@@ -1,0 +1,14 @@
+#!/bin/sh
+# Block direct commits on the protected branch. Use a feature branch + PR instead.
+protected="main"
+branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+if [ "$branch" = "$protected" ]; then
+	echo "Blocked: direct commits to '$protected' are not allowed." >&2
+	echo "Create a feature branch and open a pull request:" >&2
+	echo "  git switch -c my-change" >&2
+	echo "(To bypass in an emergency: git commit --no-verify)" >&2
+	exit 1
+fi
+
+exit 0

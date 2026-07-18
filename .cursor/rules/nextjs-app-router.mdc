@@ -1,0 +1,28 @@
+---
+description: Next.js App Router conventions for pages and components
+globs: app/**/*.js,components/**/*.js
+---
+
+- Routes live at `app/<route>/page.js`, one page per folder, matching the
+  existing pattern (`app/about/page.js`, `app/team/page.js`,
+  `app/constitution/page.js`, `app/recommendation/page.js`,
+  `app/contact/page.js`). Export `metadata` from each page for
+  title/description.
+- Shared UI goes in `components/` as PascalCase files (`Header.js`,
+  `Footer.js`, `PageBanner.js`, `HeroCarousel.js`, `PersonCard.js`). Reuse
+  `PageBanner` for any new top-level page's hero banner instead of writing a
+  new one — see any existing page for the usage pattern.
+- Default to Server Components. Only add `"use client"` when the component
+  needs state, effects, or browser APIs — `components/Header.js` (mobile
+  menu state) and `components/HeroCarousel.js` (interval/state) are the
+  existing examples of when that's warranted.
+- Import shared site content from `lib/data.js` via the `@/lib/data` alias
+  (nav links, sponsors, directors, contact info, etc.) rather than inlining
+  content directly in page files.
+- Use `next/image`, not a raw `<img>` tag. Any external image host must be
+  added to `images.remotePatterns` in `next.config.mjs` first — don't
+  hotlink from a new domain without doing that.
+- Styling is Tailwind utility classes only — no CSS modules, no
+  styled-components, no inline `style=` unless there's genuinely no Tailwind
+  equivalent (e.g. a computed value). Use the brand theme colors (see
+  `project-overview.mdc`) for anything brand-colored.

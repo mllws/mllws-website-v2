@@ -1,0 +1,24 @@
+---
+description: Project overview and stack for the MLLWS website
+alwaysApply: true
+---
+
+This is the public website for Mother Language Lovers of the World Society
+(MLLWS), a real nonprofit — not a demo project. Stack: Next.js 16 (App
+Router), Tailwind CSS v4, plain JavaScript (see `jsconfig.json` — there is no
+`tsconfig.json`; don't introduce `.ts`/`.tsx` files), npm.
+
+Repo is `mllws/mllws-website` and is **public**. Never commit secrets or
+draft/unpublished content — see `security-secrets.mdc`. Blog content lives in
+a separate private repo and is fetched at build time — see
+`content-and-data.mdc`.
+
+Brand colors are Tailwind theme vars defined in `app/globals.css`
+(`--color-brand`, `--color-brand-dark`, `--color-accent`). Use them via
+classes like `bg-brand`, `text-brand-dark`, `text-accent` instead of
+hardcoding hex values.
+
+Key docs, read before planning larger changes: `docs/FEATURES.md` (planned
+features), `docs/TESTING.md` (testing strategy), `docs/GITHUB_SETUP.md`,
+`docs/EMAIL_AUTOMATION.md`, `docs/specs/` (implementation specs for
+in-progress features).

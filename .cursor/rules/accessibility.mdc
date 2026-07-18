@@ -1,0 +1,24 @@
+---
+description: Accessibility requirements for pages and components
+globs: app/**/*.js,components/**/*.js
+---
+
+Target WCAG 2.1 AA (see `docs/TESTING.md` for the full accessibility testing
+plan and tooling) — this is a public nonprofit site, not a demo, and
+accessibility is part of the mission, not an afterthought.
+
+- Every `<Image>`/`<img>` needs meaningful `alt` text; use `alt=""` only for
+  purely decorative images.
+- Interactive elements — the nav dropdown, carousel prev/next/dot controls,
+  mobile menu toggle — must be reachable and operable by keyboard, not just
+  mouse/touch. Match the existing patterns in `components/Header.js` and
+  `components/HeroCarousel.js` (real `<button>` elements with `aria-label`s,
+  not clickable `<div>`s).
+- Check new color combinations against WCAG AA contrast (4.5:1 for normal
+  text, 3:1 for large text) before using them, especially text over the
+  brand colors defined in `app/globals.css`.
+- Don't remove a focus outline (`focus:outline-none` etc.) without providing
+  a visible replacement (e.g. `focus:ring-2`).
+- Use semantic HTML (`<nav>`, `<button>`, `<h1>`–`<h3>` in order, `<ul>`/`<li>`
+  for lists) over generic `<div>`s wherever the element's actual role
+  matches — screen readers depend on this.

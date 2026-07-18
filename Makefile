@@ -1,7 +1,7 @@
 # MLLWS website — common development tasks
 # Run `make` or `make help` to list targets.
 
-.PHONY: help install dev build start lint fetch-blog clean
+.PHONY: help install install-hooks dev build start lint fetch-blog clean
 
 .DEFAULT_GOAL := help
 
@@ -11,6 +11,12 @@ help: ## Show this help
 
 install: ## Install npm dependencies
 	npm install
+
+install-hooks: ## Install git hooks that protect the main branch
+	@for hook in pre-commit pre-merge-commit pre-push; do \
+		cp ".githooks/$$hook" ".git/hooks/$$hook" && chmod +x ".git/hooks/$$hook"; \
+	done
+	@echo "Git hooks installed: direct commit/merge/push to main is now blocked."
 
 dev: ## Start the Next.js development server
 	npm run dev

@@ -1,0 +1,13 @@
+#!/bin/sh
+# Block merges made while on the protected branch. Merge via pull request instead.
+protected="main"
+branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+if [ "$branch" = "$protected" ]; then
+	echo "Blocked: merging into '$protected' locally is not allowed." >&2
+	echo "Merge changes through a pull request on GitHub instead." >&2
+	echo "(To bypass in an emergency: git merge --no-verify ...)" >&2
+	exit 1
+fi
+
+exit 0

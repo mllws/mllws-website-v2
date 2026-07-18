@@ -1,0 +1,16 @@
+#!/bin/sh
+# Block direct pushes to the protected branch. Push a feature branch and open a PR.
+protected="main"
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+	case "$remote_ref" in
+		refs/heads/"$protected")
+			echo "Blocked: direct push to '$protected' is not allowed." >&2
+			echo "Push a feature branch and open a pull request instead." >&2
+			echo "(To bypass in an emergency: git push --no-verify)" >&2
+			exit 1
+			;;
+	esac
+done
+
+exit 0

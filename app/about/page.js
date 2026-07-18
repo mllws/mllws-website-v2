@@ -23,10 +23,11 @@ const missionItems = [
 export default function AboutPage() {
   return (
     <div>
-      <PageBanner title="About" crumb="About Us" />
+      <PageBanner title="About" crumb="About Us" eyebrow="02 — Our Story" />
 
       <section className="prose-content mx-auto max-w-4xl px-4 py-14">
-        <h2 className="text-2xl font-bold text-brand-dark">
+        <p className="section-eyebrow mb-3 max-w-xs">01</p>
+        <h2 className="text-3xl font-bold text-brand-dark">
           About Mother Language Lovers of the World Society
         </h2>
         <p>
@@ -38,7 +39,8 @@ export default function AboutPage() {
           multilingualism as envisioned by the UNESCO.
         </p>
 
-        <h2 className="mt-10 text-2xl font-bold text-brand-dark">
+        <p className="section-eyebrow mb-3 mt-14 max-w-xs">02</p>
+        <h2 className="text-3xl font-bold text-brand-dark">
           Our Mission
         </h2>
         <p className="font-medium">Mother Language Lovers of the World Society</p>
@@ -55,7 +57,8 @@ export default function AboutPage() {
           </li>
         </ol>
 
-        <h2 className="mt-10 text-2xl font-bold text-brand-dark">
+        <p className="section-eyebrow mb-3 mt-14 max-w-xs">03</p>
+        <h2 className="text-3xl font-bold text-brand-dark">
           Lingua Aqua — Mother Language Monument
         </h2>
         <p>
@@ -190,9 +193,10 @@ export default function AboutPage() {
         </p>
       </section>
 
-      <section aria-labelledby="founding-president-heading" className="bg-surface-muted py-14">
+      <section aria-labelledby="founding-president-heading" className="border-t border-border-muted bg-surface-muted py-14">
         <div className="mx-auto max-w-4xl px-4">
-          <h2 id="founding-president-heading" className="text-2xl font-bold text-brand-dark">
+          <p className="section-eyebrow mb-3 max-w-xs">04</p>
+          <h2 id="founding-president-heading" className="text-3xl font-bold text-brand-dark">
             Our Founding President
           </h2>
           <div className="mt-6 grid gap-6 md:grid-cols-[220px_1fr]">
@@ -315,9 +319,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section aria-labelledby="president-heading" className="py-14">
+      <section aria-labelledby="president-heading" className="border-t border-border-muted py-14">
         <div className="mx-auto max-w-4xl px-4">
-          <h2 id="president-heading" className="text-2xl font-bold text-brand-dark">
+          <p className="section-eyebrow mb-3 max-w-xs">05</p>
+          <h2 id="president-heading" className="text-3xl font-bold text-brand-dark">
             Mohammad Aminul Islam (Moula)
           </h2>
           <p className="mt-1 text-sm text-gray-600">

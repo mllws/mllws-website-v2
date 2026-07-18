@@ -11,7 +11,7 @@ export const metadata = {
 export default function TeamPage() {
   return (
     <div>
-      <PageBanner title="Our Team" crumb="Our Team" />
+      <PageBanner title="Our Team" crumb="Our Team" eyebrow="02 — People" />
 
       <p className="mx-auto mt-8 max-w-4xl px-4 text-lg text-gray-700">
         The people behind MLLWS — a volunteer board, regional chapter
@@ -20,32 +20,35 @@ export default function TeamPage() {
       </p>
 
       <section aria-labelledby="board-heading" className="mx-auto max-w-6xl px-4 py-12">
-        <h2 id="board-heading" className="text-2xl font-bold text-brand-dark">
+        <p className="section-eyebrow mb-3 max-w-xs">01</p>
+        <h2 id="board-heading" className="text-3xl font-bold text-brand-dark">
           Board of Directors
         </h2>
-        <div className="mt-6 grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
           {directors.map((d) => (
             <PersonCard key={d.name} {...d} />
           ))}
         </div>
       </section>
 
-      <section aria-labelledby="chapters-heading" className="mx-auto max-w-6xl px-4 pb-12">
-        <h2 id="chapters-heading" className="text-2xl font-bold text-brand-dark">
+      <section aria-labelledby="chapters-heading" className="mx-auto max-w-6xl border-t border-border-muted px-4 py-12">
+        <p className="section-eyebrow mb-3 max-w-xs">02</p>
+        <h2 id="chapters-heading" className="text-3xl font-bold text-brand-dark">
           Chapters
         </h2>
-        <div className="mt-6 grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
           {chapters.map((d) => (
             <PersonCard key={d.name} {...d} />
           ))}
         </div>
       </section>
 
-      <section aria-labelledby="advisors-heading" className="mx-auto max-w-6xl px-4 pb-16">
-        <h2 id="advisors-heading" className="text-2xl font-bold text-brand-dark">
+      <section aria-labelledby="advisors-heading" className="mx-auto max-w-6xl border-t border-border-muted px-4 py-12">
+        <p className="section-eyebrow mb-3 max-w-xs">03</p>
+        <h2 id="advisors-heading" className="text-3xl font-bold text-brand-dark">
           Advisors
         </h2>
-        <div className="mt-6 grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
           {advisors.map((d) => (
             <PersonCard key={d.name} {...d} />
           ))}

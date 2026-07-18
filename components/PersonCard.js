@@ -2,23 +2,28 @@ import Image from "next/image";
 
 export default function PersonCard({ name, title, photo, email }) {
   return (
-    <article className="overflow-hidden rounded-xl border border-border-muted bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-      <div className="aspect-square w-full overflow-hidden bg-surface-muted">
+    <article className="group text-left">
+      <div className="aspect-[4/5] w-full overflow-hidden rounded-lg bg-surface-muted grayscale-[15%] transition group-hover:grayscale-0">
         <Image
           src={photo}
           alt={`Portrait of ${name}`}
-          width={300}
-          height={300}
-          className="h-full w-full object-cover"
+          width={340}
+          height={425}
+          className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
         />
       </div>
-      <div className="p-4 text-center">
-        <p className="font-semibold text-brand-dark">{name}</p>
-        <p className="mt-1 text-sm text-gray-600">{title}</p>
+      <div className="mt-4 border-t border-border-muted pt-3">
+        <p
+          className="text-lg font-bold text-brand-dark"
+          style={{ fontFamily: "var(--font-display-family)" }}
+        >
+          {name}
+        </p>
+        <p className="mt-0.5 text-sm text-gray-600">{title}</p>
         {email && (
           <a
             href={`mailto:${email}`}
-            className="mt-2 inline-block rounded text-xs text-brand underline decoration-transparent underline-offset-2 transition hover:text-accent hover:decoration-current"
+            className="mt-1.5 inline-block rounded text-xs text-brand underline decoration-transparent underline-offset-2 transition hover:text-accent hover:decoration-current"
           >
             {email}
           </a>

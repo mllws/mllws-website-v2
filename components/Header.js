@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { nav, siteLogo } from "@/lib/data";
+import { nav, siteLogo, contactInfo } from "@/lib/data";
 
 function DesktopDropdown({ item, isActive }) {
   const [open, setOpen] = useState(false);
@@ -38,7 +38,7 @@ function DesktopDropdown({ item, isActive }) {
         aria-haspopup="true"
         aria-controls={menuId}
         onClick={() => setOpen((v) => !v)}
-        className={`flex items-center gap-1 rounded-md px-4 py-2 text-sm font-semibold uppercase tracking-wide transition-colors hover:text-accent ${
+        className={`flex items-center gap-1 rounded-md px-4 py-2 text-sm font-semibold tracking-wide transition-colors hover:text-accent ${
           isActive ? "text-accent" : "text-brand-dark"
         }`}
       >
@@ -58,7 +58,7 @@ function DesktopDropdown({ item, isActive }) {
         role="menu"
         aria-labelledby={buttonId}
         hidden={!open}
-        className="absolute left-0 top-full z-10 mt-1 w-56 rounded-lg border border-border-muted bg-white py-2 shadow-lg"
+        className="absolute left-0 top-full z-10 mt-2 w-56 rounded-lg border border-border-muted bg-surface-white py-2 shadow-xl"
       >
         {item.children.map((child) => (
           <Link
@@ -89,62 +89,97 @@ export default function Header() {
   const isItemActive = (item) =>
     pathname === item.href || item.children?.some((c) => c.href === pathname);
 
+  const socialForBar = contactInfo.social.slice(0, 4);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border-muted bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href="/" className="flex items-center gap-2 rounded-md">
-          <Image
-            src={siteLogo}
-            alt="Mother Language Lovers of the World Society — home"
-            width={160}
-            height={48}
-            className="h-11 w-auto object-contain"
-            priority
-          />
-        </Link>
+    <header className="sticky top-0 z-50 bg-surface-white/95 backdrop-blur">
+      {/* Utility bar */}
+      <div className="hidden bg-brand-dark text-white md:block">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 text-xs">
+          <p className="font-medium italic" style={{ fontFamily: "var(--font-display-family)" }}>
+            Our language is our identity
+          </p>
+          <div className="flex items-center gap-5">
+            <nav aria-label="Social media" className="flex items-center gap-4">
+              {socialForBar.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded text-white/80 transition hover:text-white"
+                >
+                  {s.label}
+                </a>
+              ))}
+            </nav>
+            <Link
+              href="/contact"
+              className="rounded-full bg-accent px-3 py-1 font-semibold text-white transition hover:bg-accent/90"
+            >
+              Get Involved
+            </Link>
+          </div>
+        </div>
+      </div>
 
-        <nav aria-label="Primary" className="hidden md:flex md:items-center md:gap-1">
-          {nav.map((item) =>
-            item.children ? (
-              <DesktopDropdown key={item.label} item={item} isActive={isItemActive(item)} />
-            ) : (
-              <Link
-                key={item.label}
-                href={item.href}
-                aria-current={pathname === item.href ? "page" : undefined}
-                className={`rounded-md px-4 py-2 text-sm font-semibold uppercase tracking-wide transition-colors hover:text-accent ${
-                  pathname === item.href ? "text-accent" : "text-brand-dark"
-                }`}
-              >
-                {item.label}
-              </Link>
-            )
-          )}
-        </nav>
+      {/* Main nav */}
+      <div className="border-b border-border-muted">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+          <Link href="/" className="flex items-center gap-3 rounded-md">
+            <Image
+              src={siteLogo}
+              alt="Mother Language Lovers of the World Society — home"
+              width={180}
+              height={54}
+              className="h-12 w-auto object-contain sm:h-14"
+              priority
+            />
+          </Link>
 
-        <button
-          type="button"
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          aria-expanded={mobileOpen}
-          aria-controls="mobile-nav"
-          className="flex flex-col gap-1.5 rounded-md p-2 md:hidden"
-          onClick={() => setMobileOpen((v) => !v)}
-        >
-          <span
-            className={`h-0.5 w-6 bg-brand-dark transition-transform ${mobileOpen ? "translate-y-2 rotate-45" : ""}`}
-          />
-          <span className={`h-0.5 w-6 bg-brand-dark transition-opacity ${mobileOpen ? "opacity-0" : ""}`} />
-          <span
-            className={`h-0.5 w-6 bg-brand-dark transition-transform ${mobileOpen ? "-translate-y-2 -rotate-45" : ""}`}
-          />
-        </button>
+          <nav aria-label="Primary" className="hidden md:flex md:items-center md:gap-1">
+            {nav.map((item) =>
+              item.children ? (
+                <DesktopDropdown key={item.label} item={item} isActive={isItemActive(item)} />
+              ) : (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  aria-current={pathname === item.href ? "page" : undefined}
+                  className={`rounded-md px-4 py-2 text-sm font-semibold tracking-wide transition-colors hover:text-accent ${
+                    pathname === item.href ? "text-accent" : "text-brand-dark"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
+          </nav>
+
+          <button
+            type="button"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
+            className="flex flex-col gap-1.5 rounded-md p-2 md:hidden"
+            onClick={() => setMobileOpen((v) => !v)}
+          >
+            <span
+              className={`h-0.5 w-6 bg-brand-dark transition-transform ${mobileOpen ? "translate-y-2 rotate-45" : ""}`}
+            />
+            <span className={`h-0.5 w-6 bg-brand-dark transition-opacity ${mobileOpen ? "opacity-0" : ""}`} />
+            <span
+              className={`h-0.5 w-6 bg-brand-dark transition-transform ${mobileOpen ? "-translate-y-2 -rotate-45" : ""}`}
+            />
+          </button>
+        </div>
       </div>
 
       <nav
         id="mobile-nav"
         aria-label="Primary"
         hidden={!mobileOpen}
-        className="border-t border-border-muted bg-white px-4 pb-4 md:hidden"
+        className="border-b border-border-muted bg-surface-white px-4 pb-4 md:hidden"
       >
         {nav.map((item) =>
           item.children ? (
@@ -153,7 +188,7 @@ export default function Header() {
                 type="button"
                 aria-expanded={mobileSubOpen}
                 aria-controls="mobile-sub-nav"
-                className="flex w-full items-center justify-between rounded-md py-2 text-sm font-semibold uppercase text-brand-dark"
+                className="flex w-full items-center justify-between rounded-md py-2 text-sm font-semibold text-brand-dark"
                 onClick={() => setMobileSubOpen((v) => !v)}
               >
                 {item.label}
@@ -181,12 +216,18 @@ export default function Header() {
               key={item.label}
               href={item.href}
               aria-current={pathname === item.href ? "page" : undefined}
-              className="block rounded-md py-2 text-sm font-semibold uppercase text-brand-dark"
+              className="block rounded-md py-2 text-sm font-semibold text-brand-dark"
             >
               {item.label}
             </Link>
           )
         )}
+        <Link
+          href="/contact"
+          className="mt-3 block rounded-full bg-accent px-4 py-2 text-center text-sm font-semibold text-white"
+        >
+          Get Involved
+        </Link>
       </nav>
     </header>
   );

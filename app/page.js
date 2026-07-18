@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import HeroCarousel from "@/components/HeroCarousel";
+import PullQuote from "@/components/PullQuote";
 import { gviewUrl } from "@/lib/data";
 
 const IMG = "https://www.motherlanguagelovers.com";
@@ -25,10 +26,8 @@ export default function Home() {
       </section>
 
       <section aria-labelledby="upcoming-heading" className="mx-auto max-w-6xl px-4 py-14">
-        <p className="text-center text-sm font-semibold uppercase tracking-widest text-accent">
-          Upcoming
-        </p>
-        <h2 id="upcoming-heading" className="text-center text-3xl font-bold text-brand-dark">
+        <p className="section-eyebrow mb-3 max-w-xs">02 — Upcoming</p>
+        <h2 id="upcoming-heading" className="text-3xl font-bold text-brand-dark">
           Events
         </h2>
 
@@ -179,9 +178,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section aria-labelledby="s214-heading" className="bg-surface-muted py-14">
+      <section aria-labelledby="s214-heading" className="border-t border-border-muted py-14">
         <div className="prose-content mx-auto max-w-4xl px-4">
-          <h2 id="s214-heading" className="text-2xl font-bold text-brand-dark">
+          <p className="section-eyebrow mb-3 max-w-xs">03 — Milestone</p>
+          <h2 id="s214-heading" className="text-3xl font-bold text-brand-dark">
             An act to establish International Mother Language Day (IMLD):
             Historic Bill S-214
           </h2>
@@ -216,6 +216,12 @@ export default function Home() {
             adopting this bill, Canada will now officially honor IMLD on
             February 21 every year.
           </p>
+
+          <PullQuote cite="Bill S-214, Royal Assent, April 27, 2023">
+            Canada now officially honors the 21st of February, every year,
+            as International Mother Language Day.
+          </PullQuote>
+
           <p>
             To respect and celebrate all mother languages, the late Mr.
             Rafiqul Islam, founding president of Mother Language Lovers of
@@ -315,9 +321,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section aria-labelledby="history-heading" className="py-14">
+      <section aria-labelledby="history-heading" className="border-t border-border-muted bg-surface-muted py-14">
         <div className="prose-content mx-auto max-w-4xl px-4">
-          <h2 id="history-heading" className="text-2xl font-bold text-brand-dark">
+          <p className="section-eyebrow mb-3 max-w-xs">04 — Origins</p>
+          <h2 id="history-heading" className="text-3xl font-bold text-brand-dark">
             Brief history of International Mother Language Day (IMLD)
           </h2>
           <p>
@@ -401,13 +408,25 @@ export default function Home() {
         </div>
       </section>
 
-      <section aria-label="Learn more" className="bg-brand py-10 text-center">
-        <Link
-          href="/about"
-          className="inline-block rounded-md bg-white px-6 py-3 font-semibold text-brand-dark shadow transition hover:bg-surface-muted"
-        >
-          Learn more about MLLWS <span aria-hidden="true">→</span>
-        </Link>
+      <section aria-labelledby="cta-heading" className="bg-brand-dark py-16 text-center text-white sm:py-20">
+        <div className="mx-auto max-w-2xl px-4">
+          <p className="section-eyebrow-inverse mx-auto mb-3 max-w-[180px] justify-center">
+            05 — Join Us
+          </p>
+          <h2 id="cta-heading" className="text-3xl font-bold sm:text-4xl">
+            Help us celebrate every mother language
+          </h2>
+          <p className="mt-4 text-white/80">
+            Learn about our mission, our history, and the people carrying
+            International Mother Language Day forward.
+          </p>
+          <Link
+            href="/about"
+            className="mt-7 inline-block rounded-full bg-white px-7 py-3 font-semibold text-brand-dark shadow transition hover:bg-surface-muted"
+          >
+            Learn more about MLLWS <span aria-hidden="true">→</span>
+          </Link>
+        </div>
       </section>
     </div>
   );

@@ -48,7 +48,7 @@ const rows = [
 export default function ContactPage() {
   return (
     <div>
-      <PageBanner title="Contact us" crumb="Contact Us" />
+      <PageBanner title="Contact us" crumb="Contact Us" eyebrow="02 — Reach Us" />
 
       <section className="mx-auto max-w-3xl px-4 py-14">
         <h2 className="text-2xl font-bold text-brand-dark">Contact information</h2>

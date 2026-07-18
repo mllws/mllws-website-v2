@@ -10,7 +10,7 @@ export const metadata = {
 export default function RecommendationPage() {
   return (
     <div>
-      <PageBanner title="Recomendation" crumb="Recomendation" />
+      <PageBanner title="Recomendation" crumb="Recomendation" eyebrow="02 — Endorsements" />
 
       <p className="mx-auto mt-8 max-w-4xl px-4 text-lg text-gray-700">
         Letters of recognition and support from school boards and community

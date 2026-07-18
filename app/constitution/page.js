@@ -9,7 +9,7 @@ export const metadata = {
 export default function ConstitutionPage() {
   return (
     <div>
-      <PageBanner title="Constitution and By-Laws" crumb="Constitution & By-Laws" />
+      <PageBanner title="Constitution and By-Laws" crumb="Constitution & By-Laws" eyebrow="02 — Governance" />
 
       <section className="mx-auto max-w-3xl px-4 py-14">
         <div className="rounded-xl border border-border-muted bg-surface-muted p-6 sm:p-8">

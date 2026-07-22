@@ -338,6 +338,99 @@ a:not([class*="text-"]):not([class*="bg-"]):hover {
   }
 }
 
+/* Hear it in your language — play control hover */
+.listen-play-btn {
+  position: relative;
+  cursor: pointer;
+  isolation: isolate;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.listen-play-btn::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  opacity: 0;
+  transform: scale(0.72);
+  transition:
+    opacity 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+.listen-play-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 rgba(179, 69, 47, 0);
+  transition: box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.listen-play-btn__icon {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.listen-play-btn:hover,
+.listen-play-btn:focus-visible {
+  transform: scale(1.1);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.listen-play-btn:hover::before,
+.listen-play-btn:focus-visible::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.listen-play-btn:hover::after,
+.listen-play-btn:focus-visible::after {
+  box-shadow: 0 0 0 10px rgba(179, 69, 47, 0.18);
+}
+
+.listen-play-btn:hover .listen-play-btn__icon,
+.listen-play-btn:focus-visible .listen-play-btn__icon {
+  transform: scale(1.08);
+}
+
+.listen-play-btn.is-playing:hover,
+.listen-play-btn.is-playing:focus-visible {
+  box-shadow: 0 10px 28px rgba(179, 69, 47, 0.4);
+}
+
+.listen-play-btn.is-playing:hover::after,
+.listen-play-btn.is-playing:focus-visible::after {
+  box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.16);
+}
+
+.listen-play-btn:active {
+  transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .listen-play-btn,
+  .listen-play-btn::before,
+  .listen-play-btn::after,
+  .listen-play-btn__icon {
+    transition: none;
+  }
+
+  .listen-play-btn:hover,
+  .listen-play-btn:focus-visible,
+  .listen-play-btn:active {
+    transform: none;
+  }
+}
+
 /* Topbar nav: underline reveals from center and lifts the label */
 .nav-link-underline {
   position: relative;

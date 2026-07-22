@@ -142,11 +142,13 @@ export default function LanguageListen() {
                 setPlaying(true);
               }
             }}
-            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-0 text-[15px] ${
-              playing ? "bg-accent text-white" : "bg-white text-brand"
+            className={`listen-play-btn flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-0 text-[15px] ${
+              playing ? "is-playing bg-accent text-white" : "bg-white text-brand"
             }`}
           >
-            <span aria-hidden="true">{playing ? "❚❚" : "▶"}</span>
+            <span className="listen-play-btn__icon" aria-hidden="true">
+              {playing ? "❚❚" : "▶"}
+            </span>
           </button>
           <div className="min-w-0 flex-1">
             <div className="font-display mb-0.5 text-lg font-bold text-white">

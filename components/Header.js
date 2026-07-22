@@ -138,6 +138,7 @@ export default function Header() {
 
           {/* Desktop hamburger — fades in as Get Involved slides to center */}
           <div
+            aria-hidden={!scrolled}
             className={`absolute inset-0 hidden items-center justify-end transition-[opacity,transform] duration-300 md:flex ${
               scrolled
                 ? "pointer-events-auto translate-y-0 scale-100 opacity-100"

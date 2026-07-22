@@ -3,232 +3,257 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { nav, siteLogo, contactInfo } from "@/lib/data";
-
-function DesktopDropdown({ item, isActive }) {
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef(null);
-  const buttonId = `nav-trigger-${item.label.replace(/\s+/g, "-").toLowerCase()}`;
-  const menuId = `nav-menu-${item.label.replace(/\s+/g, "-").toLowerCase()}`;
-
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
-        setOpen(false);
-      }
-    }
-    function handleEscape(e) {
-      if (e.key === "Escape") setOpen(false);
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscape);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, []);
-
-  return (
-    <div ref={containerRef} className="relative">
-      <button
-        id={buttonId}
-        type="button"
-        aria-expanded={open}
-        aria-haspopup="true"
-        aria-controls={menuId}
-        onClick={() => setOpen((v) => !v)}
-        className={`flex items-center gap-1 rounded-md px-4 py-2 text-sm font-semibold tracking-wide transition-colors hover:text-accent ${
-          isActive ? "text-accent" : "text-brand-dark"
-        }`}
-      >
-        {item.label}
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 10 10"
-          aria-hidden="true"
-          className={`mt-0.5 fill-current transition-transform ${open ? "rotate-180" : ""}`}
-        >
-          <path d="M1 3l4 4 4-4" stroke="currentColor" strokeWidth="1.4" fill="none" />
-        </svg>
-      </button>
-      <div
-        id={menuId}
-        role="menu"
-        aria-labelledby={buttonId}
-        hidden={!open}
-        className="absolute left-0 top-full z-10 mt-2 w-56 rounded-lg border border-border-muted bg-surface-white py-2 shadow-xl"
-      >
-        {item.children.map((child) => (
-          <Link
-            key={child.href}
-            href={child.href}
-            role="menuitem"
-            onClick={() => setOpen(false)}
-            className="block px-4 py-2 text-sm text-foreground hover:bg-surface-muted hover:text-accent"
-          >
-            {child.label}
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
-}
+import { useEffect, useState } from "react";
+import { nav, secondaryNav, siteLogo } from "@/lib/data";
 
 export default function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileSubOpen, setMobileSubOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    setMobileOpen(false);
-    setMobileSubOpen(false);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    setMenuOpen(false);
   }, [pathname]);
 
-  const isItemActive = (item) =>
-    pathname === item.href || item.children?.some((c) => c.href === pathname);
-
-  const socialForBar = contactInfo.social.slice(0, 4);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 bg-surface-white/95 backdrop-blur">
-      {/* Utility bar */}
-      <div className="hidden bg-brand-dark text-white md:block">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 text-xs">
-          <p className="font-medium italic" style={{ fontFamily: "var(--font-display-family)" }}>
-            Our language is our identity
-          </p>
-          <div className="flex items-center gap-5">
-            <nav aria-label="Social media" className="flex items-center gap-4">
-              {socialForBar.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded text-white/80 transition hover:text-white"
+    <>
+      <nav
+        aria-label="Primary"
+        className={`sticky top-0 z-50 grid grid-cols-[auto_1fr_auto] items-center gap-x-5 transition-[margin,padding,border-radius,background-color,box-shadow,border-color] duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${
+          scrolled
+            ? "mx-4 mt-3.5 rounded-full border border-accent/20 bg-[#fffbf4]/92 px-5 py-2.5 shadow-[0_10px_30px_rgba(34,31,26,0.14)] backdrop-blur-[10px] sm:mx-6"
+            : "border-b border-border-muted bg-background/90 px-6 py-4 backdrop-blur-[10px] sm:px-12"
+        }`}
+      >
+        <Link
+          href="/"
+          className="relative z-10 flex shrink-0 items-center gap-2.5 text-foreground no-underline hover:text-foreground"
+        >
+          <Image
+            src={siteLogo}
+            alt="Mother Language Lovers of the World Society"
+            width={36}
+            height={36}
+            className="h-9 w-9"
+            priority
+          />
+          <span className="font-display text-[15px] font-extrabold leading-tight tracking-tight sm:text-base">
+            Mother Language Lovers
+            <br />
+            <span className="text-xs font-semibold text-muted">of the World Society</span>
+          </span>
+        </Link>
+
+        {/* Desktop animated layers — pointer-events only on the interactive children */}
+        <div className="pointer-events-none absolute inset-0 hidden md:block" aria-hidden={false}>
+          <div
+            className={`absolute top-1/2 left-1/2 flex gap-8 whitespace-nowrap transition-[transform,opacity] duration-[450ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${
+              scrolled
+                ? "translate-x-[calc(-50%+70px)] -translate-y-1/2 scale-[0.98] opacity-0"
+                : "-translate-x-1/2 -translate-y-1/2 scale-100 opacity-100"
+            }`}
+          >
+            {nav.map((item) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  tabIndex={scrolled ? -1 : undefined}
+                  className={`pointer-events-auto inline-block whitespace-nowrap text-[15px] font-semibold no-underline transition hover:-translate-y-0.5 hover:text-accent ${
+                    scrolled ? "pointer-events-none" : ""
+                  } ${active ? "text-accent" : "text-foreground"}`}
                 >
-                  {s.label}
-                </a>
-              ))}
-            </nav>
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div
+            className={`absolute top-1/2 w-max whitespace-nowrap transition-[left,transform] duration-[450ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${
+              scrolled
+                ? "left-1/2 -translate-x-1/2 -translate-y-1/2"
+                : "left-[calc(100%-48px)] -translate-x-full -translate-y-1/2"
+            }`}
+          >
             <Link
-              href="/contact"
-              className="rounded-full bg-accent px-3 py-1 font-semibold text-white transition hover:bg-accent/90"
+              href="/membership"
+              className={`pointer-events-auto inline-block rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-[22px] py-[11px] text-sm font-bold !text-white no-underline transition-[box-shadow] duration-[350ms] hover:!text-white ${
+                scrolled
+                  ? "shadow-[0_8px_20px_rgba(179,69,47,0.35)]"
+                  : "shadow-[0_4px_12px_rgba(179,69,47,0.2)]"
+              }`}
             >
               Get Involved
             </Link>
           </div>
         </div>
-      </div>
 
-      {/* Main nav */}
-      <div className="border-b border-border-muted">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-          <Link href="/" className="flex items-center gap-3 rounded-md">
-            <Image
-              src={siteLogo}
-              alt="Mother Language Lovers of the World Society — home"
-              width={180}
-              height={54}
-              className="h-12 w-auto object-contain sm:h-14"
-              priority
-            />
+        {/* Spacer for grid middle column */}
+        <div className="hidden md:block" />
+
+        <div className="relative z-10 flex h-11 min-w-[42px] items-center justify-end gap-2">
+          <Link
+            href="/membership"
+            className="rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-4 py-2 text-sm font-bold !text-white no-underline hover:!text-white md:hidden"
+          >
+            Join
           </Link>
 
-          <nav aria-label="Primary" className="hidden md:flex md:items-center md:gap-1">
-            {nav.map((item) =>
-              item.children ? (
-                <DesktopDropdown key={item.label} item={item} isActive={isItemActive(item)} />
-              ) : (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  aria-current={pathname === item.href ? "page" : undefined}
-                  className={`rounded-md px-4 py-2 text-sm font-semibold tracking-wide transition-colors hover:text-accent ${
-                    pathname === item.href ? "text-accent" : "text-brand-dark"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              )
-            )}
-          </nav>
-
+          {/* Mobile hamburger — always available under md */}
           <button
             type="button"
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-nav"
-            className="flex flex-col gap-1.5 rounded-md p-2 md:hidden"
-            onClick={() => setMobileOpen((v) => !v)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            aria-controls="site-menu"
+            onClick={() => setMenuOpen((v) => !v)}
+            className="flex h-[42px] w-[42px] cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-0 bg-white md:hidden"
           >
-            <span
-              className={`h-0.5 w-6 bg-brand-dark transition-transform ${mobileOpen ? "translate-y-2 rotate-45" : ""}`}
-            />
-            <span className={`h-0.5 w-6 bg-brand-dark transition-opacity ${mobileOpen ? "opacity-0" : ""}`} />
-            <span
-              className={`h-0.5 w-6 bg-brand-dark transition-transform ${mobileOpen ? "-translate-y-2 -rotate-45" : ""}`}
-            />
+            <span className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "translate-y-1.5 rotate-45" : ""}`} />
+            <span className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "-translate-y-1.5 -rotate-45" : ""}`} />
           </button>
-        </div>
-      </div>
 
-      <nav
-        id="mobile-nav"
-        aria-label="Primary"
-        hidden={!mobileOpen}
-        className="border-b border-border-muted bg-surface-white px-4 pb-4 md:hidden"
-      >
-        {nav.map((item) =>
-          item.children ? (
-            <div key={item.label} className="py-1">
-              <button
-                type="button"
-                aria-expanded={mobileSubOpen}
-                aria-controls="mobile-sub-nav"
-                className="flex w-full items-center justify-between rounded-md py-2 text-sm font-semibold text-brand-dark"
-                onClick={() => setMobileSubOpen((v) => !v)}
-              >
-                {item.label}
-                <span aria-hidden="true">{mobileSubOpen ? "−" : "+"}</span>
-              </button>
-              <div
-                id="mobile-sub-nav"
-                hidden={!mobileSubOpen}
-                className="ml-3 flex flex-col border-l border-border-muted pl-3"
-              >
-                {item.children.map((child) => (
-                  <Link
-                    key={child.href}
-                    href={child.href}
-                    aria-current={pathname === child.href ? "page" : undefined}
-                    className="py-2 text-sm text-foreground"
-                  >
-                    {child.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <Link
-              key={item.label}
-              href={item.href}
-              aria-current={pathname === item.href ? "page" : undefined}
-              className="block rounded-md py-2 text-sm font-semibold text-brand-dark"
+          {/* Desktop hamburger — fades in as Get Involved slides to center */}
+          <div
+            aria-hidden={!scrolled}
+            className={`absolute inset-0 hidden items-center justify-end transition-[opacity,transform] duration-300 md:flex ${
+              scrolled
+                ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
+                : "pointer-events-none translate-y-2 scale-[0.98] opacity-0"
+            }`}
+          >
+            <button
+              type="button"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              aria-controls="site-menu"
+              tabIndex={scrolled ? undefined : -1}
+              onClick={() => setMenuOpen((v) => !v)}
+              className={`flex h-[42px] w-[42px] cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-0 transition-colors ${
+                menuOpen ? "bg-foreground/5" : "bg-white"
+              }`}
             >
-              {item.label}
-            </Link>
-          )
-        )}
-        <Link
-          href="/contact"
-          className="mt-3 block rounded-full bg-accent px-4 py-2 text-center text-sm font-semibold text-white"
-        >
-          Get Involved
-        </Link>
+              <span className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "translate-y-1.5 rotate-45" : ""}`} />
+              <span className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "opacity-0" : ""}`} />
+              <span className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "-translate-y-1.5 -rotate-45" : ""}`} />
+            </button>
+          </div>
+        </div>
       </nav>
-    </header>
+
+      {menuOpen && (
+        <div
+          id="site-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site menu"
+          className="animate-dropdown-pop fixed inset-0 z-[200] flex overflow-hidden bg-background"
+        >
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+            {["Hello", "Bonjour", "Hola", "こんにちは", "مرحبا", "নমস্কার", "你好", "Olá"].map((word, i) => (
+              <span
+                key={word}
+                className="font-display absolute font-extrabold whitespace-nowrap text-foreground opacity-5"
+                style={{
+                  left: `${8 + ((i * 47) % 84)}%`,
+                  top: `${10 + ((i * 31) % 80)}%`,
+                  fontSize: `${20 + (i % 3) * 10}px`,
+                  transform: `rotate(${(i % 2 ? -1 : 1) * (4 + i)}deg)`,
+                }}
+              >
+                {word}
+              </span>
+            ))}
+          </div>
+          <button
+            type="button"
+            aria-label="Close menu"
+            onClick={() => setMenuOpen(false)}
+            className="absolute top-7 right-8 z-10 flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border-0 bg-foreground/8 text-2xl text-foreground transition hover:bg-foreground/15"
+          >
+            ×
+          </button>
+          <div className="relative z-[1] m-auto max-h-[100dvh] w-full max-w-[760px] overflow-y-auto px-12 py-20">
+            <Link
+              href="/membership"
+              onClick={() => setMenuOpen(false)}
+              className="mb-10 inline-block cursor-pointer rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-7 py-3.5 font-bold !text-white no-underline transition duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:scale-105 hover:!text-white"
+            >
+              Get Involved
+            </Link>
+
+            {nav.map((item, i) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`group flex cursor-pointer items-baseline gap-6 border-b border-border-muted py-[18px] font-display text-4xl font-extrabold no-underline transition-[color,padding-left,transform] duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:translate-x-4 hover:pl-4 hover:!text-accent ${
+                    active ? "text-accent" : "text-foreground"
+                  }`}
+                >
+                  <span className="font-display text-base font-bold text-muted-light transition-colors duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:text-accent">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="flex flex-col">
+                    <span>{item.label}</span>
+                    <span className="mt-0.5 text-sm font-semibold text-muted-light transition-colors duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:text-accent/70">
+                      {item.translated}
+                    </span>
+                  </span>
+                </Link>
+              );
+            })}
+
+            <p className="mt-10 mb-3 text-xs font-extrabold tracking-[0.08em] text-muted-light uppercase">
+              More
+            </p>
+            {secondaryNav.map((item, i) => {
+              const active = pathname === item.href;
+              const number = String(nav.length + i + 1).padStart(2, "0");
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`group flex cursor-pointer items-baseline gap-6 border-b border-border-muted py-4 font-display text-2xl font-extrabold no-underline transition-[color,padding-left,transform] duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:translate-x-4 hover:pl-4 hover:!text-accent ${
+                    active ? "text-accent" : "text-foreground"
+                  }`}
+                >
+                  <span className="font-display text-sm font-bold text-muted-light transition-colors duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:text-accent">
+                    {number}
+                  </span>
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

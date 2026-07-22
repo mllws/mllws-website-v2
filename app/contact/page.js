@@ -4,7 +4,7 @@ import { contactInfo } from "@/lib/data";
 export const metadata = {
   title: "Contact",
   description:
-    "If you are in the middle of something and you don't want to miss that important call to preserve your mother language that could be the start of an exciting new journey",
+    "Get in touch with Mother Language Lovers of the World Society — membership, volunteering, and partnership inquiries.",
 };
 
 const rows = [
@@ -48,24 +48,23 @@ const rows = [
 export default function ContactPage() {
   return (
     <div>
-      <PageBanner title="Contact us" crumb="Contact Us" eyebrow="02 — Reach Us" />
+      <PageBanner title="Contact us" crumb="Contact" eyebrow="Reach Us" />
 
-      <section className="mx-auto max-w-3xl px-4 py-14">
-        <h2 className="text-2xl font-bold text-brand-dark">Contact information</h2>
-        <p className="mt-3 max-w-2xl text-lg text-gray-700">
-          If you are in the middle of something and you don&apos;t want to
-          miss that important call that could be the start of an exciting
-          new journey.
+      <section className="mx-auto max-w-3xl px-6 py-14 sm:px-12">
+        <h2 className="font-display text-2xl font-extrabold text-foreground">Contact information</h2>
+        <p className="mt-3 max-w-2xl text-lg text-muted">
+          Reach out about membership, volunteering, partnerships, or International Mother Language
+          Day.
         </p>
 
-        <dl className="mt-8 divide-y divide-border-muted overflow-hidden rounded-xl border border-border-muted bg-white shadow-sm">
+        <dl className="mt-8 divide-y divide-border-muted overflow-hidden rounded-[22px] border border-border-muted bg-white">
           {rows.map((row) => (
             <div
               key={row.label}
               className="grid grid-cols-1 gap-1 p-4 sm:grid-cols-[140px_1fr] sm:gap-4"
             >
-              <dt className="font-semibold text-brand-dark">{row.label}</dt>
-              <dd className="text-gray-700">{row.value}</dd>
+              <dt className="font-semibold text-foreground">{row.label}</dt>
+              <dd className="text-[#4a4438]">{row.value}</dd>
             </div>
           ))}
           {contactInfo.social.map((s) => (
@@ -73,7 +72,7 @@ export default function ContactPage() {
               key={s.label}
               className="grid grid-cols-1 gap-1 p-4 sm:grid-cols-[140px_1fr] sm:gap-4"
             >
-              <dt className="font-semibold text-brand-dark">{s.label}</dt>
+              <dt className="font-semibold text-foreground">{s.label}</dt>
               <dd>
                 <a
                   href={s.href}

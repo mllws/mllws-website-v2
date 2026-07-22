@@ -2,8 +2,46 @@ import Image from "next/image";
 import Link from "next/link";
 import { sponsors, contactInfo, siteLogo, secondaryNav } from "@/lib/data";
 
+const PRIMARY_SOCIAL = ["Facebook", "X", "Instagram"];
+
+function SocialIcon({ label }) {
+  const common = {
+    width: 18,
+    height: 18,
+    viewBox: "0 0 24 24",
+    fill: "currentColor",
+    "aria-hidden": true,
+  };
+
+  if (label === "Facebook") {
+    return (
+      <svg {...common}>
+        <path d="M14 8.5V6.8c0-.7.1-1.1 1.2-1.1H17V3h-2.6C11.6 3 10.5 4.5 10.5 6.6v1.9H8.5V11h2v10h3.5V11H16l.5-2.5H14z" />
+      </svg>
+    );
+  }
+  if (label === "X") {
+    return (
+      <svg {...common}>
+        <path d="M18.244 2H21.5l-7.5 8.57L22.5 22h-6.59l-5.17-6.75L5.1 22H1.84l8.02-9.16L1.5 2h6.75l4.67 6.18L18.244 2zm-1.16 18h1.82L7.03 3.94H5.08L17.084 20z" />
+      </svg>
+    );
+  }
+  if (label === "Instagram") {
+    return (
+      <svg {...common}>
+        <path d="M12 7.2A4.8 4.8 0 1 0 12 16.8 4.8 4.8 0 0 0 12 7.2zm0 7.9a3.1 3.1 0 1 1 0-6.2 3.1 3.1 0 0 1 0 6.2z" />
+        <path d="M17.5 2h-11A4.5 4.5 0 0 0 2 6.5v11A4.5 4.5 0 0 0 6.5 22h11a4.5 4.5 0 0 0 4.5-4.5v-11A4.5 4.5 0 0 0 17.5 2zm2.8 15.5a2.8 2.8 0 0 1-2.8 2.8h-11a2.8 2.8 0 0 1-2.8-2.8v-11a2.8 2.8 0 0 1 2.8-2.8h11a2.8 2.8 0 0 1 2.8 2.8v11z" />
+        <circle cx="17.5" cy="6.5" r="1.2" />
+      </svg>
+    );
+  }
+  return null;
+}
+
 export default function Footer() {
   const year = new Date().getFullYear();
+  const socialLinks = contactInfo.social.filter((s) => PRIMARY_SOCIAL.includes(s.label));
 
   return (
     <footer className="relative overflow-hidden bg-background px-6 pb-8 pt-14 text-foreground sm:px-12">
@@ -51,6 +89,23 @@ export default function Footer() {
             A volunteer-run non-profit celebrating linguistic diversity across Canada, and the
             home of International Mother Language Day advocacy.
           </p>
+          <nav aria-label="Social media" className="mt-5">
+            <ul className="flex flex-wrap items-center gap-2.5">
+              {socialLinks.map((s) => (
+                <li key={s.label}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-foreground/10 bg-white text-foreground no-underline transition hover:border-accent/40 hover:text-accent"
+                    aria-label={`${s.label} ${s.handle} (opens in a new tab)`}
+                  >
+                    <SocialIcon label={s.label} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
 
         <nav aria-label="Explore">

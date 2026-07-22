@@ -338,10 +338,14 @@ a:not([class*="text-"]):not([class*="bg-"]):hover {
   }
 }
 
-/* Topbar nav: underline reveals from the center and spreads outward */
+/* Topbar nav: underline reveals from center and lifts the label */
 .nav-link-underline {
   position: relative;
-  padding-bottom: 2px;
+  display: inline-block;
+  padding-bottom: 3px;
+  transition:
+    color 0.25s ease,
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .nav-link-underline::after {
@@ -358,14 +362,24 @@ a:not([class*="text-"]):not([class*="bg-"]):hover {
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+.nav-link-underline:hover,
+.nav-link-underline:focus-visible {
+  transform: translateY(-3px);
+}
+
 .nav-link-underline:hover::after,
-.nav-link-underline:focus-visible::after,
-.nav-link-underline.is-active::after {
+.nav-link-underline:focus-visible::after {
   transform: scaleX(1);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .nav-link-underline,
   .nav-link-underline::after {
     transition: none;
+  }
+
+  .nav-link-underline:hover,
+  .nav-link-underline:focus-visible {
+    transform: none;
   }
 }

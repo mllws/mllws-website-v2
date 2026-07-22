@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { nav, secondaryNav, siteLogo } from "@/lib/data";
+import LanguageHover from "@/components/LanguageHover";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -98,7 +99,7 @@ export default function Header() {
                 : "left-[calc(100%-48px)] -translate-x-full -translate-y-1/2"
             }`}
           >
-            <Link
+            <LanguageHover
               href="/membership"
               className={`pointer-events-auto inline-block rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-[22px] py-[11px] text-sm font-bold !text-white no-underline transition-[box-shadow] duration-[350ms] hover:!text-white ${
                 scrolled
@@ -107,7 +108,7 @@ export default function Header() {
               }`}
             >
               Get Involved
-            </Link>
+            </LanguageHover>
           </div>
         </div>
 
@@ -115,12 +116,12 @@ export default function Header() {
         <div className="hidden md:block" />
 
         <div className="relative z-10 flex h-11 min-w-[42px] items-center justify-end gap-2">
-          <Link
+          <LanguageHover
             href="/membership"
             className="rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-4 py-2 text-sm font-bold !text-white no-underline hover:!text-white md:hidden"
           >
             Join
-          </Link>
+          </LanguageHover>
 
           {/* Mobile hamburger — always available under md */}
           <button
@@ -197,13 +198,13 @@ export default function Header() {
             ×
           </button>
           <div className="relative z-[1] m-auto max-h-[100dvh] w-full max-w-[760px] overflow-y-auto px-12 py-20">
-            <Link
+            <LanguageHover
               href="/membership"
               onClick={() => setMenuOpen(false)}
               className="mb-10 inline-block cursor-pointer rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-7 py-3.5 font-bold !text-white no-underline transition duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:scale-105 hover:!text-white"
             >
               Get Involved
-            </Link>
+            </LanguageHover>
 
             {nav.map((item, i) => {
               const active = pathname === item.href;

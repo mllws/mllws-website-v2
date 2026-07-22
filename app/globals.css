@@ -16,8 +16,16 @@
   --surface-muted: #f1ece1;
   --surface-white: #ffffff;
   --border-muted: rgba(34, 31, 26, 0.08);
-  --font-display-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
-  --font-body-family: var(--font-inter), Inter, sans-serif;
+  --font-display-family: var(--font-plus-jakarta), var(--font-noto-bengali),
+    var(--font-noto-gurmukhi), var(--font-noto-devanagari), var(--font-noto-arabic),
+    "Plus Jakarta Sans", "Noto Sans Bengali", "Noto Sans Gurmukhi", "Noto Sans Devanagari",
+    "Noto Sans Arabic", sans-serif;
+  --font-body-family: var(--font-inter), var(--font-noto-bengali), var(--font-noto-gurmukhi),
+    var(--font-noto-devanagari), var(--font-noto-arabic), Inter, "Noto Sans Bengali",
+    "Noto Sans Gurmukhi", "Noto Sans Devanagari", "Noto Sans Arabic", sans-serif;
+  --font-indic-family: var(--font-noto-bengali), var(--font-noto-gurmukhi),
+    var(--font-noto-devanagari), var(--font-noto-arabic), "Noto Sans Bengali",
+    "Noto Sans Gurmukhi", "Noto Sans Devanagari", "Noto Sans Arabic", sans-serif;
 }
 
 @theme inline {
@@ -251,4 +259,81 @@ a:not([class*="text-"]):not([class*="bg-"]):hover {
   color: var(--foreground);
   border-left: 4px solid var(--accent);
   padding-left: 1.5rem;
+}
+
+/* Odometer / meter roll for LanguageHover experiment */
+.meter-text {
+  --meter-line: 1.2em;
+  display: inline-flex;
+  align-items: stretch;
+  height: var(--meter-line);
+  line-height: var(--meter-line);
+  overflow: hidden;
+  vertical-align: middle;
+  font-family: var(--font-body-family);
+  font-feature-settings: "liga" 1, "clig" 1, "calt" 1, "kern" 1;
+}
+
+.meter-text--indic {
+  font-family: var(--font-indic-family);
+  /* Keep conjuncts / matras together — never letter-space Indic */
+  letter-spacing: 0;
+  word-break: keep-all;
+}
+
+.meter-char {
+  display: inline-block;
+  height: var(--meter-line);
+  overflow: hidden;
+  min-width: 0.58em;
+  text-align: center;
+}
+
+.meter-char--space {
+  min-width: 0.32em;
+}
+
+.meter-char--wide {
+  min-width: 1em;
+}
+
+.meter-char--phrase {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.meter-char-reel {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.meter-char-reel--run {
+  animation: meterRoll 0.55s cubic-bezier(0.2, 0.85, 0.2, 1) both;
+  animation-delay: var(--meter-delay, 0ms);
+}
+
+.meter-char-glyph {
+  display: flex;
+  height: var(--meter-line);
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+@keyframes meterRoll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(var(--meter-steps, 0) * var(--meter-line) * -1));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meter-char-reel--run {
+    animation: none;
+    transform: translateY(calc(var(--meter-steps, 0) * var(--meter-line) * -1));
+  }
 }

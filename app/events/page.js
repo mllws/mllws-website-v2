@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import FilterChips from "@/components/FilterChips";
+import LanguageHover from "@/components/LanguageHover";
 import { events, eventFilters, upcomingEvent } from "@/lib/data";
 
 export default function EventsPage() {
@@ -52,22 +53,22 @@ export default function EventsPage() {
               <span>{upcomingEvent.location}</span>
             </div>
             <div className="flex flex-wrap gap-3">
-              <a
+              <LanguageHover
                 href={upcomingEvent.cityHref}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-block rounded-full bg-accent px-6 py-3.5 text-sm font-bold text-white no-underline transition hover:scale-105 hover:text-white"
               >
                 City of Surrey event
-              </a>
-              <a
+              </LanguageHover>
+              <LanguageHover
                 href={upcomingEvent.facebookHref}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-block rounded-full border border-foreground/15 px-6 py-3.5 text-sm font-bold text-foreground no-underline transition hover:border-accent hover:text-accent"
               >
                 Facebook event
-              </a>
+              </LanguageHover>
             </div>
           </div>
         </div>
@@ -114,12 +115,12 @@ export default function EventsPage() {
               We support community groups running their own language celebrations.
             </p>
           </div>
-          <Link
+          <LanguageHover
             href="/contact"
             className="rounded-full bg-white px-7 py-3.5 font-bold text-brand no-underline transition hover:scale-105 hover:text-brand"
           >
             Get in touch
-          </Link>
+          </LanguageHover>
         </div>
       </section>
     </div>

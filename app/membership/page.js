@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import LanguageHover from "@/components/LanguageHover";
 import { membershipTiers } from "@/lib/data";
 
 export const metadata = {
@@ -63,7 +64,7 @@ export default function MembershipPage() {
                   </li>
                 ))}
               </ul>
-              <Link
+              <LanguageHover
                 href="/contact"
                 className={`block rounded-full py-3 text-center text-sm font-bold no-underline transition hover:scale-[1.03] ${
                   tier.featured
@@ -72,7 +73,7 @@ export default function MembershipPage() {
                 }`}
               >
                 {tier.cta}
-              </Link>
+              </LanguageHover>
             </div>
           ))}
         </div>
@@ -109,12 +110,12 @@ export default function MembershipPage() {
                 </span>
               ))}
             </div>
-            <Link
+            <LanguageHover
               href="/contact"
               className="inline-block rounded-full bg-foreground px-7 py-3.5 font-bold text-white no-underline transition hover:scale-105 hover:text-white"
             >
               Donate now
-            </Link>
+            </LanguageHover>
           </div>
           <div className="relative min-h-[280px]">
             <Image
@@ -139,12 +140,12 @@ export default function MembershipPage() {
               needed — just enthusiasm for your community.
             </p>
           </div>
-          <Link
+          <LanguageHover
             href="/contact"
             className="shrink-0 rounded-full bg-white px-7 py-3.5 font-bold text-green no-underline transition hover:scale-105 hover:text-green"
           >
             Sign up to volunteer
-          </Link>
+          </LanguageHover>
         </div>
       </section>
     </div>

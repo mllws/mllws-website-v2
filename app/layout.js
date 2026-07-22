@@ -1,4 +1,11 @@
-import { Plus_Jakarta_Sans, Inter } from "next/font/google";
+import {
+  Plus_Jakarta_Sans,
+  Inter,
+  Noto_Sans_Bengali,
+  Noto_Sans_Gurmukhi,
+  Noto_Sans_Devanagari,
+  Noto_Sans_Arabic,
+} from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -21,6 +28,47 @@ const inter = Inter({
   display: "swap",
 });
 
+const notoBengali = Noto_Sans_Bengali({
+  subsets: ["bengali"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-noto-bengali",
+  display: "swap",
+  preload: false,
+});
+
+const notoGurmukhi = Noto_Sans_Gurmukhi({
+  subsets: ["gurmukhi"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-noto-gurmukhi",
+  display: "swap",
+  preload: false,
+});
+
+const notoDevanagari = Noto_Sans_Devanagari({
+  subsets: ["devanagari"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-noto-devanagari",
+  display: "swap",
+  preload: false,
+});
+
+const notoArabic = Noto_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-noto-arabic",
+  display: "swap",
+  preload: false,
+});
+
+const fontVariables = [
+  plusJakarta.variable,
+  inter.variable,
+  notoBengali.variable,
+  notoGurmukhi.variable,
+  notoDevanagari.variable,
+  notoArabic.variable,
+].join(" ");
+
 export const metadata = {
   title: {
     default: "Mother Language Lovers of the World Society (MLLWS)",
@@ -34,8 +82,11 @@ export default async function RootLayout({ children }) {
   const languageHover = await languageHoverFlag();
 
   return (
-    <html lang="en" className={`h-full antialiased ${plusJakarta.variable} ${inter.variable}`}>
-      <body className="flex min-h-full flex-col font-sans">
+    <html lang="en" className={`h-full antialiased ${fontVariables}`}>
+      <body
+        className="flex min-h-full flex-col font-sans"
+        data-language-hover={languageHover ? "on" : "off"}
+      >
         <FeatureFlagsProvider value={{ languageHover }}>
           <SkipLink />
           <Header />

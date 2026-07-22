@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import LanguageHover from "@/components/LanguageHover";
 import { voiceMessages, clickGreetings } from "@/lib/data";
 
 const PARALLAX_POSITIONS = [
@@ -165,19 +165,19 @@ export default function LanguageListen() {
         </div>
 
         <div className="pointer-events-auto mt-6 flex flex-wrap justify-center gap-3.5">
-          <button
+          <LanguageHover
             type="button"
             onClick={shuffleVoice}
-            className="rounded-full border-0 bg-white/12 px-[22px] py-3 text-sm font-bold text-white transition hover:bg-white/20"
+            className="cursor-pointer rounded-full border-0 bg-white/12 px-[22px] py-3 text-sm font-bold text-white transition hover:bg-white/20"
           >
             Another language
-          </button>
-          <Link
+          </LanguageHover>
+          <LanguageHover
             href="/membership"
             className="rounded-full bg-white px-[22px] py-3 text-sm font-bold text-brand no-underline transition hover:scale-105 hover:text-brand"
           >
             Add your language
-          </Link>
+          </LanguageHover>
         </div>
       </div>
     </section>

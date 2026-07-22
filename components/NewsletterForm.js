@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import LanguageHover from "@/components/LanguageHover";
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState("");
@@ -33,12 +34,12 @@ export default function NewsletterForm() {
         placeholder="you@email.com"
         className="min-w-[260px] rounded-full border-0 bg-white/15 px-5 py-3.5 text-[15px] text-white placeholder:text-white/75"
       />
-      <button
+      <LanguageHover
         type="submit"
-        className="rounded-full border-0 bg-white px-[26px] py-3.5 text-[15px] font-bold text-brand transition hover:scale-105"
+        className="cursor-pointer rounded-full border-0 bg-white px-[26px] py-3.5 text-[15px] font-bold text-brand transition hover:scale-105"
       >
         Subscribe
-      </button>
+      </LanguageHover>
     </form>
   );
 }

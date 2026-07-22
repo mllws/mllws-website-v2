@@ -6,19 +6,21 @@ import { edgeConfigAdapter } from "@flags-sdk/edge-config";
  * button and link labels animate into a random translation of their English
  * text, then roll back on leave (see components/LanguageHover.js).
  *
- * Value is read from Vercel Edge Config, so it can be flipped on/off from
- * the Vercel dashboard without a redeploy. Falls back to `false` (the
- * effect is off, original Link/button rendering is used) whenever Edge
- * Config isn't configured yet, e.g. in local dev.
- *
- * To turn it on, add this to your project's Edge Config in the Vercel
- * dashboard:
+ * With EDGE_CONFIG set (Vercel / `vercel env pull`), value comes from Edge
+ * Config item `flags` → key `language-hover`:
  *   { "flags": { "language-hover": true } }
+ *
+ * Without EDGE_CONFIG (typical local until env is pulled), falls back to
+ * LANGUAGE_HOVER=true|false, then false.
  */
 export const languageHoverFlag = flag({
   key: "language-hover",
   description:
     "Animated hover-translation effect on buttons/links across the site",
   defaultValue: false,
-  adapter: edgeConfigAdapter,
+  ...(process.env.EDGE_CONFIG
+    ? { adapter: edgeConfigAdapter }
+    : {
+        decide: () => process.env.LANGUAGE_HOVER === "true",
+      }),
 });

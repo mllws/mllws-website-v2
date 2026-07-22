@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { nav, siteLogo } from "@/lib/data";
+import { nav, secondaryNav, siteLogo } from "@/lib/data";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -196,7 +196,15 @@ export default function Header() {
           >
             ×
           </button>
-          <div className="relative z-[1] m-auto w-full max-w-[760px] px-12">
+          <div className="relative z-[1] m-auto max-h-[100dvh] w-full max-w-[760px] overflow-y-auto px-12 py-20">
+            <Link
+              href="/membership"
+              onClick={() => setMenuOpen(false)}
+              className="mb-10 inline-block cursor-pointer rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-7 py-3.5 font-bold !text-white no-underline transition duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:scale-105 hover:!text-white"
+            >
+              Get Involved
+            </Link>
+
             {nav.map((item, i) => {
               const active = pathname === item.href;
               return (
@@ -220,13 +228,29 @@ export default function Header() {
                 </Link>
               );
             })}
-            <Link
-              href="/membership"
-              onClick={() => setMenuOpen(false)}
-              className="mt-8 inline-block cursor-pointer rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-7 py-3.5 font-bold !text-white no-underline transition hover:scale-105 hover:!text-white"
-            >
-              Get Involved
-            </Link>
+
+            <p className="mt-10 mb-3 text-xs font-extrabold tracking-[0.08em] text-muted-light uppercase">
+              More
+            </p>
+            {secondaryNav.map((item, i) => {
+              const active = pathname === item.href;
+              const number = String(nav.length + i + 1).padStart(2, "0");
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`group flex cursor-pointer items-baseline gap-6 border-b border-border-muted py-4 font-display text-2xl font-extrabold no-underline transition-[color,padding-left,transform] duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:translate-x-4 hover:pl-4 hover:!text-accent ${
+                    active ? "text-accent" : "text-foreground"
+                  }`}
+                >
+                  <span className="font-display text-sm font-bold text-muted-light transition-colors duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:text-accent">
+                    {number}
+                  </span>
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}

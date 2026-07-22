@@ -39,13 +39,16 @@ export default function Header() {
     <>
       <nav
         aria-label="Primary"
-        className={`sticky top-0 z-50 grid grid-cols-[auto_1fr_auto] items-center gap-x-5 transition-all duration-350 ${
+        className={`sticky top-0 z-50 flex items-center justify-between gap-4 transition-all duration-300 ${
           scrolled
             ? "mx-4 mt-3.5 rounded-full border border-accent/20 bg-[#fffbf4]/92 px-5 py-2.5 shadow-[0_10px_30px_rgba(34,31,26,0.14)] backdrop-blur-[10px] sm:mx-6"
             : "border-b border-border-muted bg-background/90 px-6 py-4 backdrop-blur-[10px] sm:px-12"
         }`}
       >
-        <Link href="/" className="relative z-10 flex items-center gap-2.5 text-foreground no-underline hover:text-foreground">
+        <Link
+          href="/"
+          className="flex shrink-0 items-center gap-2.5 text-foreground no-underline hover:text-foreground"
+        >
           <Image
             src={siteLogo}
             alt="Mother Language Lovers of the World Society"
@@ -61,20 +64,20 @@ export default function Header() {
           </span>
         </Link>
 
-        <div className="pointer-events-none absolute inset-0 hidden md:block">
-          <div
-            className={`absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 gap-8 whitespace-nowrap transition-all duration-450 ${
-              scrolled ? "pointer-events-none translate-x-[calc(-50%+70px)] scale-[0.98] opacity-0" : "pointer-events-auto opacity-100"
-            }`}
-          >
-            {nav.map((item) => {
+        <div
+          className={`hidden items-center gap-8 md:flex ${
+            scrolled ? "absolute left-1/2 -translate-x-1/2" : ""
+          }`}
+        >
+          {!scrolled &&
+            nav.map((item) => {
               const active = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`inline-block text-[15px] font-semibold no-underline transition hover:-translate-y-0.5 hover:text-accent ${
+                  className={`inline-block whitespace-nowrap text-[15px] font-semibold no-underline transition hover:-translate-y-0.5 hover:text-accent ${
                     active ? "text-accent" : "text-foreground"
                   }`}
                 >
@@ -82,29 +85,20 @@ export default function Header() {
                 </Link>
               );
             })}
-          </div>
-          <div
-            className={`absolute top-1/2 w-max whitespace-nowrap transition-all duration-450 ${
-              scrolled
-                ? "left-1/2 -translate-x-1/2 -translate-y-1/2"
-                : "left-[calc(100%-48px)] -translate-x-full -translate-y-1/2"
-            }`}
-          >
-            <Link
-              href="/membership"
-              className={`pointer-events-auto inline-block rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-[22px] py-[11px] text-sm font-bold !text-white no-underline shadow-[0_4px_12px_rgba(179,69,47,0.2)] transition hover:!text-white ${
-                scrolled ? "shadow-[0_8px_20px_rgba(179,69,47,0.35)]" : ""
-              }`}
-            >
-              Get Involved
-            </Link>
-          </div>
-        </div>
-
-        <div className="relative z-10 flex h-11 min-w-[42px] items-center justify-end gap-2">
           <Link
             href="/membership"
-            className="rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-4 py-2 text-sm font-bold text-white no-underline hover:text-white md:hidden"
+            className={`inline-block rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-[22px] py-[11px] text-sm font-bold !text-white no-underline shadow-[0_4px_12px_rgba(179,69,47,0.2)] transition hover:!text-white ${
+              scrolled ? "shadow-[0_8px_20px_rgba(179,69,47,0.35)]" : ""
+            }`}
+          >
+            Get Involved
+          </Link>
+        </div>
+
+        <div className="flex shrink-0 items-center gap-2">
+          <Link
+            href="/membership"
+            className="rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-4 py-2 text-sm font-bold !text-white no-underline hover:!text-white md:hidden"
           >
             Join
           </Link>
@@ -114,9 +108,9 @@ export default function Header() {
             aria-expanded={menuOpen}
             aria-controls="site-menu"
             onClick={() => setMenuOpen((v) => !v)}
-            className={`flex h-[42px] w-[42px] flex-col items-center justify-center gap-1 rounded-xl border-0 transition md:hidden ${
-              scrolled ? "bg-white" : "bg-white"
-            } ${menuOpen ? "bg-foreground/5" : ""} ${scrolled ? "md:flex" : "md:hidden"}`}
+            className={`flex h-[42px] w-[42px] flex-col items-center justify-center gap-1 rounded-xl border-0 bg-white transition ${
+              scrolled ? "" : "md:hidden"
+            }`}
           >
             <span
               className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "translate-y-1.5 rotate-45" : ""}`}
@@ -125,20 +119,6 @@ export default function Header() {
             <span
               className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "-translate-y-1.5 -rotate-45" : ""}`}
             />
-          </button>
-          <button
-            type="button"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            aria-controls="site-menu"
-            onClick={() => setMenuOpen((v) => !v)}
-            className={`hidden h-[42px] w-[42px] flex-col items-center justify-center gap-1 rounded-xl border-0 bg-white transition md:flex ${
-              scrolled ? "opacity-100" : "pointer-events-none opacity-0"
-            }`}
-          >
-            <span className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "translate-y-1.5 rotate-45" : ""}`} />
-            <span className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "opacity-0" : ""}`} />
-            <span className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "-translate-y-1.5 -rotate-45" : ""}`} />
           </button>
         </div>
       </nav>
@@ -201,7 +181,7 @@ export default function Header() {
             <Link
               href="/membership"
               onClick={() => setMenuOpen(false)}
-              className="mt-8 inline-block rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-7 py-3.5 font-bold text-white no-underline hover:text-white"
+              className="mt-8 inline-block rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-7 py-3.5 font-bold !text-white no-underline hover:!text-white"
             >
               Get Involved
             </Link>

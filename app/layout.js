@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SkipLink from "@/components/SkipLink";
+import PageTransition from "@/components/PageTransition";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -34,7 +35,7 @@ export default function RootLayout({ children }) {
         <SkipLink />
         <Header />
         <main id="main-content" className="flex-1">
-          {children}
+          <PageTransition>{children}</PageTransition>
         </main>
         <Footer />
       </body>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import LanguageHover from "@/components/LanguageHover";
 import { heroSlides } from "@/lib/data";
 
 export default function HeroCarousel() {
@@ -86,18 +86,18 @@ export default function HeroCarousel() {
             future. Join MLLWS for festivals, advocacy, and community celebrations all year long.
           </p>
           <div className="flex flex-wrap gap-4">
-            <Link
+            <LanguageHover
               href="/events"
               className="rounded-full bg-white px-[30px] py-4 text-base font-bold !text-foreground no-underline transition hover:scale-105 hover:!text-foreground"
             >
               Explore events
-            </Link>
-            <Link
+            </LanguageHover>
+            <LanguageHover
               href="/membership"
               className="rounded-full border-2 border-white/50 bg-transparent px-[30px] py-4 text-base font-bold !text-white no-underline transition hover:bg-white/12 hover:!text-white"
             >
               Join us
-            </Link>
+            </LanguageHover>
           </div>
         </div>
       </div>

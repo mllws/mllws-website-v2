@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import HeroCarousel from "@/components/HeroCarousel";
 import LanguageListen from "@/components/LanguageListen";
+import LanguageHover from "@/components/LanguageHover";
 import NewsletterForm from "@/components/NewsletterForm";
 import {
   greetingRibbon,
@@ -69,12 +70,12 @@ export default function Home() {
                 </a>
               </span>
             </div>
-            <Link
+            <LanguageHover
               href={upcomingEvent.ctaHref}
               className="inline-block rounded-full bg-accent px-[26px] py-3.5 font-bold text-white no-underline transition hover:scale-105 hover:text-white"
             >
               {upcomingEvent.ctaLabel}
-            </Link>
+            </LanguageHover>
           </div>
         </div>
       </section>
@@ -160,36 +161,36 @@ export default function Home() {
               <p className="mb-[26px] text-[15px] leading-relaxed text-[#D6E6F2]">
                 Get event updates, our newsletter, and a voice in what we do next.
               </p>
-              <Link
+              <LanguageHover
                 href="/membership"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-brand no-underline hover:text-brand"
               >
                 Join today
-              </Link>
+              </LanguageHover>
             </div>
             <div className="rounded-3xl bg-accent p-9 text-white transition hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(179,69,47,0.35)]">
               <h3 className="font-display mb-3 text-[21px] font-bold">Donate</h3>
               <p className="mb-[26px] text-[15px] leading-relaxed text-[#F0CFC2]">
                 Every dollar funds venue costs, artist fees and free tickets for newcomer families.
               </p>
-              <Link
+              <LanguageHover
                 href="/membership#donate"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-accent no-underline hover:text-accent"
               >
                 Give today
-              </Link>
+              </LanguageHover>
             </div>
             <div className="rounded-3xl bg-green p-9 text-white transition hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(46,139,103,0.35)]">
               <h3 className="font-display mb-3 text-[21px] font-bold">Volunteer</h3>
               <p className="mb-[26px] text-[15px] leading-relaxed text-[#CBE9D9]">
                 Help run booths, translate, or support youth and community programs in your language.
               </p>
-              <Link
+              <LanguageHover
                 href="/contact"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-green no-underline hover:text-green"
               >
                 Sign up
-              </Link>
+              </LanguageHover>
             </div>
           </div>
 

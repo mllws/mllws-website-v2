@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import LanguageHover from "@/components/LanguageHover";
 import { aboutMilestones, aboutValues, directors } from "@/lib/data";
 
 export const metadata = {
@@ -127,24 +128,24 @@ export default function AboutPage() {
             Read our constitution, recommendation letters, or get in touch.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
-            <Link
+            <LanguageHover
               href="/constitution"
               className="rounded-full bg-white px-5 py-3 text-sm font-bold text-brand no-underline hover:text-brand"
             >
               Constitution
-            </Link>
-            <Link
+            </LanguageHover>
+            <LanguageHover
               href="/recommendation"
               className="rounded-full bg-white/15 px-5 py-3 text-sm font-bold text-white no-underline hover:text-white"
             >
               Recommendations
-            </Link>
-            <Link
+            </LanguageHover>
+            <LanguageHover
               href="/contact"
               className="rounded-full bg-white/15 px-5 py-3 text-sm font-bold text-white no-underline hover:text-white"
             >
               Contact
-            </Link>
+            </LanguageHover>
           </div>
         </div>
       </section>

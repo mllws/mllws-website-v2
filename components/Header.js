@@ -129,7 +129,7 @@ export default function Header() {
             aria-expanded={menuOpen}
             aria-controls="site-menu"
             onClick={() => setMenuOpen((v) => !v)}
-            className="flex h-[42px] w-[42px] flex-col items-center justify-center gap-1 rounded-xl border-0 bg-white md:hidden"
+            className="flex h-[42px] w-[42px] cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-0 bg-white md:hidden"
           >
             <span className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "translate-y-1.5 rotate-45" : ""}`} />
             <span className={`h-0.5 w-[18px] rounded bg-foreground transition ${menuOpen ? "opacity-0" : ""}`} />
@@ -152,7 +152,7 @@ export default function Header() {
               aria-controls="site-menu"
               tabIndex={scrolled ? undefined : -1}
               onClick={() => setMenuOpen((v) => !v)}
-              className={`flex h-[42px] w-[42px] flex-col items-center justify-center gap-1 rounded-xl border-0 transition-colors ${
+              className={`flex h-[42px] w-[42px] cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-0 transition-colors ${
                 menuOpen ? "bg-foreground/5" : "bg-white"
               }`}
             >
@@ -192,7 +192,7 @@ export default function Header() {
             type="button"
             aria-label="Close menu"
             onClick={() => setMenuOpen(false)}
-            className="absolute top-7 right-8 z-10 flex h-11 w-11 items-center justify-center rounded-xl border-0 bg-foreground/8 text-2xl text-foreground"
+            className="absolute top-7 right-8 z-10 flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border-0 bg-foreground/8 text-2xl text-foreground transition hover:bg-foreground/15"
           >
             ×
           </button>
@@ -204,17 +204,18 @@ export default function Header() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
-                  className={`flex items-baseline gap-6 border-b border-border-muted py-[18px] font-display text-4xl font-extrabold no-underline transition hover:pl-4 hover:text-accent ${
+                  className={`group flex cursor-pointer items-baseline gap-6 border-b border-border-muted py-[18px] font-display text-4xl font-extrabold no-underline transition-[color,padding-left,transform] duration-200 ease-out hover:translate-x-4 hover:pl-4 hover:!text-accent ${
                     active ? "text-accent" : "text-foreground"
                   }`}
-                  style={{ transitionDelay: `${i * 70}ms` }}
                 >
-                  <span className="font-display text-base font-bold text-muted-light">
+                  <span className="font-display text-base font-bold text-muted-light transition-colors duration-200 group-hover:text-accent">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="flex flex-col">
                     <span>{item.label}</span>
-                    <span className="mt-0.5 text-sm font-semibold text-muted-light">{item.translated}</span>
+                    <span className="mt-0.5 text-sm font-semibold text-muted-light transition-colors duration-200 group-hover:text-accent/70">
+                      {item.translated}
+                    </span>
                   </span>
                 </Link>
               );
@@ -222,7 +223,7 @@ export default function Header() {
             <Link
               href="/membership"
               onClick={() => setMenuOpen(false)}
-              className="mt-8 inline-block rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-7 py-3.5 font-bold !text-white no-underline hover:!text-white"
+              className="mt-8 inline-block cursor-pointer rounded-full bg-gradient-to-r from-accent via-accent-dark to-purple px-7 py-3.5 font-bold !text-white no-underline transition hover:scale-105 hover:!text-white"
             >
               Get Involved
             </Link>

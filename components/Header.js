@@ -82,7 +82,7 @@ export default function Header() {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   tabIndex={scrolled ? -1 : undefined}
-                  className={`pointer-events-auto inline-block whitespace-nowrap text-[15px] font-semibold no-underline transition hover:-translate-y-0.5 hover:text-accent ${
+                  className={`nav-link-underline pointer-events-auto inline-block whitespace-nowrap text-[15px] font-semibold no-underline hover:text-accent ${
                     scrolled ? "pointer-events-none" : ""
                   } ${active ? "text-accent" : "text-foreground"}`}
                 >

@@ -96,6 +96,8 @@ export default function Header() {
                 scrolled ? "shadow-[0_8px_20px_rgba(179,69,47,0.35)]" : ""
               }`}
             >
+              Get Involved
+            </Link>
           </div>
         </div>
 

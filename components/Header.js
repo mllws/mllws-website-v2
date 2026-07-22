@@ -204,16 +204,16 @@ export default function Header() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
-                  className={`group flex cursor-pointer items-baseline gap-6 border-b border-border-muted py-[18px] font-display text-4xl font-extrabold no-underline transition-[color,padding-left,transform] duration-200 ease-out hover:translate-x-4 hover:pl-4 hover:!text-accent ${
+                  className={`group flex cursor-pointer items-baseline gap-6 border-b border-border-muted py-[18px] font-display text-4xl font-extrabold no-underline transition-[color,padding-left,transform] duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:translate-x-4 hover:pl-4 hover:!text-accent ${
                     active ? "text-accent" : "text-foreground"
                   }`}
                 >
-                  <span className="font-display text-base font-bold text-muted-light transition-colors duration-200 group-hover:text-accent">
+                  <span className="font-display text-base font-bold text-muted-light transition-colors duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:text-accent">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="flex flex-col">
                     <span>{item.label}</span>
-                    <span className="mt-0.5 text-sm font-semibold text-muted-light transition-colors duration-200 group-hover:text-accent/70">
+                    <span className="mt-0.5 text-sm font-semibold text-muted-light transition-colors duration-[350ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:text-accent/70">
                       {item.translated}
                     </span>
                   </span>

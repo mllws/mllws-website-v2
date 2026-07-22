@@ -10,21 +10,21 @@ export const metadata = {
 export default function RecommendationPage() {
   return (
     <div>
-      <PageBanner title="Recomendation" crumb="Recomendation" eyebrow="02 — Endorsements" />
+      <PageBanner title="Recommendation" crumb="Recommendation" eyebrow="Endorsements" />
 
-      <p className="mx-auto mt-8 max-w-4xl px-4 text-lg text-gray-700">
+      <p className="mx-auto mt-8 max-w-4xl px-6 text-lg text-muted sm:px-12">
         Letters of recognition and support from school boards and community
         partners across British Columbia.
       </p>
 
-      <section className="mx-auto max-w-4xl space-y-10 px-4 py-12">
+      <section className="mx-auto max-w-4xl space-y-10 px-6 py-12 sm:px-12">
         {recommendationLetters.map((letter) => (
           <article
             key={letter.title}
-            className="overflow-hidden rounded-xl border border-border-muted shadow-sm"
+            className="overflow-hidden rounded-[22px] border border-border-muted bg-white"
           >
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border-muted bg-surface-muted px-5 py-4">
-              <h2 className="text-lg font-bold text-brand-dark">{letter.title}</h2>
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border-muted bg-background px-5 py-4">
+              <h2 className="font-display text-lg font-bold text-foreground">{letter.title}</h2>
               <a
                 href={letter.pdf}
                 target="_blank"

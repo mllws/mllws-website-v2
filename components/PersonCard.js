@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function PersonCard({ name, title, photo, email }) {
   return (
     <article className="group text-left">
-      <div className="aspect-[4/5] w-full overflow-hidden rounded-lg bg-surface-muted grayscale-[15%] transition group-hover:grayscale-0">
+      <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-surface-muted">
         <Image
           src={photo}
           alt={`Portrait of ${name}`}
@@ -13,13 +13,8 @@ export default function PersonCard({ name, title, photo, email }) {
         />
       </div>
       <div className="mt-4 border-t border-border-muted pt-3">
-        <p
-          className="text-lg font-bold text-brand-dark"
-          style={{ fontFamily: "var(--font-display-family)" }}
-        >
-          {name}
-        </p>
-        <p className="mt-0.5 text-sm text-gray-600">{title}</p>
+        <p className="font-display text-lg font-bold text-foreground">{name}</p>
+        <p className="mt-0.5 text-sm text-muted">{title}</p>
         {email && (
           <a
             href={`mailto:${email}`}

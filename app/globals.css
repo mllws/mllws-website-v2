@@ -1,20 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  /* Warm, editorial neutral instead of stark white — reads as "crafted"
-     rather than "corporate template." */
-  --background: #faf7f2;
+  /* Mock design palette — warm cream ground, terracotta accent, sky blue brand */
+  --background: #fbf6ee;
   --foreground: #221f1a;
-
-  /* Brand palette — every pairing below has been checked against WCAG AA
-     (4.5:1 for normal text) both as text-on-background and as
-     white-text-on-fill. */
-  --brand: #0e5c6b; /* ~7:1 on --background */
-  --brand-dark: #093f49; /* footer / high-contrast surfaces */
-  --accent: #b45309; /* ~5:1 on --background AND with white text on it */
-  --surface-muted: #f1ece1; /* warm sand, used for alternating section bands */
-  --surface-white: #ffffff; /* true white, used sparingly for cards/photos to pop */
-  --border-muted: #e2dccb;
+  --brand: #3b6ea5;
+  --brand-dark: #2a527c;
+  --accent: #b3452f;
+  --accent-dark: #8b3626;
+  --green: #2e8b67;
+  --green-dark: #1f6b4c;
+  --purple: #6e4a9e;
+  --muted: #6b6459;
+  --muted-light: #9b9186;
+  --surface-muted: #f1ece1;
+  --surface-white: #ffffff;
+  --border-muted: rgba(34, 31, 26, 0.08);
+  --font-display-family: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+  --font-body-family: var(--font-inter), Inter, sans-serif;
 }
 
 @theme inline {
@@ -23,10 +26,17 @@
   --color-brand: var(--brand);
   --color-brand-dark: var(--brand-dark);
   --color-accent: var(--accent);
+  --color-accent-dark: var(--accent-dark);
+  --color-green: var(--green);
+  --color-green-dark: var(--green-dark);
+  --color-purple: var(--purple);
+  --color-muted: var(--muted);
+  --color-muted-light: var(--muted-light);
   --color-surface-muted: var(--surface-muted);
   --color-surface-white: var(--surface-white);
   --color-border-muted: var(--border-muted);
   --font-display: var(--font-display-family);
+  --font-sans: var(--font-body-family);
 }
 
 * {
@@ -40,18 +50,9 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
-    Helvetica, sans-serif;
+  font-family: var(--font-body-family);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-}
-
-/* Editorial display serif for headings — system stack, no network font
-   fetch required. Gives the site a distinct, heritage-appropriate voice
-   instead of the all-sans "corporate template" look. */
-:root {
-  --font-display-family: ui-serif, Georgia, Cambria, "Times New Roman", Times,
-    serif;
 }
 
 h1,
@@ -59,9 +60,17 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display-family);
-  line-height: 1.08;
-  letter-spacing: -0.015em;
-  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+}
+
+a:not([class*="text-"]):not([class*="bg-"]) {
+  color: var(--brand);
+}
+
+a:not([class*="text-"]):not([class*="bg-"]):hover {
+  color: var(--accent);
 }
 
 ::selection {
@@ -69,16 +78,11 @@ h4 {
   color: #fff;
 }
 
-/* Visible, high-contrast focus ring for every interactive element reached
-   by keyboard. Never remove this without providing an equivalent. */
 :focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 2px;
 }
 
-/* Respect the user's OS-level motion preference: kill autoplay/animation
-   rather than just slowing it down. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -94,13 +98,12 @@ h4 {
   }
 }
 
-/* Skip-to-content link: visually hidden until focused via keyboard. */
 .skip-link {
   position: absolute;
   left: 1rem;
   top: -100%;
   z-index: 100;
-  background: var(--brand-dark);
+  background: var(--foreground);
   color: #fff;
   padding: 0.75rem 1.25rem;
   border-radius: 0 0 0.5rem 0.5rem;
@@ -112,53 +115,69 @@ h4 {
   top: 0;
 }
 
-/* Numbered eyebrow label used at the top of editorial sections, e.g.
-   "01 — Our Mission". Keeps section rhythm consistent site-wide. */
-.section-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.font-display {
   font-family: var(--font-display-family);
-  font-style: italic;
-  color: var(--accent);
-  font-size: 0.95rem;
 }
 
-.section-eyebrow::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--border-muted);
+@keyframes drift {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
-/* Same eyebrow treatment, tuned for use on dark/brand-colored backgrounds
-   (e.g. PageBanner) where the default border color would be invisible. */
-.section-eyebrow-inverse {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-display-family);
-  font-style: italic;
-  color: #f3d9b8;
-  font-size: 0.95rem;
+@keyframes footerGradient {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
-.section-eyebrow-inverse::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.25);
+@keyframes dropdownPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.88) translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
-/* Large pull-quote treatment for editorial pages. */
-.pull-quote {
-  font-family: var(--font-display-family);
-  font-style: italic;
-  font-size: 1.5rem;
-  line-height: 1.4;
-  color: var(--brand-dark);
-  border-left: 4px solid var(--accent);
-  padding-left: 1.5rem;
+@keyframes popFloat {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -90%) scale(1);
+  }
+}
+
+.animate-drift {
+  animation: drift 26s linear infinite;
+}
+
+.animate-footer-gradient {
+  background-size: 200% 100%;
+  animation: footerGradient 6s linear infinite;
+}
+
+.animate-dropdown-pop {
+  animation: dropdownPop 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.animate-pop-float {
+  animation: popFloat 1.4s ease-out forwards;
 }
 
 .prose-content {
@@ -168,7 +187,7 @@ h4 {
 .prose-content p {
   margin-bottom: 1.15rem;
   line-height: 1.75;
-  color: #33322f;
+  color: #33302a;
 }
 
 .prose-content a {
@@ -183,4 +202,14 @@ h4 {
 
 .not-prose {
   max-width: none;
+}
+
+.pull-quote {
+  font-family: var(--font-display-family);
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: var(--foreground);
+  border-left: 4px solid var(--accent);
+  padding-left: 1.5rem;
 }

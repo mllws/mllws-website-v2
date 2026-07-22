@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { heroSlides } from "@/lib/data";
@@ -9,7 +9,6 @@ export default function HeroCarousel() {
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const liveRegionRef = useRef(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -23,137 +22,100 @@ export default function HeroCarousel() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  const next = useCallback(() => {
-    setIndex((i) => (i + 1) % heroSlides.length);
-  }, []);
-
-  const prev = useCallback(() => {
-    setIndex((i) => (i - 1 + heroSlides.length) % heroSlides.length);
-  }, []);
-
   const goTo = useCallback((i) => setIndex(i), []);
 
   useEffect(() => {
     if (!playing) return;
-    const id = setInterval(next, 6000);
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % heroSlides.length);
+    }, 4000);
     return () => clearInterval(id);
-  }, [playing, next]);
-
-  const slide = heroSlides[index];
-  const headline = heroSlides[0];
-
-  function handleKeyDown(e) {
-    if (e.key === "ArrowLeft") {
-      prev();
-    } else if (e.key === "ArrowRight") {
-      next();
-    }
-  }
+  }, [playing]);
 
   return (
     <section
       aria-roledescription="carousel"
       aria-label="Featured highlights"
-      onKeyDown={handleKeyDown}
+      className="relative isolate min-h-[640px] overflow-hidden sm:min-h-[720px]"
       onMouseEnter={() => setPlaying(false)}
       onMouseLeave={() => !reducedMotion && setPlaying(true)}
-      onFocus={() => setPlaying(false)}
-      className="border-b border-border-muted bg-surface-muted"
     >
-      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 md:grid-cols-[1.1fr_1fr] md:py-20">
-        {/* Editorial copy side */}
-        <div>
-          <p className="section-eyebrow max-w-[220px]">01 — Welcome</p>
-          <h1 className="mt-5 text-4xl font-bold leading-[1.05] text-brand-dark sm:text-5xl lg:text-6xl">
-            {headline.title}
-          </h1>
-          <p className="mt-5 max-w-lg text-lg text-gray-700">
-            {headline.subtitle}
-          </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link
-              href="/about"
-              className="rounded-full bg-brand-dark px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand"
-            >
-              About the Society
-            </Link>
-            <Link
-              href="/contact"
-              className="rounded-full border-2 border-accent px-6 py-3 text-sm font-semibold text-accent transition hover:bg-accent hover:text-white"
-            >
-              Get Involved
-            </Link>
-          </div>
+      {heroSlides.map((slide, i) => (
+        <div
+          key={slide.image}
+          className="absolute inset-0 transition-all duration-800 ease-out"
+          style={{
+            opacity: i === index ? 1 : 0,
+            transform: i === index ? "scale(1)" : "scale(1.04)",
+          }}
+          aria-hidden={i !== index}
+        >
+          <Image
+            src={slide.image}
+            alt={i === index ? slide.alt : ""}
+            fill
+            priority={i === 0}
+            className="object-cover"
+            sizes="100vw"
+          />
         </div>
+      ))}
 
-        {/* Framed rotating image side */}
-        <div className="relative">
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border-4 border-surface-white shadow-xl ring-1 ring-border-muted">
-            <div role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${heroSlides.length}`} className="absolute inset-0">
-              <Image
-                key={slide.image}
-                src={slide.image}
-                alt={slide.title ? "" : "Mother Language Lovers of the World Society"}
-                fill
-                priority
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-            </div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#0f0d0a] via-[#0f0d0a]/85 to-transparent"
+      />
 
-            {/* Visually hidden live region announcing slide changes to screen readers. */}
-            <p ref={liveRegionRef} aria-live="polite" className="sr-only">
-              {slide.title
-                ? `Showing slide ${index + 1} of ${heroSlides.length}: ${slide.title}`
-                : `Showing slide ${index + 1} of ${heroSlides.length}`}
-            </p>
-
-            <button
-              type="button"
-              aria-label="Previous slide"
-              onClick={prev}
-              className="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-lg text-white backdrop-blur hover:bg-black/60"
+      <div className="absolute inset-0 z-[2] flex items-center px-6 sm:px-12">
+        <div className="max-w-[520px]">
+          <span className="mb-5 inline-block rounded-full bg-white/15 px-4 py-2 text-[13px] font-bold tracking-wide text-white">
+            International Mother Language Day · Feb 21, every year
+          </span>
+          <h1 className="font-display mb-5 text-[34px] font-extrabold leading-[1.18] tracking-tight text-white drop-shadow-[0_2px_20px_rgba(0,0,0,0.85)] sm:text-[42px]">
+            Celebrating every language.
+            <br />
+            Connecting every community.
+          </h1>
+          <p className="mb-8 max-w-[480px] text-lg leading-relaxed text-[#EDE9E1] drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">
+            Language is more than words — it carries our history, identity and hopes for the
+            future. Join MLLWS for festivals, advocacy, and community celebrations all year long.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <Link
+              href="/events"
+              className="rounded-full bg-white px-[30px] py-4 text-base font-bold !text-foreground no-underline transition hover:scale-105 hover:!text-foreground"
             >
-              <span aria-hidden="true">‹</span>
-            </button>
-            <button
-              type="button"
-              aria-label="Next slide"
-              onClick={next}
-              className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-lg text-white backdrop-blur hover:bg-black/60"
+              Explore events
+            </Link>
+            <Link
+              href="/membership"
+              className="rounded-full border-2 border-white/50 bg-transparent px-[30px] py-4 text-base font-bold !text-white no-underline transition hover:bg-white/12 hover:!text-white"
             >
-              <span aria-hidden="true">›</span>
-            </button>
-          </div>
-
-          {/* Controls float below the frame, off the photo */}
-          <div className="mt-4 flex items-center justify-center gap-3">
-            <div className="flex gap-2" role="tablist" aria-label="Slides">
-              {heroSlides.map((s, i) => (
-                <button
-                  key={s.image}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === index}
-                  aria-label={`Go to slide ${i + 1} of ${heroSlides.length}`}
-                  onClick={() => goTo(i)}
-                  className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                    i === index ? "bg-accent" : "bg-border-muted hover:bg-brand/50"
-                  }`}
-                />
-              ))}
-            </div>
-            <button
-              type="button"
-              aria-label={playing ? "Pause slideshow" : "Play slideshow"}
-              onClick={() => setPlaying((p) => !p)}
-              className="flex h-7 w-7 items-center justify-center rounded-full border border-border-muted bg-surface-white text-xs text-brand-dark hover:bg-surface-muted"
-            >
-              <span aria-hidden="true">{playing ? "❚❚" : "▶"}</span>
-            </button>
+              Join us
+            </Link>
           </div>
         </div>
       </div>
+
+      <div className="absolute bottom-7 left-0 right-0 z-[2] flex justify-center gap-2" role="tablist" aria-label="Slides">
+        {heroSlides.map((slide, i) => (
+          <button
+            key={slide.image}
+            type="button"
+            role="tab"
+            aria-selected={i === index}
+            aria-label={`Go to slide ${i + 1} of ${heroSlides.length}`}
+            onClick={() => goTo(i)}
+            className={`h-2 rounded-full border-0 p-0 transition-all ${
+              i === index ? "w-[22px] bg-white" : "w-2 bg-white/40 hover:bg-white/70"
+            }`}
+          />
+        ))}
+      </div>
+
+      <p className="sr-only" aria-live="polite">
+        Showing slide {index + 1} of {heroSlides.length}
+      </p>
     </section>
   );
 }

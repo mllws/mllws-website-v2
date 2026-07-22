@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="view-transition" content="same-origin">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+@keyframes float1{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(4deg)}}
+@keyframes float2{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(12px) rotate(-3deg)}}
+@keyframes drift{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes popIn{0%{opacity:0;transform:scale(0.4) rotate(-8deg)}35%{transform:scale(3) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}
+@keyframes revealIn{0%{opacity:0;color:#B3452F}35%{opacity:0.95;color:#B3452F}100%{opacity:0.16;color:#3B6EA5}}
+@keyframes dropdownPop{0%{opacity:0;transform:scale(0.88) translateY(-10px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes rollA{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(-18px);opacity:0.78}}
+@keyframes rollB{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(16px);opacity:0.78}}
+body{margin:0;background:#FBF6EE;font-family:'Inter',sans-serif;color:#221F1A}
+a{color:#3B6EA5}
+a:hover{color:#B3452F}
+@keyframes footerGradient{0%{background-position:0% 0}100%{background-position:200% 0}}
+@keyframes popFloat{0%{opacity:0;transform:translate(-50%,-50%) scale(0.6)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-90%) scale(1)}}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #B3452F;outline-offset:2px}
+input::placeholder{color:rgba(255,255,255,0.75)}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#FBF6EE">
+
+  <!-- NAV -->
+  <nav style="{{ navStyle }}">
+    <a href="Home.dc.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#221F1A">
+      <img src="./assets/logo-icon-red.png" alt="Mother Language Lovers of the World Society logo" style="height:36px;width:36px;display:block"/>
+      <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;letter-spacing:-0.01em;color:#221F1A">Mother Language Lovers<br/><span style="font-weight:600;font-size:12px;color:#6b6459">of the World Society</span></span>
+    </a>
+    <div style="position:absolute;inset:0;pointer-events:none">
+      <div style="{{ menuLayerStyle }}">
+        <a href="Home.dc.html" style="text-decoration:none;color:#B3452F;font-weight:600;font-size:15px;display:inline-block;transition:transform .2s ease" style-hover="transform:translateY(-3px)">Home</a>
+        <a href="Events.dc.html" style="text-decoration:none;color:#221F1A;font-weight:600;font-size:15px;display:inline-block;transition:color .2s ease,transform .2s ease" style-hover="color:#B3452F;transform:translateY(-3px)">Events</a>
+        <a href="Stories.dc.html" style="text-decoration:none;color:#221F1A;font-weight:600;font-size:15px;display:inline-block;transition:color .2s ease,transform .2s ease" style-hover="color:#B3452F;transform:translateY(-3px)">Stories</a>
+        <a href="About.dc.html" style="text-decoration:none;color:#221F1A;font-weight:600;font-size:15px;display:inline-block;transition:color .2s ease,transform .2s ease" style-hover="color:#B3452F;transform:translateY(-3px)">Our Story</a>
+      </div>
+      <div style="{{ getInvolvedLayerStyle }}">
+        <a href="Membership.dc.html" style="{{ getInvolvedStyle }}">Get Involved</a>
+      </div>
+    </div>
+    <div></div>
+    <div style="position:relative;height:44px;min-width:42px">
+      <div style="{{ hamburgerLayerStyle }}">
+        <div style="position:relative">
+          <button onClick="{{ toggleMenu }}" style="{{ hamburgerBtnStyle }}">
+            <span style="{{ bar1Style }}"></span>
+            <span style="{{ bar2Style }}"></span>
+            <span style="{{ bar3Style }}"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:fixed;inset:0;background:#FBF6EE;z-index:200;display:flex;overflow:hidden;animation:dropdownPop .3s cubic-bezier(.2,.8,.2,1)">
+              <div style="{{ overlayWordLayerStyle }}">
+                <sc-for list="{{ overlayWords }}" as="ow" hint-placeholder-count="8">
+                  <span style="{{ ow.style }}">{{ ow.text }}</span>
+                </sc-for>
+              </div>
+              <button onClick="{{ closeMenu }}" style="position:absolute;top:28px;right:32px;width:44px;height:44px;border-radius:12px;border:none;background:rgba(34,31,26,0.08);color:#221F1A;font-size:22px;cursor:pointer;z-index:2">×</button>
+              <div style="position:relative;z-index:1;margin:auto;padding:0 48px;width:100%;max-width:760px">
+                <sc-for list="{{ menuItems }}" as="item" hint-placeholder-count="4">
+                  <a href="{{ item.href }}" onClick="{{ closeMenu }}" style="{{ item.style }}" style-hover="{{ item.hoverStyle }}">
+                    <span style="{{ item.numberStyle }}">{{ item.number }}</span>
+                    <span style="display:flex;flex-direction:column">
+                      <span>{{ item.label }}</span>
+                      <span style="{{ item.subStyle }}">{{ item.translated }}</span>
+                    </span>
+                  </a>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+  <!-- HERO -->
+  <section style="position:relative;min-height:720px;overflow:hidden;isolation:isolate">
+    <div style="{{ slideStyles[0] }}"><image-slot id="hero-1" shape="rect" placeholder="festival crowd, photo" style="width:100%;height:100%;display:block"></image-slot></div>
+    <div style="{{ slideStyles[1] }}"><image-slot id="hero-2" shape="rect" placeholder="kids storytelling, photo" style="width:100%;height:100%;display:block"></image-slot></div>
+    <div style="{{ slideStyles[2] }}"><image-slot id="hero-3" shape="rect" placeholder="traditional dance, photo" style="width:100%;height:100%;display:block"></image-slot></div>
+    <div style="{{ slideStyles[3] }}"><image-slot id="hero-4" shape="rect" placeholder="community potluck, photo" style="width:100%;height:100%;display:block"></image-slot></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,#0f0d0a 0%,#0f0d0a 85%,rgba(15,13,10,0) 100%);pointer-events:none;z-index:1"></div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;padding:0 48px;z-index:2">
+      <div style="max-width:520px">
+        <span style="display:inline-block;background:rgba(255,255,255,0.15);color:#fff;font-weight:700;font-size:13px;padding:8px 16px;border-radius:999px;margin-bottom:22px;letter-spacing:0.02em">International Mother Language Day · Feb 21, every year</span>
+        <h1 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:42px;line-height:1.18;letter-spacing:-0.02em;margin:0 0 20px;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,0.85),0 1px 4px rgba(0,0,0,0.9)">Celebrating every language.<br/>Connecting every community.</h1>
+        <p style="font-size:18px;line-height:1.6;color:#EDE9E1;max-width:480px;margin:0 0 32px;text-shadow:0 2px 12px rgba(0,0,0,0.6)">Language is more than words — it carries our history, identity and hopes for the future. Join us for festivals, storytelling nights and language circles all year long.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <a href="Events.dc.html" style="text-decoration:none;background:#fff;color:#221F1A;padding:16px 30px;border-radius:999px;font-weight:700;font-size:16px" style-hover="transform:scale(1.05)">Explore events</a>
+          <a href="Membership.dc.html" style="text-decoration:none;background:transparent;color:#fff;padding:16px 30px;border-radius:999px;font-weight:700;font-size:16px;border:2px solid rgba(255,255,255,0.5)" style-hover="background:rgba(255,255,255,0.12)">Join us</a>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:28px;left:0;right:0;display:flex;justify-content:center;gap:8px;z-index:2">
+      <sc-for list="{{ slideDots }}" as="d" hint-placeholder-count="4">
+        <button onClick="{{ d.onClick }}" style="{{ d.style }}"></button>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- GREETING RIBBON -->
+  <section style="padding:18px 0;background:#fff;border-top:1px solid rgba(34,31,26,0.06);border-bottom:1px solid rgba(34,31,26,0.06);overflow:hidden">
+    <div style="display:flex;width:max-content;animation:drift 26s linear infinite;gap:48px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:17px;color:#6b6459;white-space:nowrap">
+      <span>Hello · Bonjour · নমস্কার · Hola · 你好 · مرحبا · ਸਤ ਸ੍ਰੀ ਅਕਾਲ · Olá · こんにちは · Merhaba ·</span>
+      <span>Hello · Bonjour · নমস্কার · Hola · 你好 · مرحبا · ਸਤ ਸ੍ਰੀ ਅਕਾਲ · Olá · こんにちは · Merhaba ·</span>
+    </div>
+  </section>
+
+  <!-- LANGUAGE SPOTLIGHT -->
+  <!-- UPCOMING EVENT -->
+  <section style="padding:88px 48px;max-width:1200px;margin:0 auto">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:36px">
+      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:32px;margin:0">Up next</h2>
+      <a href="Events.dc.html" style="text-decoration:none;font-weight:700;color:#3B6EA5">All events →</a>
+    </div>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;background:#fff;border-radius:28px;overflow:hidden;border:1px solid rgba(34,31,26,0.08);align-items:stretch">
+      <image-slot id="upcoming-event" shape="rect" placeholder="mainstage performance, photo" style="width:100%;height:340px;display:block"></image-slot>
+      <div style="padding:48px">
+        <span style="display:inline-block;background:#EAF3EC;color:#1F6B4C;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;margin-bottom:18px">Flagship Event</span>
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:28px;margin:0 0 14px">International Mother Language Day Festival</h3>
+        <p style="color:#4a4438;line-height:1.6;margin:0 0 22px">A full day of music, dance, food and stories from 40+ language communities across the city. Bring the whole family.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;font-weight:600;font-size:15px;color:#221F1A">
+          <span>📅 Saturday, February 21, 2027 · 11am–7pm</span>
+          <span>📍 Harbourfront Community Centre, Toronto</span>
+        </div>
+        <a href="Events.dc.html" style="transition:transform .25s ease,box-shadow .25s ease;text-decoration:none;background:#B3452F;color:#fff;padding:14px 26px;border-radius:999px;font-weight:700;display:inline-block" style-hover="transform:scale(1.05)">Reserve your spot</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMS -->
+  <section style="padding:32px 48px 88px;max-width:1200px;margin:0 auto">
+    <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:32px;margin:0 0 8px">What we run, year-round</h2>
+    <p style="color:#6b6459;font-size:17px;margin:0 0 36px">Not just one day in February — community, all year.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
+      <div style="transition:transform .25s ease,box-shadow .25s ease;background:#fff;border-radius:22px;padding:32px;border:1px solid rgba(34,31,26,0.08)" style-hover="transform:translateY(-6px);box-shadow:0 16px 32px rgba(34,31,26,0.1)">
+        <div style="width:52px;height:52px;border-radius:16px;background:#F7E4D3;display:flex;align-items:center;justify-content:center;margin-bottom:20px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 4h10l6 6v10H4z" stroke="#B3452F" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:19px;margin:0 0 10px">Language Circles</h3>
+        <p style="color:#6b6459;line-height:1.6;margin:0;font-size:15px">Weekly meetups where neighbours teach each other a few words of their mother tongue over tea.</p>
+      </div>
+      <div style="transition:transform .25s ease,box-shadow .25s ease;background:#fff;border-radius:22px;padding:32px;border:1px solid rgba(34,31,26,0.08)" style-hover="transform:translateY(-6px);box-shadow:0 16px 32px rgba(34,31,26,0.1)">
+        <div style="width:52px;height:52px;border-radius:16px;background:#EAF3EC;display:flex;align-items:center;justify-content:center;margin-bottom:20px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#2E8B67" stroke-width="2"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="#2E8B67" stroke-width="2"/></svg></div>
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:19px;margin:0 0 10px">Youth Ambassadors</h3>
+        <p style="color:#6b6459;line-height:1.6;margin:0;font-size:15px">Teens run workshops teaching younger kids songs and stories from their family's language.</p>
+      </div>
+      <div style="transition:transform .25s ease,box-shadow .25s ease;background:#fff;border-radius:22px;padding:32px;border:1px solid rgba(34,31,26,0.08)" style-hover="transform:translateY(-6px);box-shadow:0 16px 32px rgba(34,31,26,0.1)">
+        <div style="width:52px;height:52px;border-radius:16px;background:#F5EDFB;display:flex;align-items:center;justify-content:center;margin-bottom:20px"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 18V6a2 2 0 012-2h9l5 5v9a2 2 0 01-2 2H6a2 2 0 01-2-2z" stroke="#6E4A9E" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:19px;margin:0 0 10px">Storytelling Nights</h3>
+        <p style="color:#6b6459;line-height:1.6;margin:0;font-size:15px">Monthly evenings of folktales, poetry and lullabies performed live in their original language.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LISTEN IN YOUR LANGUAGE -->
+  <section style="background:#3B6EA5;padding:140px 48px;position:relative;overflow:hidden;isolation:isolate" onClick="{{ handleSectionClick }}">
+    <div style="{{ parallaxLayerStyle }}">
+      <sc-for list="{{ parallaxWords }}" as="pw" hint-placeholder-count="10">
+        <span style="{{ pw.style }}">{{ pw.text }}</span>
+      </sc-for>
+    </div>
+    <div style="position:absolute;top:-100px;right:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(179,69,47,0.22),transparent 70%);pointer-events:none"></div>
+    <sc-for list="{{ clickPops }}" as="pop" hint-placeholder-count="0">
+      <span style="{{ pop.style }}">{{ pop.text }}</span>
+    </sc-for>
+    <div style="max-width:720px;margin:0 auto;text-align:center;position:relative;pointer-events:none">
+      <span style="display:inline-block;background:rgba(255,255,255,0.12);color:#fff;font-weight:700;font-size:13px;padding:6px 16px;border-radius:999px;margin-bottom:20px">Hear it in your language</span>
+      <p style="color:#D6E6F2;font-size:17px;margin:0 0 32px">Short greetings recorded by our members, in their own words. Tap anywhere for a surprise greeting.</p>
+      <div style="background:rgba(255,255,255,0.08);border-radius:24px;padding:32px;display:flex;align-items:center;gap:20px;text-align:left;pointer-events:auto">
+        <button onClick="{{ currentVoice.onToggle }}" style="{{ currentVoice.buttonStyle }}">{{ currentVoice.icon }}</button>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:18px;color:#fff;margin-bottom:2px">{{ currentVoice.language }} · {{ currentVoice.greeting }}</div>
+          <div style="color:#D6E6F2;font-size:14px;margin-bottom:10px">{{ currentVoice.name }}, {{ currentVoice.role }}</div>
+          <div style="height:5px;background:rgba(255,255,255,0.15);border-radius:999px;overflow:hidden">
+            <div style="{{ currentVoice.progressStyle }}"></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;gap:14px;margin-top:24px;flex-wrap:wrap;pointer-events:auto">
+        <button onClick="{{ shuffleVoice }}" style="background:rgba(255,255,255,0.12);color:#fff;border:none;padding:12px 22px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit" style-hover="background:rgba(255,255,255,0.2)">🔀 Another language</button>
+        <a href="Membership.dc.html" style="text-decoration:none;background:#fff;color:#3B6EA5;padding:12px 22px;border-radius:999px;font-weight:700;font-size:14px" style-hover="transform:scale(1.05)">🎙 Add your language</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORIES -->
+  <section style="padding:36px 48px 88px;max-width:1200px;margin:0 auto">
+    <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:32px;margin:0 0 36px">Voices from our community</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
+      <div style="transition:transform .25s ease,box-shadow .25s ease;background:#FFF9F2;border-radius:22px;padding:28px" style-hover="transform:translateY(-4px)">
+        <p style="font-size:16px;line-height:1.6;color:#221F1A;margin:0 0 22px">"I never thought I'd hear my grandmother's dialect spoken on a stage in Canada. My kids finally get to be proud of it."</p>
+        <div style="display:flex;align-items:center;gap:12px">
+          <image-slot id="quote-1" shape="circle" placeholder="portrait" style="width:44px;height:44px;display:block"></image-slot>
+          <div><div style="font-weight:700;font-size:14px">Amara O.</div><div style="color:#6b6459;font-size:13px">Member since 2019</div></div>
+        </div>
+      </div>
+      <div style="transition:transform .25s ease,box-shadow .25s ease;background:#EFF6F1;border-radius:22px;padding:28px" style-hover="transform:translateY(-4px)">
+        <p style="font-size:16px;line-height:1.6;color:#221F1A;margin:0 0 22px">"Volunteering at the festival gave me a community I didn't know I was missing since we moved here."</p>
+        <div style="display:flex;align-items:center;gap:12px">
+          <image-slot id="quote-2" shape="circle" placeholder="portrait" style="width:44px;height:44px;display:block"></image-slot>
+          <div><div style="font-weight:700;font-size:14px">Rafael M.</div><div style="color:#6b6459;font-size:13px">Volunteer</div></div>
+        </div>
+      </div>
+      <div style="transition:transform .25s ease,box-shadow .25s ease;background:#FBF0EE;border-radius:22px;padding:28px" style-hover="transform:translateY(-4px)">
+        <p style="font-size:16px;line-height:1.6;color:#221F1A;margin:0 0 22px">"My daughter now teaches Punjabi words to her whole class because of what she learned at Language Circles."</p>
+        <div style="display:flex;align-items:center;gap:12px">
+          <image-slot id="quote-3" shape="circle" placeholder="portrait" style="width:44px;height:44px;display:block"></image-slot>
+          <div><div style="font-weight:700;font-size:14px">Simran K.</div><div style="color:#6b6459;font-size:13px">Parent</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section style="padding:0 48px 88px;max-width:1200px;margin:0 auto">
+    <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:32px;margin:0 0 36px">Moments from our events</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:160px;gap:16px">
+      <image-slot id="gal-1" shape="rounded" radius="18" placeholder="dance performance" style="transition:transform .25s ease,box-shadow .25s ease;grid-column:span 2;grid-row:span 2;width:100%;height:100%;display:block" style-hover="transform:scale(1.03)"></image-slot>
+      <image-slot id="gal-2" shape="rounded" radius="18" placeholder="food stalls" style="width:100%;height:100%;display:block"></image-slot>
+      <image-slot id="gal-3" shape="rounded" radius="18" placeholder="kids activity" style="width:100%;height:100%;display:block"></image-slot>
+      <image-slot id="gal-4" shape="rounded" radius="18" placeholder="volunteers" style="width:100%;height:100%;display:block"></image-slot>
+      <image-slot id="gal-5" shape="rounded" radius="18" placeholder="music" style="width:100%;height:100%;display:block"></image-slot>
+    </div>
+  </section>
+
+  <!-- GET INVOLVED -->
+  <section style="background:#3B6EA5;padding:88px 48px;position:relative;overflow:hidden">
+    <div style="max-width:1200px;margin:0 auto;position:relative">
+    <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:32px;margin:0 0 8px;color:#fff">Get involved</h2>
+    <p style="color:#D6E6F2;font-size:17px;margin:0 0 36px">However you show up, you help keep languages alive.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
+      <div style="transition:transform .25s ease,box-shadow .25s ease;background:rgba(255,255,255,0.1);border-radius:24px;padding:36px;color:#fff" style-hover="transform:translateY(-6px);box-shadow:0 16px 32px rgba(0,0,0,0.25)">
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:21px;margin:0 0 12px">Become a member</h3>
+        <p style="color:#D6E6F2;line-height:1.6;margin:0 0 26px;font-size:15px">Get event pre-sale, our quarterly newsletter, and a voice in what we do next.</p>
+        <a href="Membership.dc.html" style="text-decoration:none;background:#fff;color:#3B6EA5;padding:12px 22px;border-radius:999px;font-weight:700;display:inline-block;font-size:14px">Join today</a>
+      </div>
+      <div style="transition:transform .25s ease,box-shadow .25s ease;background:#B3452F;border-radius:24px;padding:36px;color:#fff" style-hover="transform:translateY(-6px);box-shadow:0 16px 32px rgba(179,69,47,0.35)">
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:21px;margin:0 0 12px">Donate</h3>
+        <p style="color:#F0CFC2;line-height:1.6;margin:0 0 26px;font-size:15px">Every dollar funds venue costs, artist fees and free tickets for newcomer families.</p>
+        <a href="Membership.dc.html" style="text-decoration:none;background:#fff;color:#B3452F;padding:12px 22px;border-radius:999px;font-weight:700;display:inline-block;font-size:14px">Give today</a>
+      </div>
+      <div style="transition:transform .25s ease,box-shadow .25s ease;background:#2E8B67;border-radius:24px;padding:36px;color:#fff" style-hover="transform:translateY(-6px);box-shadow:0 16px 32px rgba(46,139,103,0.35)">
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:21px;margin:0 0 12px">Volunteer</h3>
+        <p style="color:#CBE9D9;line-height:1.6;margin:0 0 26px;font-size:15px">Help run booths, translate, or mentor a youth ambassador in your language.</p>
+        <a href="Membership.dc.html" style="text-decoration:none;background:#fff;color:#2E8B67;padding:12px 22px;border-radius:999px;font-weight:700;display:inline-block;font-size:14px">Sign up</a>
+      </div>
+    </div>
+
+    <!-- NEWSLETTER -->
+    <div style="margin-top:56px;background:rgba(255,255,255,0.1);border-radius:28px;padding:52px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap">
+      <div>
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:24px;margin:0 0 8px;color:#fff">Never miss a celebration</h3>
+        <p style="color:#D6E6F2;margin:0;font-size:15px">Monthly event updates, straight to your inbox.</p>
+      </div>
+      <sc-if value="{{ subscribed }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:15px">✓ You're subscribed — welcome!</div>
+      </sc-if>
+      <sc-if value="{{ notSubscribed }}" hint-placeholder-val="{{ true }}">
+      <form style="display:flex;gap:12px;flex-wrap:wrap" onSubmit="{{ handleSubscribe }}">
+        <input type="email" required="{{ true }}" value="{{ emailValue }}" onChange="{{ handleEmailChange }}" placeholder="you@email.com" style="padding:14px 20px;border-radius:999px;border:none;background:rgba(255,255,255,0.15);color:#fff;font-size:15px;min-width:260px;font-family:Inter,sans-serif"/>
+        <button type="submit" style="transition:transform .25s ease;background:#fff;color:#3B6EA5;border:none;padding:14px 26px;border-radius:999px;font-weight:700;font-size:15px;cursor:pointer" style-hover="transform:scale(1.05)">Subscribe</button>
+      </form>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#FBF6EE;color:#221F1A;padding:56px 48px 32px;position:relative;overflow:hidden">
+    <div style="height:5px;background:linear-gradient(90deg,#B3452F,#2E8B67,#3B6EA5,#6E4A9E,#B3452F);background-size:200% 100%;animation:footerGradient 6s linear infinite;position:absolute;top:0;left:0;right:0"></div>
+    <div style="position:absolute;top:-140px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(179,69,47,0.12),transparent 70%);pointer-events:none"></div>
+    <div style="position:absolute;bottom:-160px;left:10%;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(46,139,103,0.1),transparent 70%);pointer-events:none"></div>
+
+    <div style="max-width:1200px;margin:0 auto 40px;text-align:center;position:relative">
+      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:20px;color:#221F1A;margin-bottom:28px">Our language is our identity</div>
+      <div style="display:flex;justify-content:center;align-items:center;gap:28px;flex-wrap:wrap;opacity:0.85">
+        <image-slot id="sponsor-surrey" shape="rect" placeholder="City of Surrey logo" style="height:36px;width:100px;display:block"></image-slot>
+        <image-slot id="sponsor-surrey-lib" shape="rect" placeholder="Surrey Libraries logo" style="height:36px;width:100px;display:block"></image-slot>
+        <image-slot id="sponsor-surrey-school" shape="rect" placeholder="Surrey Schools logo" style="height:36px;width:100px;display:block"></image-slot>
+        <image-slot id="sponsor-van-school" shape="rect" placeholder="Vancouver School Board logo" style="height:36px;width:100px;display:block"></image-slot>
+        <image-slot id="sponsor-richmond" shape="rect" placeholder="Richmond School District 38 logo" style="height:36px;width:100px;display:block"></image-slot>
+        <image-slot id="sponsor-langley" shape="rect" placeholder="Langley Schools logo" style="height:36px;width:100px;display:block"></image-slot>
+        <image-slot id="sponsor-ottawa" shape="rect" placeholder="Ottawa Catholic School Board logo" style="height:36px;width:100px;display:block"></image-slot>
+      </div>
+    </div>
+
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;position:relative">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <img src="./assets/logo-icon-red.png" alt="Mother Language Lovers of the World Society logo" style="height:30px;width:30px;display:block"/>
+          <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;color:#221F1A">Mother Language Lovers of the World Society</span>
+        </div>
+        <p style="color:#6b6459;font-size:14px;line-height:1.6;max-width:320px">A volunteer-run non-profit celebrating linguistic diversity across Canada, one event at a time.</p>
+      </div>
+      <div>
+        <div style="font-weight:800;color:#8B3626;margin-bottom:16px;font-size:14px;letter-spacing:0.02em">Explore</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+          <a href="Events.dc.html" style="color:#6b6459;text-decoration:none;transition:color .2s ease,transform .2s ease;display:inline-block" style-hover="color:#8B3626;transform:translateX(5px)">Events</a>
+          <a href="Stories.dc.html" style="color:#6b6459;text-decoration:none;transition:color .2s ease,transform .2s ease;display:inline-block" style-hover="color:#8B3626;transform:translateX(5px)">Stories</a>
+          <a href="About.dc.html" style="color:#6b6459;text-decoration:none;transition:color .2s ease,transform .2s ease;display:inline-block" style-hover="color:#8B3626;transform:translateX(5px)">Our Story</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:800;color:#1F6B4C;margin-bottom:16px;font-size:14px;letter-spacing:0.02em">Get involved</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+          <a href="Membership.dc.html" style="color:#6b6459;text-decoration:none;transition:color .2s ease,transform .2s ease;display:inline-block" style-hover="color:#1F6B4C;transform:translateX(5px)">Membership</a>
+          <a href="Membership.dc.html" style="color:#6b6459;text-decoration:none;transition:color .2s ease,transform .2s ease;display:inline-block" style-hover="color:#1F6B4C;transform:translateX(5px)">Donate</a>
+          <a href="Membership.dc.html" style="color:#6b6459;text-decoration:none;transition:color .2s ease,transform .2s ease;display:inline-block" style-hover="color:#1F6B4C;transform:translateX(5px)">Volunteer</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:800;color:#3B6EA5;margin-bottom:16px;font-size:14px;letter-spacing:0.02em">Contact</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;color:#6b6459">
+          <span>hello@mllws.org</span>
+          <span>Surrey / Vancouver, BC</span>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:0 auto;border-top:1px solid rgba(34,31,26,0.1);padding-top:24px;position:relative">
+      <p style="color:#8a8175;font-size:12.5px;line-height:1.6;max-width:900px;margin:0 0 14px">Mother Language Lovers of the World Society (MLLWS) acknowledges that it is situated on the unceded traditional territories of the xʷməθkʷəy̓əm (Musqueam Indian Band), Sḵwx̱wú7mesh (Squamish Nation), and səlilwətaɬ (Tsleil-Waututh Nation).</p>
+      <div style="color:#8a8175;font-size:13px">Copyright © 2026 by Mother Language Lovers of the World Society | All rights reserved</div>
+    </div>
+  </footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">const CLICK_GREETINGS = [
+  'Hello','Bonjour','Hola','Ciao','Merhaba','Salaam','こんにちは','你好','안녕하세요',
+  'नमस्ते','ਸਤ ਸ੍ਰੀ ਅਕਾਲ','নমস্কার','Olá','Hallo','Xin chào','Shalom','Kamusta','Selam','Jambo','Здравствуйте','Γειά σου','Aloha'
+];
+const PARALLAX_POSITIONS = [
+  {left:4,top:6,size:26,rot:-6},{left:92,top:8,size:22,rot:5},{left:3,top:92,size:24,rot:-4},
+  {left:94,top:90,size:20,rot:6},{left:2,top:40,size:20,rot:-3},{left:95,top:35,size:22,rot:4},
+  {left:6,top:70,size:18,rot:-5},{left:90,top:65,size:20,rot:3},{left:3,top:20,size:18,rot:-6},{left:93,top:18,size:20,rot:5}
+];
+const VOICE_MESSAGES = [
+  { language: 'French', greeting: 'Bonjour', name: 'Amara O.', role: 'Member', duration: 6 },
+  { language: 'Punjabi', greeting: 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ', name: 'Simran K.', role: 'Parent', duration: 5 },
+  { language: 'Japanese', greeting: 'こんにちは', name: 'Rafael M.', role: 'Volunteer', duration: 7 },
+  { language: 'Arabic', greeting: 'مرحبا', name: 'Yusuf A.', role: 'Youth Ambassador', duration: 5 },
+  { language: 'Portuguese', greeting: 'Olá', name: 'Elena F.', role: 'Member', duration: 6 },
+  { language: 'Korean', greeting: '안녕하세요', name: 'Jieun P.', role: 'Community cook', duration: 5 }
+];
+
+const MENU_ITEMS = [
+  {href:'Home.dc.html', label:'Home', translated:'Accueil', active:true},
+  {href:'Events.dc.html', label:'Events', translated:'ਸਮਾਗਮ', active:false},
+  {href:'Stories.dc.html', label:'Stories', translated:'物語', active:false},
+  {href:'About.dc.html', label:'Our Story', translated:'قصتنا', active:false}
+];
+const OVERLAY_WORDS = ['Hello','Bonjour','Hola','こんにちは','مرحبا','ਸਤ ਸ੍ਰੀ ਅਕਾਲ','你好','Olá'];
+
+class Component extends DCLogic {
+  state = { scrolled: false, menuOpen: false, slideIndex: 0, email: '', subscribed: false, playingIndex: null, playedSeconds: 0, currentVoiceIndex: Math.floor(Math.random() * VOICE_MESSAGES.length), clickPops: [] };
+  _popSeq = 0;
+  componentDidMount() {
+    this._onLinkClick = (e) => {
+      const a = e.target.closest('a[href$=".dc.html"]');
+      if (a && !e.defaultPrevented && a.target !== '_blank' && a.href !== window.location.href) {
+        e.preventDefault();
+        this.setState({ pageExiting: true });
+        setTimeout(() => { window.location.href = a.getAttribute('href'); }, 220);
+      }
+    };
+    document.addEventListener('click', this._onLinkClick);
+    this._onScroll = () => this.setState({ scrolled: window.scrollY > 24 });
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    this._onKeydown = (e) => { if (e.key === 'Escape' && this.state.menuOpen) this.setState({ menuOpen: false }); };
+    window.addEventListener('keydown', this._onKeydown);
+    this._slideTimer = setInterval(() => {
+      this.setState(st => ({ slideIndex: (st.slideIndex + 1) % 4 }));
+    }, 4000);
+    this._countdownTimer = setInterval(() => this.forceUpdate(), 60000);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('keydown', this._onKeydown);
+    clearInterval(this._slideTimer);
+    clearInterval(this._countdownTimer);
+    clearInterval(this._voiceTimer);
+  }
+  togglePlay(i) {
+    clearInterval(this._voiceTimer);
+    if (this.state.playingIndex === i) { this.setState({ playingIndex: null, playedSeconds: 0 }); return; }
+    this.setState({ playingIndex: i, playedSeconds: 0 });
+    this._voiceTimer = setInterval(() => {
+      this.setState(st => {
+        const next = st.playedSeconds + 0.2;
+        if (next >= VOICE_MESSAGES[i].duration) { clearInterval(this._voiceTimer); return { playingIndex: null, playedSeconds: 0 }; }
+        return { playedSeconds: next };
+      });
+    }, 200);
+  }
+  handleSectionClick(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const text = CLICK_GREETINGS[Math.floor(Math.random() * CLICK_GREETINGS.length)];
+    const id = ++this._popSeq;
+    this.setState(st => ({ clickPops: [...st.clickPops, { id, x, y, text }] }));
+    setTimeout(() => {
+      this.setState(st => ({ clickPops: st.clickPops.filter(p => p.id !== id) }));
+    }, 1400);
+  }
+  shuffleVoice() {
+    clearInterval(this._voiceTimer);
+    this.setState(st => {
+      let next;
+      do { next = Math.floor(Math.random() * VOICE_MESSAGES.length); } while (next === st.currentVoiceIndex && VOICE_MESSAGES.length > 1);
+      return { currentVoiceIndex: next, playingIndex: null, playedSeconds: 0 };
+    });
+  }
+  renderVals() {
+    const s = this.state.scrolled;
+    const active = this.state.slideIndex;
+    const slideStyles = [0, 1, 2, 3].map(i => ({
+      position: 'absolute', inset: 0,
+      opacity: i === active ? 1 : 0,
+      transform: i === active ? 'scale(1)' : 'scale(1.04)',
+      transition: 'opacity .8s ease, transform .8s ease'
+    }));
+    const slideDots = [0, 1, 2, 3].map(i => ({
+      onClick: () => this.setState({ slideIndex: i }),
+      style: {
+        width: i === active ? '22px' : '8px', height: '8px', borderRadius: '999px',
+        border: 'none', cursor: 'pointer', padding: 0,
+        background: i === active ? '#fff' : 'rgba(255,255,255,0.4)',
+        transition: 'all .3s ease'
+      }
+    }));
+    const parallaxOffset = window.scrollY * 0.06;
+    const parallaxWords = PARALLAX_POSITIONS.map((p, i) => ({
+      text: CLICK_GREETINGS[i % CLICK_GREETINGS.length],
+      style: {
+        position: 'absolute', left: p.left + '%', top: p.top + '%',
+        fontFamily: "'Plus Jakarta Sans',sans-serif", fontWeight: 800, fontSize: p.size + 'px',
+        color: '#fff', opacity: 0.08, whiteSpace: 'nowrap',
+        transform: `translateY(${parallaxOffset}px) rotate(${p.rot}deg)`
+      }
+    }));
+    const parallaxLayerStyle = { position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' };
+    const clickPops = this.state.clickPops.map(p => ({
+      text: p.text,
+      style: {
+        position: 'absolute', left: p.x + 'px', top: p.y + 'px', transform: 'translate(-50%,-50%)',
+        fontFamily: "'Plus Jakarta Sans',sans-serif", fontWeight: 800, fontSize: '28px', color: '#D9A441',
+        pointerEvents: 'none', animation: 'popFloat 1.4s ease-out forwards', zIndex: 5
+      }
+    }));
+    const voiceIdx = this.state.currentVoiceIndex;
+    const vm = VOICE_MESSAGES[voiceIdx];
+    const voicePlaying = this.state.playingIndex === voiceIdx;
+    const voicePct = voicePlaying ? Math.min(100, (this.state.playedSeconds / vm.duration) * 100) : 0;
+    const currentVoice = {
+      language: vm.language, greeting: vm.greeting, name: vm.name, role: vm.role,
+      icon: voicePlaying ? '❚❚' : '▶',
+      onToggle: () => this.togglePlay(voiceIdx),
+      buttonStyle: {
+        width: 48, height: 48, borderRadius: '999px', border: 'none', flex: 'none',
+        background: voicePlaying ? '#B3452F' : '#fff', color: voicePlaying ? '#fff' : '#3B6EA5', fontSize: 15, cursor: 'pointer'
+      },
+      progressStyle: { height: '100%', width: voicePct + '%', background: '#B3452F', transition: 'width .2s linear' }
+    };
+    return {
+      currentVoice,
+      parallaxWords, parallaxLayerStyle, clickPops,
+      handleSectionClick: (e) => this.handleSectionClick(e),
+      shuffleVoice: () => this.shuffleVoice(),
+      subscribed: this.state.subscribed,
+      notSubscribed: !this.state.subscribed,
+      emailValue: this.state.email,
+      handleEmailChange: (e) => this.setState({ email: e.target.value }),
+      handleSubscribe: (e) => { e.preventDefault(); if (this.state.email) this.setState({ subscribed: true }); },
+      slideStyles, slideDots,
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState(st => ({ menuOpen: !st.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      navStyle: {
+        position: 'sticky', top: 0, zIndex: 50,
+        margin: s ? '14px 24px 0' : '0',
+        padding: s ? '10px 22px' : '18px 48px',
+        borderRadius: s ? 999 : 0,
+        background: s ? 'rgba(255,251,244,0.92)' : 'rgba(251,246,238,0.9)',
+        backdropFilter: 'blur(10px)',
+        border: s ? '1px solid rgba(179,69,47,0.18)' : 'none',
+        borderBottom: s ? '1px solid rgba(179,69,47,0.18)' : '1px solid rgba(34,31,26,0.08)',
+        boxShadow: s ? '0 10px 30px rgba(34,31,26,0.14)' : 'none',
+        display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', columnGap: '20px',
+        transition: 'margin .35s cubic-bezier(.2,.8,.2,1), padding .35s cubic-bezier(.2,.8,.2,1), border-radius .35s cubic-bezier(.2,.8,.2,1), background .35s ease, box-shadow .35s ease, border-color .35s ease'
+      },
+      navMenuStyle: {
+        display: 'flex', alignItems: 'center', gap: s ? '22px' : '32px',
+        fontSize: '15px', fontWeight: 600,
+        position: s ? 'absolute' : 'static',
+        left: s ? '50%' : 'auto',
+        transform: s ? 'translateX(-50%)' : 'none',
+        transition: 'all .35s ease'
+      },
+      getInvolvedStyle: {
+        textDecoration: 'none', color: '#fff', fontWeight: 700, fontSize: 14,
+        padding: '11px 22px', borderRadius: 999,
+        background: 'linear-gradient(90deg,#B3452F,#8B3626 55%,#6E4A9E)',
+        boxShadow: s ? '0 8px 20px rgba(179,69,47,0.35)' : '0 4px 12px rgba(179,69,47,0.2)',
+        transition: 'all .35s ease'
+      },
+      menuLayerStyle: {
+        position: 'absolute', top: '50%', left: '50%', display: 'flex', gap: '32px',
+        whiteSpace: 'nowrap',
+        opacity: s ? 0 : 1,
+        transform: s ? 'translate(calc(-50% + 70px),-50%) scale(0.98)' : 'translate(-50%,-50%) scale(1)',
+        pointerEvents: s ? 'none' : 'auto',
+        transition: 'transform .45s cubic-bezier(.4,0,.2,1), opacity .35s ease'
+      },
+      getInvolvedLayerStyle: {
+        position: 'absolute', top: '50%',
+        left: s ? '50%' : 'calc(100% - 48px)',
+        transform: s ? 'translate(-50%,-50%)' : 'translate(-100%,-50%)',
+        width: 'max-content',
+        whiteSpace: 'nowrap',
+        pointerEvents: 'auto',
+        transition: 'left .45s cubic-bezier(.4,0,.2,1), transform .45s cubic-bezier(.4,0,.2,1)'
+      },
+      hamburgerBtnStyle: {
+        width: 42, height: 42, borderRadius: 12, border: 'none',
+        background: this.state.menuOpen ? 'rgba(34,31,26,0.06)' : '#fff',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4,
+        cursor: 'pointer', position: 'relative', transition: 'background .3s ease'
+      },
+      bar1Style: {
+        width: 18, height: 2, borderRadius: 2, background: this.state.menuOpen ? '#fff' : '#221F1A',
+        transform: this.state.menuOpen ? 'translateY(6px) rotate(45deg)' : 'none',
+        transition: 'transform .3s ease, background .3s ease'
+      },
+      bar2Style: {
+        width: 18, height: 2, borderRadius: 2, background: this.state.menuOpen ? '#fff' : '#221F1A',
+        opacity: this.state.menuOpen ? 0 : 1,
+        transition: 'opacity .2s ease, background .3s ease'
+      },
+      bar3Style: {
+        width: 18, height: 2, borderRadius: 2, background: this.state.menuOpen ? '#fff' : '#221F1A',
+        transform: this.state.menuOpen ? 'translateY(-6px) rotate(-45deg)' : 'none',
+        transition: 'transform .3s ease, background .3s ease'
+      },
+      overlayWordLayerStyle: { position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' },
+      overlayWords: OVERLAY_WORDS.map((w, i) => ({
+        text: w,
+        style: {
+          position: 'absolute', left: (8 + (i * 47) % 84) + '%', top: (10 + (i * 31) % 80) + '%',
+          fontFamily: "'Plus Jakarta Sans',sans-serif", fontWeight: 800, fontSize: (20 + (i % 3) * 10) + 'px',
+          color: '#221F1A', opacity: 0.05, whiteSpace: 'nowrap', transform: `rotate(${(i % 2 ? -1 : 1) * (4 + i)}deg)`
+        }
+      })),
+      menuItems: MENU_ITEMS.map((item, i) => ({
+        href: item.href, label: item.label, translated: item.translated,
+        number: String(i + 1).padStart(2, '0'),
+        style: {
+          textDecoration: 'none', color: item.active ? '#B3452F' : '#221F1A', fontWeight: 800, fontSize: 40,
+          fontFamily: "'Plus Jakarta Sans',sans-serif",
+          padding: '18px 0', display: 'flex', alignItems: 'baseline', gap: '24px',
+          borderBottom: '1px solid rgba(34,31,26,0.1)',
+          opacity: this.state.menuOpen ? 1 : 0,
+          transform: this.state.menuOpen ? 'translateX(0)' : 'translateX(-24px)',
+          transition: `opacity .35s ease ${i * 0.07}s, transform .35s cubic-bezier(.2,.8,.2,1) ${i * 0.07}s, color .2s ease, padding-left .2s ease`
+        },
+        hoverStyle: { color: '#B3452F', paddingLeft: '16px' },
+        numberStyle: { fontSize: 16, fontWeight: 700, color: '#9B9186', fontFamily: "'Plus Jakarta Sans',sans-serif" },
+        subStyle: { fontSize: 14, fontWeight: 600, color: '#9B9186', marginTop: '2px' }
+      })),
+      hamburgerLayerStyle: {
+        position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+        opacity: s ? 1 : 0,
+        transform: s ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.98)',
+        pointerEvents: s ? 'auto' : 'none',
+        transition: 'opacity .3s ease, transform .3s ease'
+      }
+    };
+  }
+}</script>
+</body>
+</html>

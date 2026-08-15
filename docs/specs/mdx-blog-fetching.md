@@ -25,6 +25,8 @@ in `docs/FEATURES.md` under "MDX-friendly blog posts."
 - `.gitignore` — `/content/blog/` is already ignored (fetched content must never
   be committed here).
 - `.env.local.example` — documents `BLOG_CONTENT_TOKEN`.
+
+**Live site after a new post:** do not fetch GitHub at request time. Create a Vercel Deploy Hook and point a `push` webhook on `mllws-blog` at it (steps in `docs/FEATURES.md`). The website repo needs no extra route or cache invalidation.
 - Sample post already committed in `mllws-blog` at `content/posts/hello-world.mdx`
   with this frontmatter shape (use it as the source of truth for the schema):
   ```yaml

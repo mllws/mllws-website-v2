@@ -26,6 +26,19 @@ Using **`next-mdx-remote/rsc`**: posts are content files fed through a shared bl
 
 Setup still needed (requires the repo owner, since it involves a credential): generate a fine-grained GitHub PAT scoped to read-only "Contents" access on `mllws/mllws-blog` only, then add it as `BLOG_CONTENT_TOKEN` in Vercel's project environment variables (and in a local `.env.local`, never committed, for local development).
 
+**Publishing without remembering to redeploy:** keep the build-time fetch. Add a Vercel **Deploy Hook** so a push to `mllws-blog` rebuilds the live site. That is a normal production deploy (about 1–2 minutes), not runtime GitHub fetching.
+
+1. Vercel project → **Settings → Git → Deploy Hooks**. Create a hook named e.g. `blog-content`, branch `main`. Copy the URL. Treat it like a secret (anyone with it can trigger a production deploy).
+2. In `mllws/mllws-blog` → **Settings → Webhooks** → Add webhook:
+   - Payload URL: the Deploy Hook URL
+   - Content type: `application/json`
+   - Secret: leave empty (Vercel authenticates via the unique hook URL)
+   - Events: **Just the `push` event**
+   - Active
+3. Confirm `BLOG_CONTENT_TOKEN` is set on Vercel for Production (and Preview if you want posts on preview deploys).
+
+After that: merge or push a published post (`draft: false`) to `main` on `mllws-blog` → GitHub POSTs the hook → Vercel rebuilds → `prebuild` clones posts → `/blog` updates. You do not need to open the website repo. Extra pushes to `mllws-blog` (docs, drafts) will also rebuild; that is fine at low volume.
+
 ## Membership & donation — Zeffy integration
 Zeffy is free for nonprofits (no platform, subscription, or transaction fees) and supports donation, membership, and event-ticket forms.
 

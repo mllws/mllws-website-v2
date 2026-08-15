@@ -247,6 +247,55 @@ a:not([class*="text-"]):not([class*="bg-"]):hover {
   color: var(--accent);
 }
 
+.prose-content h2,
+.prose-content h3 {
+  font-family: var(--font-display-family);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 1.75rem 0 0.75rem;
+}
+
+.prose-content h2 {
+  font-size: 1.5rem;
+}
+
+.prose-content h3 {
+  font-size: 1.2rem;
+}
+
+.prose-content ul,
+.prose-content ol {
+  margin: 0 0 1.15rem 1.25rem;
+  line-height: 1.75;
+  color: #33302a;
+}
+
+.prose-content li {
+  margin-bottom: 0.35rem;
+}
+
+.prose-content blockquote {
+  font-family: var(--font-display-family);
+  font-style: italic;
+  border-left: 4px solid var(--accent);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  color: var(--foreground);
+}
+
+.prose-content pre,
+.prose-content code {
+  font-size: 0.9em;
+}
+
+.prose-content pre {
+  overflow-x: auto;
+  padding: 1rem 1.15rem;
+  border-radius: 0.75rem;
+  background: var(--surface-muted);
+  margin-bottom: 1.15rem;
+}
+
 .not-prose {
   max-width: none;
 }

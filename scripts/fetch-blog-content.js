@@ -63,8 +63,10 @@ const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "mllws-blog-"));
 
 try {
   console.log(`[fetch-blog-content] Cloning ${REPO}...`);
+  // Fine-grained PATs often 403 with x-access-token. oauth2:TOKEN is the
+  // HTTPS username GitHub accepts for user PATs (classic and fine-grained).
   execSync(
-    `git clone --depth 1 https://x-access-token:${TOKEN}@github.com/${REPO}.git "${tmpDir}"`,
+    `git clone --depth 1 https://oauth2:${TOKEN}@github.com/${REPO}.git "${tmpDir}"`,
     {
       stdio: ["ignore", "pipe", "pipe"],
       env: { ...process.env, GIT_TERMINAL_PROMPT: "0" },

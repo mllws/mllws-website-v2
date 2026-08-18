@@ -37,9 +37,12 @@ yarn-error.log*
 # vercel
 .vercel
 
-# blog content is fetched at build time from the private mllws-blog repo
-# (see scripts/fetch-blog-content.js) - never commit it here.
+# Content is fetched at build time from the private mllws-blog repo
+# (see scripts/fetch-blog-content.js) — never commit it here.
 /content/blog/
+/content/events/
+/content/stories/
+/content/galleries/
 
 # typescript
 *.tsbuildinfo

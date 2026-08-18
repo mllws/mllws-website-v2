@@ -1,8 +1,14 @@
 #!/usr/bin/env node
 /**
- * Pulls blog post MDX files from the private mllws-blog repo into
- * content/blog/ at build time. The private repo's content is never
+ * Pulls content from the private mllws-blog repo into local content/
+ * directories at build time. The private repo's content is never
  * committed into this (public) repo.
+ *
+ * Copied directories:
+ *   content/posts/     → content/blog/
+ *   content/events/    → content/events/
+ *   content/stories/   → content/stories/
+ *   content/galleries/ → content/galleries/
  *
  * Requires BLOG_CONTENT_TOKEN - a fine-grained GitHub PAT scoped to
  * read-only "Contents" access on mllws/mllws-blog. Set it as an
@@ -11,7 +17,7 @@
  *
  * If the token isn't set, this script skips silently so `npm run dev`
  * / `npm run build` still work for anyone without blog access - the
- * blog routes will just render an empty list.
+ * content routes will just render empty lists.
  */
 
 const { execSync } = require("node:child_process");
@@ -20,7 +26,13 @@ const os = require("node:os");
 const path = require("node:path");
 
 const REPO = "mllws/mllws-blog";
-const TARGET_DIR = path.join(process.cwd(), "content", "blog");
+
+const CONTENT_MAPPINGS = [
+  { src: "content/posts", dest: "content/blog" },
+  { src: "content/events", dest: "content/events" },
+  { src: "content/stories", dest: "content/stories" },
+  { src: "content/galleries", dest: "content/galleries" },
+];
 
 function loadEnvLocal() {
   const envPath = path.join(process.cwd(), ".env.local");
@@ -43,8 +55,14 @@ function loadEnvLocal() {
   }
 }
 
-function ensureTargetDir() {
-  fs.mkdirSync(TARGET_DIR, { recursive: true });
+function ensureDir(dir) {
+  fs.mkdirSync(dir, { recursive: true });
+}
+
+function ensureAllTargetDirs() {
+  for (const { dest } of CONTENT_MAPPINGS) {
+    ensureDir(path.join(process.cwd(), dest));
+  }
 }
 
 loadEnvLocal();
@@ -53,16 +71,16 @@ const TOKEN = process.env.BLOG_CONTENT_TOKEN;
 
 if (!TOKEN) {
   console.log(
-    "[fetch-blog-content] BLOG_CONTENT_TOKEN not set - skipping blog content fetch."
+    "[fetch-content] BLOG_CONTENT_TOKEN not set - skipping content fetch."
   );
-  ensureTargetDir();
+  ensureAllTargetDirs();
   process.exit(0);
 }
 
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "mllws-blog-"));
 
 try {
-  console.log(`[fetch-blog-content] Cloning ${REPO}...`);
+  console.log(`[fetch-content] Cloning ${REPO}...`);
   // Fine-grained PATs often 403 with x-access-token. oauth2:TOKEN is the
   // HTTPS username GitHub accepts for user PATs (classic and fine-grained).
   execSync(
@@ -73,28 +91,42 @@ try {
     }
   );
 
-  const postsDir = path.join(tmpDir, "content", "posts");
-  if (!fs.existsSync(postsDir) || !fs.statSync(postsDir).isDirectory()) {
-    console.error("[fetch-blog-content] mllws-blog repo has no content/posts directory");
-    ensureTargetDir();
-    process.exit(0);
+  let copied = 0;
+
+  for (const { src, dest } of CONTENT_MAPPINGS) {
+    const srcDir = path.join(tmpDir, src);
+    const destDir = path.join(process.cwd(), dest);
+
+    if (!fs.existsSync(srcDir) || !fs.statSync(srcDir).isDirectory()) {
+      console.log(`[fetch-content] No ${src}/ in mllws-blog — skipping.`);
+      ensureDir(destDir);
+      continue;
+    }
+
+    const stagingDir = fs.mkdtempSync(
+      path.join(os.tmpdir(), `mllws-staging-${path.basename(dest)}-`)
+    );
+    try {
+      fs.cpSync(srcDir, stagingDir, { recursive: true });
+      fs.rmSync(destDir, { recursive: true, force: true });
+      ensureDir(path.dirname(destDir));
+      fs.cpSync(stagingDir, destDir, { recursive: true });
+      copied++;
+      console.log(`[fetch-content] Copied ${src}/ → ${dest}/`);
+    } finally {
+      fs.rmSync(stagingDir, { recursive: true, force: true });
+    }
   }
 
-  const stagingDir = fs.mkdtempSync(path.join(os.tmpdir(), "mllws-blog-staging-"));
-  try {
-    fs.cpSync(postsDir, stagingDir, { recursive: true });
-    fs.rmSync(TARGET_DIR, { recursive: true, force: true });
-    fs.mkdirSync(path.dirname(TARGET_DIR), { recursive: true });
-    fs.cpSync(stagingDir, TARGET_DIR, { recursive: true });
-  } finally {
-    fs.rmSync(stagingDir, { recursive: true, force: true });
+  if (copied === 0) {
+    console.log("[fetch-content] No content directories found in mllws-blog.");
   }
 
-  console.log(`[fetch-blog-content] Copied posts into ${TARGET_DIR}`);
+  ensureAllTargetDirs();
 } catch (err) {
   const message = String(err.message || err).replaceAll(TOKEN, "[redacted]");
-  console.error("[fetch-blog-content] Failed to fetch blog content:", message);
-  ensureTargetDir();
+  console.error("[fetch-content] Failed to fetch content:", message);
+  ensureAllTargetDirs();
 } finally {
   fs.rmSync(tmpDir, { recursive: true, force: true });
 }

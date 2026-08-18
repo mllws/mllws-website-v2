@@ -1,18 +1,15 @@
-"use client";
-
-import { useMemo, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import FilterChips from "@/components/FilterChips";
 import LanguageHover from "@/components/LanguageHover";
-import { events, eventFilters, upcomingEvent } from "@/lib/data";
+import EventsList from "@/components/EventsList";
+import { getAllEvents, getFeaturedEvent, getEventFilters } from "@/lib/events";
+
+function includeDrafts() {
+  return process.env.NODE_ENV !== "production";
+}
 
 export default function EventsPage() {
-  const [filter, setFilter] = useState("all");
-  const filtered = useMemo(
-    () => (filter === "all" ? events.filter((e) => !e.featured) : events.filter((e) => e.category === filter && !e.featured)),
-    [filter]
-  );
+  const events = getAllEvents({ includeDrafts: includeDrafts() });
+  const featured = getFeaturedEvent({ includeDrafts: includeDrafts() });
+  const filters = getEventFilters({ includeDrafts: includeDrafts() });
 
   return (
     <div>
@@ -26,84 +23,15 @@ export default function EventsPage() {
         </p>
       </section>
 
-      <section className="mx-auto max-w-[1200px] px-6 pb-6 sm:px-12">
-        <FilterChips filters={eventFilters} onChange={setFilter} />
-      </section>
-
-      <section className="mx-auto max-w-[1200px] px-6 py-10 sm:px-12">
-        <div className="grid items-stretch overflow-hidden rounded-[28px] border border-border-muted bg-white md:grid-cols-2">
-          <div className="relative min-h-[280px] md:min-h-[320px]">
-            <Image
-              src={upcomingEvent.image}
-              alt={upcomingEvent.imageAlt}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority
-            />
-          </div>
-          <div className="p-8 sm:p-11">
-            <span className="mb-4 inline-block rounded-full bg-[#EAF3EC] px-3.5 py-1.5 text-[13px] font-bold text-green-dark">
-              Flagship · Festivals
-            </span>
-            <h2 className="font-display mb-3 text-[26px] font-extrabold">{upcomingEvent.title}</h2>
-            <p className="mb-5 text-[15px] leading-relaxed text-[#4a4438]">{upcomingEvent.description}</p>
-            <div className="mb-6 flex flex-col gap-2 text-sm font-semibold">
-              <span>{upcomingEvent.date}</span>
-              <span>{upcomingEvent.location}</span>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <LanguageHover
-                href={upcomingEvent.cityHref}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-block rounded-full bg-accent px-6 py-3.5 text-sm font-bold text-white no-underline transition hover:scale-105 hover:text-white"
-              >
-                City of Surrey event
-              </LanguageHover>
-              <LanguageHover
-                href={upcomingEvent.facebookHref}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-block rounded-full border border-foreground/15 px-6 py-3.5 text-sm font-bold text-foreground no-underline transition hover:border-accent hover:text-accent"
-              >
-                Facebook event
-              </LanguageHover>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
-        <h2 className="font-display mb-7 text-[26px] font-extrabold">More from our calendar</h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((ev) => (
-            <article
-              key={ev.title}
-              className="overflow-hidden rounded-2xl border border-border-muted bg-white transition hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(34,31,26,0.1)]"
-            >
-              <div className="relative h-[170px]">
-                <Image src={ev.image} alt={ev.imageAlt} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 33vw" />
-              </div>
-              <div className="p-[22px]">
-                <span className="text-xs font-bold" style={{ color: ev.tagColor }}>
-                  {ev.tag}
-                </span>
-                <h3 className="font-display my-2 text-[17px] font-bold">{ev.title}</h3>
-                <p className="mb-3 text-sm text-muted">{ev.dateLocation}</p>
-                <Link href="/about" className="text-[13px] font-bold no-underline">
-                  Learn more →
-                </Link>
-              </div>
-            </article>
-          ))}
-          {filtered.length === 0 && (
-            <p className="col-span-full py-10 text-center text-muted">
-              No events in this category right now — check back soon.
-            </p>
-          )}
-        </div>
-      </section>
+      {events.length > 0 ? (
+        <EventsList events={events} filters={filters} featured={featured} />
+      ) : (
+        <section className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12">
+          <p className="py-10 text-center text-muted">
+            No events published yet — check back soon.
+          </p>
+        </section>
+      )}
 
       <section className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
         <div className="flex flex-wrap items-center justify-between gap-6 rounded-[28px] bg-brand p-12">

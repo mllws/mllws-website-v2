@@ -6,11 +6,12 @@ import LanguageHover from "@/components/LanguageHover";
 import NewsletterForm from "@/components/NewsletterForm";
 import {
   greetingRibbon,
-  upcomingEvent,
+  upcomingEvent as fallbackUpcomingEvent,
   programs,
   communityQuotes,
   galleryImages,
 } from "@/lib/data";
+import { getFeaturedEvent } from "@/lib/events";
 
 function ProgramIcon({ color }) {
   return (
@@ -26,6 +27,22 @@ function ProgramIcon({ color }) {
 }
 
 export default function Home() {
+  const mdxEvent = getFeaturedEvent();
+  const upcomingEvent = mdxEvent
+    ? {
+        badge: mdxEvent.tag || "Event",
+        title: mdxEvent.title,
+        description: mdxEvent.description || "",
+        date: mdxEvent.dateLocation || mdxEvent.date,
+        location: mdxEvent.location || "",
+        image: mdxEvent.coverImage || "",
+        imageAlt: mdxEvent.imageAlt || mdxEvent.title,
+        ctaHref: `/events/${mdxEvent.slug}`,
+        ctaLabel: "Event details",
+        mapHref: mdxEvent.mapHref,
+      }
+    : fallbackUpcomingEvent;
+
   return (
     <div>
       <HeroCarousel />

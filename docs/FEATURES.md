@@ -1,13 +1,30 @@
 # Current Features to Be Developed
 
-Five features slated for the next build phase of the MLLWS site.
+Features slated for the next build phase of the MLLWS site.
 
-## Event history
+## Content architecture
+
+All dynamic content (blog posts, events, stories, galleries) lives in the private `mllws/mllws-blog` repo under `content/`. The website repo clones it at build time via `scripts/fetch-blog-content.js` using `BLOG_CONTENT_TOKEN`. A Vercel Deploy Hook rebuilds the site on every push to `mllws-blog` so new content goes live without a manual website deploy (~1–2 min).
+
+Images are **not** stored in Git. Use existing URLs on `motherlanguagelovers.com` for historical photos, and Cloudinary free tier (or similar) for new uploads — the MDX files store only HTTPS URLs.
+
+```
+mllws-blog/content/
+  posts/        # blog (done — #8, #10)
+  events/       # one .mdx per event (#13)
+  stories/      # one .mdx per story (#14)
+  galleries/    # one .mdx per album (#15)
+```
+
+Fetch script extension: #16.
+
+## Event history (#13)
 A dedicated `/events` archive (12 years of Mother Language Festival, IMLD proclamations, Rafiqul Islam memorial events, Bill S-214 milestones) instead of burying past events on the homepage.
 
-- Suggested shape: `lib/events.js` or an MDX collection at `content/events/*.mdx`, one entry per event with date, location, photo gallery, and recap text.
-- Render as a filterable timeline at `/events` plus a detail page per event at `/events/[slug]`.
-- Reuses the same MDX pipeline as the blog feature below — worth building both together.
+- Content: `content/events/*.mdx` in `mllws-blog`. Frontmatter: `title`, `date`, `location`, `category`, `tags`, `coverImage`, `mapHref`, `facebookHref`, `cityHref`, `sponsors[]`, `featured`, `draft`.
+- Data layer: `lib/events.js` — `getAllEvents`, `getEventBySlug`, `getEventFilters` (same pattern as `lib/posts.js`).
+- Pages: filterable timeline at `/events` (update existing page) plus detail page at `/events/[slug]`.
+- Remove hardcoded `events`, `eventFilters`, `upcomingEvent` from `lib/data.js`.
 
 ## Chatbot
 Two tiers depending on ambition:
@@ -38,6 +55,32 @@ Setup still needed (requires the repo owner, since it involves a credential): ge
 3. Confirm `BLOG_CONTENT_TOKEN` is set on Vercel for Production (and Preview if you want posts on preview deploys).
 
 After that: merge or push a published post (`draft: false`) to `main` on `mllws-blog` → GitHub POSTs the hook → Vercel rebuilds → `prebuild` clones posts → `/blog` updates. You do not need to open the website repo. Extra pushes to `mllws-blog` (docs, drafts) will also rebuild; that is fine at low volume.
+
+## Stories MDX data layer (#14)
+Move story content (Bill S-214, IMLD origins, partner spotlights, tributes) from hardcoded arrays in `lib/data.js` into `content/stories/*.mdx` in `mllws-blog`. Each story gets a full MDX page.
+
+- Frontmatter: `title`, `date`, `author`, `category` (milestones / origins / recaps / spotlights), `tags`, `excerpt`, `coverImage`, `draft`.
+- Data layer: `lib/stories.js` — `getAllStories`, `getStoryBySlug`, `getStoryFilters`.
+- Pages: update `/stories` to read from the data layer; add `/stories/[slug]` for full MDX.
+- Remove hardcoded `stories`, `storyFilters` from `lib/data.js`.
+
+## Photo gallery / image catalogue (#15)
+Album pages at `/gallery` and `/gallery/[slug]` with a responsive image grid. Albums are MDX files that reference externally hosted image URLs.
+
+- Content: `content/galleries/*.mdx` in `mllws-blog`. Frontmatter: `title`, `date`, `event` (linked event slug), `coverImage`, `draft`. Body lists images with `src`, `alt`, `caption`.
+- Data layer: `lib/galleries.js` — `getAllGalleries`, `getGalleryBySlug`.
+- Pages: `/gallery` album grid, `/gallery/[slug]` image lightbox.
+- Optional: homepage gallery strip reads from the latest album.
+- Image hosting: keep existing `motherlanguagelovers.com` URLs for history; Cloudinary free tier for new photos. Never commit binaries to Git.
+
+## Extend fetch script (#16)
+Update `scripts/fetch-blog-content.js` to copy the full `content/` tree from `mllws-blog` — not just `content/posts/`. Add `content/events/`, `content/stories/`, `content/galleries/` to `.gitignore`. Ensure each target directory exists even if empty. No new env vars needed.
+
+## Build order
+1. #16 — extend fetch script (prerequisite for all three)
+2. #13 — events MDX + `/events/[slug]`
+3. #14 — stories MDX + `/stories/[slug]`
+4. #15 — gallery + `/gallery/[slug]`
 
 ## Membership & donation — Zeffy integration
 Zeffy is free for nonprofits (no platform, subscription, or transaction fees) and supports donation, membership, and event-ticket forms.

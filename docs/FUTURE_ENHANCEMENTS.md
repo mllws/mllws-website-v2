@@ -12,7 +12,7 @@ Ideas to grow traffic and reach beyond the current six-page site, grouped by pur
 - **Volunteer / Get Involved page** with a simple sign-up form (Zeffy also supports volunteer/RSVP forms, or a lightweight Google Form embed).
 - **Newsletter sign-up** (Mailchimp/Buttondown embed) — currently there's no way to capture repeat visitors.
 - **Community stories / testimonials** — short submissions from festival attendees, chapter members, students about what their mother language means to them. User-generated content drives sharing.
-- **Photo & video gallery** per festival year — the site currently has almost no visual archive of past festivals; likely easy to source and strong for social proof. *(Now tracked as #15 in `FEATURES.md`.)*
+- **Photo & video gallery** per festival year — the site currently has almost no visual archive of past festivals; likely easy to source and strong for social proof. *(Now tracked as #15 in `FEATURES.md`, with Vercel Blob preferred for new uploads.)*
 
 ## Reach / press
 - **Press & media kit page** — logos, fact sheet, past coverage, and a media contact; makes it easy for journalists to cover the festival or IMLD milestones.

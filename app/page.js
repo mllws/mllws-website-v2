@@ -9,9 +9,10 @@ import {
   upcomingEvent as fallbackUpcomingEvent,
   programs,
   communityQuotes,
-  galleryImages,
+  galleryImages as fallbackGalleryImages,
 } from "@/lib/data";
 import { getFeaturedEvent } from "@/lib/events";
+import { getHomepageGalleryImages } from "@/lib/galleries";
 
 function ProgramIcon({ color }) {
   return (
@@ -42,6 +43,7 @@ export default function Home() {
         mapHref: mdxEvent.mapHref,
       }
     : fallbackUpcomingEvent;
+  const galleryImages = getHomepageGalleryImages() || fallbackGalleryImages;
 
   return (
     <div>
@@ -141,9 +143,14 @@ export default function Home() {
       </section>
 
       <section aria-labelledby="gallery-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
-        <h2 id="gallery-heading" className="font-display mb-9 text-[32px] font-extrabold">
-          Moments from our events
-        </h2>
+        <div className="mb-9 flex items-baseline justify-between gap-4">
+          <h2 id="gallery-heading" className="font-display text-[32px] font-extrabold">
+            Moments from our events
+          </h2>
+          <Link href="/gallery" className="font-bold text-brand no-underline hover:text-accent">
+            All photos →
+          </Link>
+        </div>
         <div className="grid auto-rows-[160px] grid-cols-2 gap-4 md:grid-cols-4">
           {galleryImages.map((img) => (
             <div

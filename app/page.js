@@ -12,7 +12,8 @@ import {
   galleryImages as fallbackGalleryImages,
 } from "@/lib/data";
 import { getFeaturedEvent } from "@/lib/events";
-import { getHomepageGalleryImages } from "@/lib/galleries";
+import { getHomepageGalleryImages, getLatestGallery } from "@/lib/galleries";
+import { getAllStories, getFeaturedStory } from "@/lib/stories";
 
 function ProgramIcon({ color }) {
   return (
@@ -43,7 +44,13 @@ export default function Home() {
         mapHref: mdxEvent.mapHref,
       }
     : fallbackUpcomingEvent;
+  const latestGallery = getLatestGallery();
   const galleryImages = getHomepageGalleryImages() || fallbackGalleryImages;
+  const galleryHref = latestGallery ? `/gallery/${latestGallery.slug}` : "/gallery";
+  const featuredStory = getFeaturedStory();
+  const moreStories = featuredStory
+    ? getAllStories().filter((story) => story.slug !== featuredStory.slug).slice(0, 2)
+    : [];
 
   return (
     <div>
@@ -66,14 +73,16 @@ export default function Home() {
           </Link>
         </div>
         <div className="grid items-stretch overflow-hidden rounded-[28px] border border-border-muted bg-white md:grid-cols-2">
-          <div className="relative min-h-[280px] md:min-h-[340px]">
-            <Image
-              src={upcomingEvent.image}
-              alt={upcomingEvent.imageAlt}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
+          <div className="relative min-h-[280px] md:min-h-[340px] bg-surface-muted">
+            {upcomingEvent.image ? (
+              <Image
+                src={upcomingEvent.image}
+                alt={upcomingEvent.imageAlt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            ) : null}
           </div>
           <div className="p-8 sm:p-12">
             <span className="mb-[18px] inline-block rounded-full bg-[#EAF3EC] px-3.5 py-1.5 text-[13px] font-bold text-green-dark">
@@ -142,19 +151,98 @@ export default function Home() {
         </div>
       </section>
 
+      {featuredStory && (
+        <section aria-labelledby="stories-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
+          <div className="mb-9 flex items-baseline justify-between gap-4">
+            <h2 id="stories-heading" className="font-display text-[32px] font-extrabold">
+              Stories from our community
+            </h2>
+            <Link href="/stories" className="font-bold text-brand no-underline hover:text-accent">
+              All stories →
+            </Link>
+          </div>
+          <div className="grid items-stretch overflow-hidden rounded-[28px] border border-border-muted bg-white md:grid-cols-2">
+            <div className="relative min-h-[240px] bg-surface-muted">
+              {featuredStory.coverImage ? (
+                <Image
+                  src={featuredStory.coverImage}
+                  alt={featuredStory.imageAlt || featuredStory.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : null}
+            </div>
+            <div className="p-8 sm:p-11">
+              <span
+                className="mb-4 inline-block rounded-full px-3.5 py-1.5 text-[13px] font-bold"
+                style={{ color: featuredStory.tagColor, backgroundColor: `${featuredStory.tagColor}15` }}
+              >
+                {featuredStory.tag}
+              </span>
+              <h3 className="font-display mb-3 text-[26px] font-extrabold">
+                <Link
+                  href={`/stories/${featuredStory.slug}`}
+                  className="text-foreground no-underline hover:text-accent"
+                >
+                  {featuredStory.title}
+                </Link>
+              </h3>
+              <p className="mb-5 text-[15px] leading-relaxed text-[#4a4438]">{featuredStory.excerpt}</p>
+              <Link href={`/stories/${featuredStory.slug}`} className="text-sm font-bold no-underline">
+                Read the story →
+              </Link>
+            </div>
+          </div>
+          {moreStories.length > 0 && (
+            <div className="mt-6 grid gap-6 sm:grid-cols-2">
+              {moreStories.map((story) => (
+                <Link
+                  key={story.slug}
+                  href={`/stories/${story.slug}`}
+                  className="overflow-hidden rounded-2xl border border-border-muted bg-white no-underline transition hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(34,31,26,0.1)]"
+                >
+                  <article>
+                    <div className="relative h-[170px] bg-surface-muted">
+                      {story.coverImage ? (
+                        <Image
+                          src={story.coverImage}
+                          alt={story.imageAlt || story.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                      ) : null}
+                    </div>
+                    <div className="p-[22px]">
+                      <span className="text-xs font-bold" style={{ color: story.tagColor }}>
+                        {story.tag}
+                      </span>
+                      <h3 className="font-display my-2 text-[17px] font-bold text-foreground">{story.title}</h3>
+                      <p className="text-sm text-muted">{story.excerpt}</p>
+                    </div>
+                  </article>
+                </Link>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
       <section aria-labelledby="gallery-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
         <div className="mb-9 flex items-baseline justify-between gap-4">
           <h2 id="gallery-heading" className="font-display text-[32px] font-extrabold">
             Moments from our events
           </h2>
-          <Link href="/gallery" className="font-bold text-brand no-underline hover:text-accent">
+          <Link href={galleryHref} className="font-bold text-brand no-underline hover:text-accent">
             All photos →
           </Link>
         </div>
         <div className="grid auto-rows-[160px] grid-cols-2 gap-4 md:grid-cols-4">
           {galleryImages.map((img) => (
-            <div
+            <Link
               key={img.src + img.alt}
+              href={galleryHref}
               className={`relative overflow-hidden rounded-[18px] ${
                 img.span ? "col-span-2 row-span-2" : ""
               }`}
@@ -166,7 +254,7 @@ export default function Home() {
                 className="object-cover transition hover:scale-105"
                 sizes="(max-width: 768px) 50vw, 25vw"
               />
-            </div>
+            </Link>
           ))}
         </div>
       </section>

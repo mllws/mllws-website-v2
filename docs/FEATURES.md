@@ -6,7 +6,7 @@ Features slated for the next build phase of the MLLWS site.
 
 All dynamic content (blog posts, events, stories, galleries) lives in the private `mllws/mllws-blog` repo under `content/`. The website repo clones it at build time via `scripts/fetch-blog-content.js` using `BLOG_CONTENT_TOKEN`. A Vercel Deploy Hook rebuilds the site on every push to `mllws-blog` so new content goes live without a manual website deploy (~1–2 min).
 
-Images are **not** stored in Git. Use existing URLs on `motherlanguagelovers.com` for historical photos, and Cloudinary free tier (or similar) for new uploads — the MDX files store only HTTPS URLs.
+Images are **not** stored in Git. Use existing URLs on `motherlanguagelovers.com` for historical photos, and Vercel Blob for new uploads — the MDX files store only HTTPS URLs. `next/image` still handles format conversion and resizing on delivery.
 
 ```
 mllws-blog/content/
@@ -71,7 +71,7 @@ Album pages at `/gallery` and `/gallery/[slug]` with a responsive image grid. Al
 - Data layer: `lib/galleries.js` — `getAllGalleries`, `getGalleryBySlug`.
 - Pages: `/gallery` album grid, `/gallery/[slug]` image lightbox.
 - Optional: homepage gallery strip reads from the latest album.
-- Image hosting: keep existing `motherlanguagelovers.com` URLs for history; Cloudinary free tier for new photos. Never commit binaries to Git.
+- Image hosting: keep existing `motherlanguagelovers.com` URLs for history; prefer Vercel Blob for new photos so hosting stays in the same platform as the site. Never commit binaries to Git. `next/image` can still optimize delivery on top of Blob-hosted originals.
 
 ## Extend fetch script (#16)
 Update `scripts/fetch-blog-content.js` to copy the full `content/` tree from `mllws-blog` — not just `content/posts/`. Add `content/events/`, `content/stories/`, `content/galleries/` to `.gitignore`. Ensure each target directory exists even if empty. No new env vars needed.

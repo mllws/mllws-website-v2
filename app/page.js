@@ -66,10 +66,10 @@ export default function Home() {
       <section aria-labelledby="upcoming-heading" className="mx-auto max-w-[1200px] px-6 py-16 sm:px-12 sm:py-22">
         <div className="mb-9 flex items-baseline justify-between gap-4">
           <h2 id="upcoming-heading" className="font-display text-[32px] font-extrabold">
-            Up next
+            Up Next
           </h2>
           <Link href="/events" className="font-bold text-brand no-underline hover:text-accent">
-            All events →
+            All Events →
           </Link>
         </div>
         <div className="grid items-stretch overflow-hidden rounded-[28px] border border-border-muted bg-white md:grid-cols-2">
@@ -110,7 +110,7 @@ export default function Home() {
 
       <section aria-labelledby="programs-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
         <h2 id="programs-heading" className="font-display mb-2 text-[32px] font-extrabold">
-          What we run, year-round
+          What we run, year round
         </h2>
         <p className="mb-9 text-[17px] text-muted">Not just one day in February — community, all year.</p>
         <div className="grid gap-6 md:grid-cols-3">
@@ -133,7 +133,7 @@ export default function Home() {
 
       <section aria-labelledby="voices-heading" className="mx-auto max-w-[1200px] px-6 py-16 sm:px-12 sm:py-22">
         <h2 id="voices-heading" className="font-display mb-9 text-[32px] font-extrabold">
-          Voices from our community
+          Voices from our Community
         </h2>
         <div className="grid gap-6 md:grid-cols-3">
           {communityQuotes.map((q) => (
@@ -155,10 +155,10 @@ export default function Home() {
         <section aria-labelledby="stories-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
           <div className="mb-9 flex items-baseline justify-between gap-4">
             <h2 id="stories-heading" className="font-display text-[32px] font-extrabold">
-              Stories from our community
+              Stories from our Community
             </h2>
             <Link href="/stories" className="font-bold text-brand no-underline hover:text-accent">
-              All stories →
+              All Stories →
             </Link>
           </div>
           <div className="grid items-stretch overflow-hidden rounded-[28px] border border-border-muted bg-white md:grid-cols-2">
@@ -190,7 +190,7 @@ export default function Home() {
               </h3>
               <p className="mb-5 text-[15px] leading-relaxed text-[#4a4438]">{featuredStory.excerpt}</p>
               <Link href={`/stories/${featuredStory.slug}`} className="text-sm font-bold no-underline">
-                Read the story →
+                Read the Story →
               </Link>
             </div>
           </div>
@@ -232,10 +232,10 @@ export default function Home() {
       <section aria-labelledby="gallery-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
         <div className="mb-9 flex items-baseline justify-between gap-4">
           <h2 id="gallery-heading" className="font-display text-[32px] font-extrabold">
-            Moments from our events
+            Moments from our Events
           </h2>
           <Link href={galleryHref} className="font-bold text-brand no-underline hover:text-accent">
-            All photos →
+            All Photos →
           </Link>
         </div>
         <div className="grid auto-rows-[160px] grid-cols-2 gap-4 md:grid-cols-4">
@@ -262,7 +262,7 @@ export default function Home() {
       <section aria-labelledby="involved-heading" className="relative overflow-hidden bg-brand px-6 py-16 sm:px-12 sm:py-22">
         <div className="relative mx-auto max-w-[1200px]">
           <h2 id="involved-heading" className="font-display mb-2 text-[32px] font-extrabold text-white">
-            Get involved
+            Get Involved
           </h2>
           <p className="mb-9 text-[17px] text-[#D6E6F2]">
             However you show up, you help keep languages alive.
@@ -277,7 +277,7 @@ export default function Home() {
                 href="/membership"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-brand no-underline hover:text-brand"
               >
-                Join today
+                Join Today
               </LanguageHover>
             </div>
             <div className="rounded-3xl bg-accent p-9 text-white transition hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(179,69,47,0.35)]">
@@ -289,7 +289,7 @@ export default function Home() {
                 href="/membership#donate"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-accent no-underline hover:text-accent"
               >
-                Give today
+                Give Today
               </LanguageHover>
             </div>
             <div className="rounded-3xl bg-green p-9 text-white transition hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(46,139,103,0.35)]">
@@ -301,7 +301,7 @@ export default function Home() {
                 href="/contact"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-green no-underline hover:text-green"
               >
-                Sign up
+                Sign Up
               </LanguageHover>
             </div>
           </div>
@@ -311,7 +311,7 @@ export default function Home() {
               <h3 className="font-display mb-2 text-2xl font-extrabold text-white">
                 Never miss a celebration
               </h3>
-              <p className="text-[15px] text-[#D6E6F2]">Monthly event updates, straight to your inbox.</p>
+              <p className="text-[15px] text-[#D6E6F2]">Event updates, straight to your inbox.</p>
             </div>
             <NewsletterForm />
           </div>

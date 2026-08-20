@@ -23,7 +23,7 @@ export default function ConstitutionPage() {
             A committee has been formed to review and amend the current MLLWS
             Constitution to improve governance and address procedural
             concerns. The amendments are expected to be presented by the
-            first week of December 2024.
+            first week of December 2026.
           </p>
           <p className="mt-3 leading-relaxed text-[#4a4438]">
             The updated Constitution and By-Laws will be published here once

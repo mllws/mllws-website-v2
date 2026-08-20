@@ -186,7 +186,7 @@ export default function Footer() {
       </div>
 
       <div className="relative mx-auto max-w-[1200px] border-t border-foreground/10 pt-6">
-        <p className="mb-3.5 max-w-[900px] text-[12.5px] leading-relaxed text-muted-light">
+        <p className="mb-3.5 text-[12.5px] leading-relaxed text-muted-light">
           Mother Language Lovers of the World Society (MLLWS) acknowledges that it is situated on
           the unceded traditional territories of the xʷməθkʷəy̓əm (Musqueam Indian Band),
           Sḵwx̱wú7mesh (Squamish Nation), and səlilwətaɬ (Tsleil-Waututh Nation).

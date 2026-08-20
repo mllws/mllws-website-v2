@@ -95,7 +95,7 @@ export default function AboutPage() {
 
       <section aria-labelledby="board-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
         <h2 id="board-heading" className="font-display mb-8 text-center text-[28px] font-extrabold">
-          Volunteer board
+          Volunteer Board
         </h2>
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
           {boardPreview.map((person) => (

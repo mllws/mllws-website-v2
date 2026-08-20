@@ -30,20 +30,6 @@ export default function TeamPage() {
       </section>
 
       <section
-        aria-labelledby="chapters-heading"
-        className="mx-auto max-w-[1200px] border-t border-border-muted px-6 py-12 sm:px-12"
-      >
-        <h2 id="chapters-heading" className="font-display text-3xl font-extrabold text-foreground">
-          Chapters
-        </h2>
-        <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
-          {chapters.map((d) => (
-            <PersonCard key={d.name} {...d} />
-          ))}
-        </div>
-      </section>
-
-      <section
         aria-labelledby="advisors-heading"
         className="mx-auto max-w-[1200px] border-t border-border-muted px-6 py-12 sm:px-12"
       >
@@ -56,6 +42,20 @@ export default function TeamPage() {
           ))}
         </div>
       </section>
+
+      <section
+        aria-labelledby="chapters-heading"
+        className="mx-auto max-w-[1200px] border-t border-border-muted px-6 py-12 sm:px-12"
+      >
+        <h2 id="chapters-heading" className="font-display text-3xl font-extrabold text-foreground">
+          Chapters
+        </h2>
+        <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
+          {chapters.map((d) => (
+            <PersonCard key={d.name} {...d} />
+          ))}
+        </div>
+      </section>      
     </div>
   );
 }

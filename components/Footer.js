@@ -60,7 +60,7 @@ export default function Footer() {
 
       <div className="relative mx-auto mb-10 max-w-[1200px] text-center">
         <p className="font-display mb-7 text-xl font-extrabold text-foreground">
-          Our language is our identity
+          Our Language is our Identity
         </p>
         <ul className="flex flex-wrap items-center justify-center gap-7 opacity-85">
           {sponsors.map((s) => (

@@ -269,7 +269,7 @@ export default function Home() {
           </p>
           <div className="grid gap-6 md:grid-cols-3">
             <div className="rounded-3xl bg-white/10 p-9 text-white transition hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(0,0,0,0.25)]">
-              <h3 className="font-display mb-3 text-[21px] font-bold">Become a member</h3>
+              <h3 className="font-display mb-3 text-[21px] font-bold">Become a Member</h3>
               <p className="mb-[26px] text-[15px] leading-relaxed text-[#D6E6F2]">
                 Get event updates, our newsletter, and a voice in what we do next.
               </p>

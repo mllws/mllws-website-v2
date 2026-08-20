@@ -38,7 +38,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="prose-content mx-auto max-w-[800px] px-6 pb-16 sm:px-12 sm:pb-22">
+      <section className="prose-content mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
         <p className="text-[19px] leading-[1.8] text-[#33302A]">
           We are a non-profit organization bringing together people of various linguistic and
           cultural origins to celebrate their heritage and enrich multiculturalism and
@@ -81,7 +81,7 @@ export default function AboutPage() {
 
       <section aria-labelledby="values-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
         <h2 id="values-heading" className="font-display mb-8 text-center text-[28px] font-extrabold">
-          What we believe
+          What we Believe
         </h2>
         <div className="grid gap-6 md:grid-cols-3">
           {aboutValues.map((v) => (
@@ -116,14 +116,14 @@ export default function AboutPage() {
         </div>
         <p className="mt-8 text-center">
           <Link href="/team" className="font-bold no-underline">
-            Meet the full team →
+            Meet the Full Team →
           </Link>
         </p>
       </section>
 
       <section className="mx-auto max-w-[800px] px-6 pb-16 text-center sm:px-12 sm:pb-22">
         <div className="rounded-[28px] bg-brand px-8 py-12 text-white">
-          <h2 className="font-display mb-3 text-2xl font-extrabold">Learn more</h2>
+          <h2 className="font-display mb-3 text-2xl font-extrabold">Learn More</h2>
           <p className="mb-6 text-[#D6E6F2]">
             Read our constitution, recommendation letters, or get in touch.
           </p>

@@ -67,7 +67,7 @@ export default function BlogPage() {
                     </ul>
                   )}
                   <Link href={`/blog/${post.slug}`} className="text-sm font-bold no-underline">
-                    Read post →
+                    Read Post →
                   </Link>
                 </article>
               </li>

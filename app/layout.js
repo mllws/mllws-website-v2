@@ -12,7 +12,13 @@ import Footer from "@/components/Footer";
 import SkipLink from "@/components/SkipLink";
 import PageTransition from "@/components/PageTransition";
 import { FeatureFlagsProvider } from "@/lib/feature-flags-context";
-import { languageHoverFlag } from "@/flags";
+import {
+  languageHoverFlag,
+  becomeAMemberFlag,
+  donateFlag,
+  volunteerFlag,
+  hearItInYourLanguageFlag,
+} from "@/flags";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -79,7 +85,19 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const languageHover = await languageHoverFlag();
+  const [
+    languageHover,
+    becomeAMember,
+    donate,
+    volunteer,
+    hearItInYourLanguage,
+  ] = await Promise.all([
+    languageHoverFlag(),
+    becomeAMemberFlag(),
+    donateFlag(),
+    volunteerFlag(),
+    hearItInYourLanguageFlag(),
+  ]);
 
   return (
     <html lang="en" className={`h-full antialiased ${fontVariables}`}>
@@ -87,7 +105,15 @@ export default async function RootLayout({ children }) {
         className="flex min-h-full flex-col font-sans"
         data-language-hover={languageHover ? "on" : "off"}
       >
-        <FeatureFlagsProvider value={{ languageHover }}>
+        <FeatureFlagsProvider
+          value={{
+            languageHover,
+            becomeAMember,
+            donate,
+            volunteer,
+            hearItInYourLanguage,
+          }}
+        >
           <SkipLink />
           <Header />
           <main id="main-content" className="flex-1">

@@ -172,10 +172,17 @@ export default function LanguageHover({
   // Feature flag off: plain Link/anchor/button (pre-experiment UI)
   if (!enabled) {
     if (href) {
-      const isExternal = /^https?:\/\//.test(href);
+      const isExternal = /^https:\/\//.test(href);
       if (isExternal) {
         return (
-          <a href={href} className={className} {...rest}>
+          <a
+            href={href}
+            className={className}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${typeof children === "string" ? children : "Open link"} (opens in a new tab)`}
+            {...rest}
+          >
             {children}
           </a>
         );
@@ -194,10 +201,18 @@ export default function LanguageHover({
   }
 
   if (href) {
-    const isExternal = /^https?:\/\//.test(href);
+    const isExternal = /^https:\/\//.test(href);
     if (isExternal) {
       return (
-        <a href={href} className={className} aria-label={original} {...interaction} {...rest}>
+        <a
+          href={href}
+          className={className}
+          aria-label={`${original} (opens in a new tab)`}
+          target="_blank"
+          rel="noopener noreferrer"
+          {...interaction}
+          {...rest}
+        >
           {label}
         </a>
       );

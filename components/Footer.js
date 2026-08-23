@@ -160,7 +160,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="inline-block text-muted no-underline transition hover:translate-x-1 hover:text-green-dark">
+              <Link href="/membership#volunteer" className="inline-block text-muted no-underline transition hover:translate-x-1 hover:text-green-dark">
                 Volunteer
               </Link>
             </li>

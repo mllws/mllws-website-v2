@@ -19,6 +19,7 @@ import {
   volunteerFlag,
   hearItInYourLanguageFlag,
 } from "@/flags";
+import { getInvolvedUrls } from "@/lib/get-involved-href";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -99,6 +100,12 @@ export default async function RootLayout({ children }) {
     hearItInYourLanguageFlag(),
   ]);
 
+  const { membershipHref, donateHref, volunteerHref } = getInvolvedUrls({
+    becomeAMember,
+    donate,
+    volunteer,
+  });
+
   return (
     <html lang="en" className={`h-full antialiased ${fontVariables}`}>
       <body
@@ -112,6 +119,9 @@ export default async function RootLayout({ children }) {
             donate,
             volunteer,
             hearItInYourLanguage,
+            membershipHref,
+            donateHref,
+            volunteerHref,
           }}
         >
           <SkipLink />

@@ -2,14 +2,12 @@ import LanguageHover from "@/components/LanguageHover";
 import EventsList from "@/components/EventsList";
 import { getAllEvents, getFeaturedEvent, getEventFilters } from "@/lib/events";
 
-function includeDrafts() {
-  return process.env.NODE_ENV !== "production";
-}
+export const dynamic = "force-static";
 
-export default function EventsPage() {
-  const events = getAllEvents({ includeDrafts: includeDrafts() });
-  const featured = getFeaturedEvent({ includeDrafts: includeDrafts() });
-  const filters = getEventFilters({ includeDrafts: includeDrafts() });
+export default async function EventsPage() {
+  const events = await getAllEvents();
+  const featured = await getFeaturedEvent();
+  const filters = await getEventFilters();
 
   return (
     <div>

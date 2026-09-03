@@ -16,6 +16,8 @@ import { getFeaturedEvent } from "@/lib/events";
 import { getHomepageGalleryImages, getLatestGallery } from "@/lib/galleries";
 import { getAllStories, getFeaturedStory } from "@/lib/stories";
 
+export const dynamic = "force-static";
+
 function ProgramIcon({ color }) {
   return (
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -29,8 +31,8 @@ function ProgramIcon({ color }) {
   );
 }
 
-export default function Home() {
-  const mdxEvent = getFeaturedEvent();
+export default async function Home() {
+  const mdxEvent = await getFeaturedEvent();
   const upcomingEvent = mdxEvent
     ? {
         badge: mdxEvent.tag || "Event",
@@ -45,12 +47,12 @@ export default function Home() {
         mapHref: mdxEvent.mapHref,
       }
     : fallbackUpcomingEvent;
-  const latestGallery = getLatestGallery();
-  const galleryImages = getHomepageGalleryImages() || fallbackGalleryImages;
+  const latestGallery = await getLatestGallery();
+  const galleryImages = (await getHomepageGalleryImages()) || fallbackGalleryImages;
   const galleryHref = latestGallery ? `/gallery/${latestGallery.slug}` : "/gallery";
-  const featuredStory = getFeaturedStory();
+  const featuredStory = await getFeaturedStory();
   const moreStories = featuredStory
-    ? getAllStories().filter((story) => story.slug !== featuredStory.slug).slice(0, 2)
+    ? (await getAllStories()).filter((story) => story.slug !== featuredStory.slug).slice(0, 2)
     : [];
 
   return (

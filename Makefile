@@ -1,7 +1,7 @@
 # MLLWS website — common development tasks
 # Run `make` or `make help` to list targets.
 
-.PHONY: help install install-hooks dev build start lint fetch-blog clean
+.PHONY: help install install-hooks dev build start lint clean
 
 .DEFAULT_GOAL := help
 
@@ -21,7 +21,7 @@ install-hooks: ## Install git hooks that protect the main branch
 dev: ## Start the Next.js development server
 	npm run dev
 
-build: ## Build the production site (fetches blog content first)
+build: ## Build the production site
 	npm run build
 
 start: ## Serve the production build
@@ -29,9 +29,6 @@ start: ## Serve the production build
 
 lint: ## Run ESLint
 	npm run lint
-
-fetch-blog: ## Fetch blog content from the private mllws-blog repo
-	node scripts/fetch-blog-content.js
 
 clean: ## Remove build output and caches
 	rm -rf .next out node_modules/.cache

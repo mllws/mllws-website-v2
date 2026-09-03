@@ -9,9 +9,9 @@ Router), Tailwind CSS v4, plain JavaScript (see `jsconfig.json` — there is no
 `tsconfig.json`; don't introduce `.ts`/`.tsx` files), npm.
 
 Repo is `mllws/mllws-website` and is **public**. Never commit secrets or
-draft/unpublished content — see `security-secrets.mdc`. Blog content lives in
-a separate private repo and is fetched at build time — see
-`content-and-data.mdc`.
+draft/unpublished content — see `security-secrets.mdc`. Blog, events,
+stories, and galleries are edited in Sanity (`mllws-sanity`) and read as
+published GROQ on this site — see `content-and-data.mdc`.
 
 Brand colors are Tailwind theme vars defined in `app/globals.css`
 (`--color-brand`, `--color-brand-dark`, `--color-accent`). Use them via

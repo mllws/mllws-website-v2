@@ -37,8 +37,8 @@ yarn-error.log*
 # vercel
 .vercel
 
-# Content is fetched at build time from the private mllws-blog repo
-# (see scripts/fetch-blog-content.js) — never commit it here.
+# Leftover local CMS snapshots — never commit them.
+/content/cms/
 /content/blog/
 /content/events/
 /content/stories/

@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import CmsHtml from "@/components/CmsHtml";
 import GalleryGrid from "@/components/GalleryGrid";
 import { getAllGalleries, getGalleryBySlug } from "@/lib/galleries";
 
-function includeDrafts() {
-  return process.env.NODE_ENV !== "production";
-}
+export const dynamic = "force-static";
 
 function formatGalleryDate(iso) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -17,15 +15,15 @@ function formatGalleryDate(iso) {
   }).format(new Date(`${iso}T00:00:00Z`));
 }
 
-export function generateStaticParams() {
-  return getAllGalleries({ includeDrafts: includeDrafts() }).map((gallery) => ({
+export async function generateStaticParams() {
+  return (await getAllGalleries()).map((gallery) => ({
     slug: gallery.slug,
   }));
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const gallery = getGalleryBySlug(slug, { includeDrafts: includeDrafts() });
+  const gallery = await getGalleryBySlug(slug);
   if (!gallery) {
     return { title: "Album not found" };
   }
@@ -37,7 +35,7 @@ export async function generateMetadata({ params }) {
 
 export default async function GalleryDetailPage({ params }) {
   const { slug } = await params;
-  const gallery = getGalleryBySlug(slug, { includeDrafts: includeDrafts() });
+  const gallery = await getGalleryBySlug(slug);
   if (!gallery) notFound();
 
   return (
@@ -49,11 +47,6 @@ export default async function GalleryDetailPage({ params }) {
       </p>
 
       <header className="mb-10">
-        {gallery.draft && (
-          <span className="mb-4 inline-block rounded-full bg-[#F7E4D3] px-3 py-1 text-xs font-bold text-accent-dark">
-            Draft
-          </span>
-        )}
         <h1 className="font-display mb-4 text-[36px] font-extrabold tracking-tight sm:text-[42px]">
           {gallery.title}
         </h1>
@@ -75,11 +68,7 @@ export default async function GalleryDetailPage({ params }) {
         )}
       </header>
 
-      {gallery.content.trim() && (
-        <div className="prose-content mb-10">
-          <MDXRemote source={gallery.content} />
-        </div>
-      )}
+      <CmsHtml html={gallery.content} className="prose-content mb-10" />
 
       <GalleryGrid images={gallery.images} />
     </article>

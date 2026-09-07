@@ -1,12 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import CmsHtml from "@/components/CmsHtml";
 import { getAllEvents, getEventBySlug } from "@/lib/events";
 
-function includeDrafts() {
-  return process.env.NODE_ENV !== "production";
-}
+export const dynamic = "force-static";
 
 function formatEventDate(iso) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -17,15 +15,15 @@ function formatEventDate(iso) {
   }).format(new Date(`${iso}T00:00:00Z`));
 }
 
-export function generateStaticParams() {
-  return getAllEvents({ includeDrafts: includeDrafts() }).map((event) => ({
+export async function generateStaticParams() {
+  return (await getAllEvents()).map((event) => ({
     slug: event.slug,
   }));
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const event = getEventBySlug(slug, { includeDrafts: includeDrafts() });
+  const event = await getEventBySlug(slug);
   if (!event) {
     return { title: "Event not found" };
   }
@@ -37,7 +35,7 @@ export async function generateMetadata({ params }) {
 
 export default async function EventDetailPage({ params }) {
   const { slug } = await params;
-  const event = getEventBySlug(slug, { includeDrafts: includeDrafts() });
+  const event = await getEventBySlug(slug);
   if (!event) notFound();
 
   return (
@@ -62,11 +60,6 @@ export default async function EventDetailPage({ params }) {
       )}
 
       <header className="mb-10">
-        {event.draft && (
-          <span className="mb-4 inline-block rounded-full bg-[#F7E4D3] px-3 py-1 text-xs font-bold text-accent-dark">
-            Draft
-          </span>
-        )}
         <span
           className="mb-4 inline-block rounded-full px-3.5 py-1.5 text-[13px] font-bold"
           style={{ color: event.tagColor, backgroundColor: `${event.tagColor}15` }}
@@ -139,11 +132,7 @@ export default async function EventDetailPage({ params }) {
         )}
       </header>
 
-      {event.content.trim() && (
-        <div className="prose-content">
-          <MDXRemote source={event.content} />
-        </div>
-      )}
+      <CmsHtml html={event.content} />
     </article>
   );
 }

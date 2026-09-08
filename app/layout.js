@@ -82,8 +82,8 @@ const fontVariables = [
 export const metadata = {
   metadataBase: new URL(organizationSchema.url),
   icons: {
-    icon: "/logo-icon.png",
-    apple: "/logo-icon.png",
+    icon: "/Logo-Without-MLLWS-Solid-Center.png",
+    apple: "/Logo-Without-MLLWS-Solid-Center.png",
   },
   title: {
     default: "Mother Language Lovers of the World Society (MLLWS)",

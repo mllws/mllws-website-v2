@@ -5,6 +5,12 @@ import { useState } from "react";
 const PHONE_PATTERN = /^\(?\d{3}\)?[-. ]?\d{3}[-. ]?\d{4}$/;
 const EMAIL_PATTERN = /^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$/;
 const POSTAL_CODE_PATTERN = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ ]?\d[ABCEGHJ-NPRSTV-Z]\d$/i;
+const mediaOptions = [
+    "Photography",
+    "Videography & Video Editing",
+    "Content Creation & Management",
+    "Social Media Management",
+];
 
 const provinces = [
     "Alberta",
@@ -39,7 +45,26 @@ const initialForm = {
     primaryLanguages: "",
     facebook: "",
     linkedin: "",
+    mediaSkills: [],
+    mediaOther: "",
 };
+
+function FieldHint({ children }) {
+    return (
+        <span className="group relative ml-1 inline-flex align-middle">
+            <button
+                type="button"
+                className="flex h-4 w-4 items-center justify-center rounded-full border border-muted text-[11px] font-bold text-muted"
+                aria-label="More information"
+            >
+                ?
+            </button>
+            <span className="pointer-events-none invisible absolute bottom-full left-1/2 z-10 mb-2 w-56 -translate-x-1/2 rounded-lg bg-foreground px-3 py-2 text-left text-xs font-normal leading-relaxed text-white opacity-0 shadow-lg transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                {children}
+            </span>
+        </span>
+    );
+}
 
 function FieldMessage({ id, message }) {
     if (!message) return null;
@@ -59,6 +84,16 @@ export default function MembershipForm() {
         const { name, value } = event.target;
         setForm((current) => ({ ...current, [name]: value }));
         setErrors((current) => ({ ...current, [name]: "" }));
+        setSubmitted(false);
+    }
+
+    function toggleMediaSkill(skill) {
+        setForm((current) => ({
+            ...current,
+            mediaSkills: current.mediaSkills.includes(skill)
+                ? current.mediaSkills.filter((item) => item !== skill)
+                : [...current.mediaSkills, skill],
+        }));
         setSubmitted(false);
     }
 
@@ -91,6 +126,18 @@ export default function MembershipForm() {
         }
         if (form.postalCode && !POSTAL_CODE_PATTERN.test(form.postalCode.trim())) {
             nextErrors.postalCode = "Enter a valid Canadian Postal Code, for example V3W 0Y8.";
+        }
+        if (form.dateOfBirth) {
+            const birthDate = new Date(`${form.dateOfBirth}T00:00:00`);
+            const today = new Date();
+            const eighteenthBirthday = new Date(
+                birthDate.getFullYear() + 18,
+                birthDate.getMonth(),
+                birthDate.getDate()
+            );
+            if (Number.isNaN(birthDate.getTime()) || eighteenthBirthday > today) {
+                nextErrors.dateOfBirth = "You must be at least 18 years old to apply.";
+            }
         }
 
         return nextErrors;
@@ -147,6 +194,7 @@ export default function MembershipForm() {
                         </label>
                         <label className="text-sm font-semibold">
                             Date of Birth <span className="text-accent">*</span>
+                            <FieldHint>We ask for your date of birth to confirm that applicants meet the minimum age requirement.</FieldHint>
                             <input type="date" name="dateOfBirth" value={form.dateOfBirth} onChange={updateField} className={fieldClass("dateOfBirth")} autoComplete="bday" aria-invalid={Boolean(errors.dateOfBirth)} aria-describedby="dateOfBirth-error" />
                             <FieldMessage id="dateOfBirth-error" message={errors.dateOfBirth} />
                         </label>
@@ -156,11 +204,13 @@ export default function MembershipForm() {
                         <legend className="sr-only">Contact information</legend>
                         <label className="text-sm font-semibold">
                             Phone Number <span className="text-accent">*</span>
+                            <FieldHint>We may use your phone number to contact you about your membership application or MLLWS activities.</FieldHint>
                             <input type="tel" name="phone" value={form.phone} onChange={updateField} className={fieldClass("phone")} autoComplete="tel" placeholder="604-555-0123" aria-invalid={Boolean(errors.phone)} aria-describedby="phone-error" />
                             <FieldMessage id="phone-error" message={errors.phone} />
                         </label>
                         <label className="text-sm font-semibold">
                             Email Address <span className="text-accent">*</span>
+                            <FieldHint>We use your email to send membership updates and follow up about your application.</FieldHint>
                             <input type="email" name="email" value={form.email} onChange={updateField} className={fieldClass("email")} autoComplete="email" placeholder="you@example.com" aria-invalid={Boolean(errors.email)} aria-describedby="email-error" />
                             <FieldMessage id="email-error" message={errors.email} />
                         </label>
@@ -222,6 +272,7 @@ export default function MembershipForm() {
                         </label>
                         <label className="text-sm font-semibold">
                             Primary Language(s) Spoken <span className="text-accent">*</span>
+                            <FieldHint>This helps us understand and celebrate the languages represented in our membership community.</FieldHint>
                             <input name="primaryLanguages" value={form.primaryLanguages} onChange={updateField} className={fieldClass("primaryLanguages")} placeholder="Separate multiple languages with commas" aria-invalid={Boolean(errors.primaryLanguages)} aria-describedby="primaryLanguages-error" />
                             <FieldMessage id="primaryLanguages-error" message={errors.primaryLanguages} />
                         </label>
@@ -233,6 +284,45 @@ export default function MembershipForm() {
                             LinkedIn Profile Link
                             <input type="url" name="linkedin" value={form.linkedin} onChange={updateField} className={fieldClass("linkedin")} autoComplete="url" />
                         </label>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend className="text-sm font-semibold">
+                            Are you passionate about media, storytelling, or digital outreach?
+                            <FieldHint>These skills help MLLWS document events, share community stories, and grow our digital presence.</FieldHint>
+                        </legend>
+                        <p className="mt-2 text-sm text-muted">
+                            We are looking for talented individuals to help grow our digital presence and document our journey.
+                        </p>
+                        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                            {mediaOptions.map((skill) => (
+                                <label key={skill} className="flex items-center gap-3 rounded-xl border border-border-muted p-4 text-sm">
+                                    <input
+                                        type="checkbox"
+                                        checked={form.mediaSkills.includes(skill)}
+                                        onChange={() => toggleMediaSkill(skill)}
+                                        className="h-4 w-4 accent-brand"
+                                    />
+                                    <span>{skill}</span>
+                                </label>
+                            ))}
+                            <label className="flex items-center gap-3 rounded-xl border border-border-muted p-4 text-sm sm:col-span-2">
+                                <input
+                                    type="checkbox"
+                                    checked={form.mediaSkills.includes("Other")}
+                                    onChange={() => toggleMediaSkill("Other")}
+                                    className="h-4 w-4 accent-brand"
+                                />
+                                <span>Other:</span>
+                                <input
+                                    name="mediaOther"
+                                    value={form.mediaOther}
+                                    onChange={updateField}
+                                    className="min-w-0 flex-1 border-0 border-b border-dashed border-muted bg-transparent px-1 py-1 text-sm outline-none focus:border-brand"
+                                    aria-label="Other media or digital outreach skill"
+                                />
+                            </label>
+                        </div>
                     </fieldset>
 
                     <button type="submit" className="rounded-full bg-foreground px-7 py-3.5 font-bold text-white transition hover:scale-105">

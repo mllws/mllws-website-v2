@@ -1,45 +1,34 @@
 "use client";
 
 import { useState } from "react";
-import LanguageHover from "@/components/LanguageHover";
+import Script from "next/script";
 
 export default function NewsletterForm() {
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
+  const [showFallback, setShowFallback] = useState(false);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (email) setSubscribed(true);
-  }
-
-  if (subscribed) {
-    return (
-      <div className="flex items-center gap-2.5 text-[15px] font-bold text-white">
-        ✓ You&apos;re subscribed — welcome!
-      </div>
-    );
+  function handleEmbedError() {
+    setShowFallback(true);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-wrap gap-3">
-      <label htmlFor="newsletter-email" className="sr-only">
-        Email address
-      </label>
-      <input
-        id="newsletter-email"
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="you@email.com"
-        className="min-w-[260px] rounded-full border-0 bg-white/15 px-5 py-3.5 text-[15px] text-white placeholder:text-white/75"
+    <div className="w-full max-w-[560px] overflow-hidden rounded-2xl bg-white text-foreground">
+      {!showFallback && (
+        <div data-zeffy-embed data-form-url="/en-CA/embed/newsletter-form/sign-up-for-our-newsletter-4295" />
+      )}
+      {showFallback && (
+        <div className="relative h-[280px] w-full overflow-hidden">
+          <iframe
+            title="Signup form powered by Zeffy"
+            className="absolute inset-0 h-full w-full border-0"
+            src="https://www.zeffy.com/en-CA/embed/newsletter-form/sign-up-for-our-newsletter-4295"
+            allowTransparency="true"
+          />
+        </div>
+      )}
+      <Script
+        src="https://www.zeffy.com/embed/v2/zeffy-embed.js"
+        onError={handleEmbedError}
       />
-      <LanguageHover
-        type="submit"
-        className="cursor-pointer rounded-full border-0 bg-white px-[26px] py-3.5 text-[15px] font-bold text-brand transition hover:scale-105"
-      >
-        Subscribe
-      </LanguageHover>
-    </form>
+    </div>
   );
 }

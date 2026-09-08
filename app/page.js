@@ -297,7 +297,7 @@ export default async function Home() {
               </p>
               <InvolvedCta
                 kind="donate"
-                href="/membership"
+                href="/donate"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-accent no-underline hover:text-accent"
               >
                 Give Today

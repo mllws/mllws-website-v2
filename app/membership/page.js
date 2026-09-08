@@ -1,5 +1,5 @@
 import Image from "next/image";
-import InvolvedCta, { MembershipSoonNote } from "@/components/InvolvedCta";
+import InvolvedCta from "@/components/InvolvedCta";
 import { membershipTiers } from "@/lib/data";
 
 export const metadata = {
@@ -77,7 +77,9 @@ export default function MembershipPage() {
             </div>
           ))}
         </div>
-        <MembershipSoonNote />
+        <p className="mt-6 text-center text-sm text-muted">
+          Membership payments are securely processed by Zeffy.
+        </p>
       </section>
 
       <section id="donate" aria-labelledby="donate-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
@@ -108,6 +110,7 @@ export default function MembershipPage() {
             </div>
             <InvolvedCta
               kind="donate"
+              href="/donate"
               className="inline-block rounded-full bg-foreground px-7 py-3.5 font-bold text-white no-underline transition hover:scale-105 hover:text-white"
             >
               Donate Now
@@ -133,7 +136,7 @@ export default function MembershipPage() {
         <div className="flex flex-wrap items-center justify-between gap-8 rounded-[28px] bg-green p-8 sm:p-13">
           <div className="max-w-[520px]">
             <h2 id="volunteer-heading" className="font-display mb-3 text-[26px] font-extrabold text-white">
-              Volunteer with us
+              Volunteer with MLLWS
             </h2>
             <p className="text-[15px] leading-relaxed text-[#CBE9D9]">
               Run a booth, translate, mentor youth, or help set up the festival. No experience

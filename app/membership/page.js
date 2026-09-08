@@ -145,7 +145,7 @@ export default function MembershipPage() {
           </div>
           <InvolvedCta
             kind="volunteer"
-            href="/membership"
+            href="/membership/apply"
             className="shrink-0 rounded-full bg-white px-7 py-3.5 font-bold text-green no-underline transition hover:scale-105 hover:text-green"
           >
             Sign up to Volunteer

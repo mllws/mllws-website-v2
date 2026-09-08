@@ -90,13 +90,13 @@ export default function HeroCarousel() {
               href="/events"
               className="rounded-full bg-white px-[30px] py-4 text-base font-bold !text-foreground no-underline transition hover:scale-105 hover:!text-foreground"
             >
-              Explore events
+              Explore Events
             </LanguageHover>
             <LanguageHover
               href="/membership"
               className="rounded-full border-2 border-white/50 bg-transparent px-[30px] py-4 text-base font-bold !text-white no-underline transition hover:bg-white/12 hover:!text-white"
             >
-              Join us
+              Join MLLWS
             </LanguageHover>
           </div>
         </div>
@@ -111,9 +111,8 @@ export default function HeroCarousel() {
             aria-selected={i === index}
             aria-label={`Go to slide ${i + 1} of ${heroSlides.length}`}
             onClick={() => goTo(i)}
-            className={`h-2 rounded-full border-0 p-0 transition-all ${
-              i === index ? "w-[22px] bg-white" : "w-2 bg-white/40 hover:bg-white/70"
-            }`}
+            className={`h-2 rounded-full border-0 p-0 transition-all ${i === index ? "w-[22px] bg-white" : "w-2 bg-white/40 hover:bg-white/70"
+              }`}
           />
         ))}
       </div>

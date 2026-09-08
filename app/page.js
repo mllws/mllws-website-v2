@@ -284,6 +284,7 @@ export default async function Home() {
               </p>
               <InvolvedCta
                 kind="member"
+                href="/membership"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-brand no-underline hover:text-brand"
               >
                 Join Today
@@ -296,6 +297,7 @@ export default async function Home() {
               </p>
               <InvolvedCta
                 kind="donate"
+                href="/membership"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-accent no-underline hover:text-accent"
               >
                 Give Today
@@ -308,6 +310,7 @@ export default async function Home() {
               </p>
               <InvolvedCta
                 kind="volunteer"
+                href="/membership"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-green no-underline hover:text-green"
               >
                 Sign Up

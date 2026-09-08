@@ -10,12 +10,12 @@ const HREF_KEY = {
   volunteer: "volunteerHref",
 };
 
-export default function InvolvedCta({ kind, className, children }) {
+export default function InvolvedCta({ kind, href, className, children }) {
   const flags = useFeatureFlags();
-  const href = flags[HREF_KEY[kind]] || "/contact";
+  const destination = href || flags[HREF_KEY[kind]] || "/contact";
 
   return (
-    <LanguageHover href={href} className={className}>
+    <LanguageHover href={destination} className={className}>
       {children}
     </LanguageHover>
   );

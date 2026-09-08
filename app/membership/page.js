@@ -32,8 +32,8 @@ export default function MembershipPage() {
             <div
               key={tier.name}
               className={`relative flex h-full flex-col rounded-3xl p-9 ${tier.featured
-                  ? "bg-brand text-white"
-                  : "border border-border-muted bg-white text-foreground"
+                ? "bg-brand text-white"
+                : "border border-border-muted bg-white text-foreground"
                 }`}
             >
               {tier.featured && (
@@ -66,10 +66,9 @@ export default function MembershipPage() {
               </ul>
               <InvolvedCta
                 kind="member"
-                className={`block rounded-full py-3 text-center text-sm font-bold no-underline transition hover:scale-[1.03] ${
-                  tier.featured
-                    ? "bg-white text-brand hover:text-brand"
-                    : "bg-foreground text-white hover:text-white"
+                className={`block rounded-full py-3 text-center text-sm font-bold no-underline transition hover:scale-[1.03] ${tier.featured
+                  ? "bg-white text-brand hover:text-brand"
+                  : "bg-foreground text-white hover:text-white"
                   }`}
               >
                 {tier.cta}
@@ -98,8 +97,8 @@ export default function MembershipPage() {
                 <span
                   key={amount}
                   className={`rounded-full px-[22px] py-3 text-[15px] font-bold ${i === 2
-                      ? "bg-accent text-white"
-                      : "border border-foreground/12 bg-background text-foreground"
+                    ? "bg-accent text-white"
+                    : "border border-foreground/12 bg-background text-foreground"
                     }`}
                 >
                   {amount}
@@ -142,9 +141,10 @@ export default function MembershipPage() {
           </div>
           <InvolvedCta
             kind="volunteer"
+            href="/membership"
             className="shrink-0 rounded-full bg-white px-7 py-3.5 font-bold text-green no-underline transition hover:scale-105 hover:text-green"
           >
-            Sign up to volunteer
+            Sign up to Volunteer
           </InvolvedCta>
         </div>
       </section>

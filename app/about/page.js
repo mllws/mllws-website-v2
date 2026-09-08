@@ -9,7 +9,7 @@ export const metadata = {
     "Mother Language Lovers of the World Society's mission is to fortify and strengthen the love for one's own mother language and respect for other languages, raise awareness among all people about the importance of mother language in social and cultural development, and protect minority languages, including Braille and Sign Language.",
 };
 
-const IMG = "https://www.motherlanguagelovers.com";
+const IMG = "";
 const boardPreview = directors.slice(0, 4);
 
 export default function AboutPage() {
@@ -28,8 +28,8 @@ export default function AboutPage() {
       <section className="mx-auto max-w-[1000px] px-6 pb-16 sm:px-12 sm:pb-22">
         <div className="relative h-[320px] overflow-hidden rounded-[28px] sm:h-[420px]">
           <Image
-            src={`${IMG}/Content/Pictures/mllws2.jpg`}
-            alt="MLLWS community gathering"
+            src={`${IMG}/banners/mllws2.jpg`}
+            alt="MLLWS Community Gathering"
             fill
             className="object-cover"
             sizes="(max-width: 1000px) 100vw, 1000px"
@@ -68,9 +68,8 @@ export default function AboutPage() {
           {aboutMilestones.map((m, i) => (
             <div
               key={m.year}
-              className={`grid grid-cols-[100px_1fr] gap-6 py-5 ${
-                i < aboutMilestones.length - 1 ? "border-b border-border-muted" : ""
-              }`}
+              className={`grid grid-cols-[100px_1fr] gap-6 py-5 ${i < aboutMilestones.length - 1 ? "border-b border-border-muted" : ""
+                }`}
             >
               <div className={`font-display text-xl font-extrabold ${m.color}`}>{m.year}</div>
               <div className="text-[15px] leading-relaxed text-[#4a4438]">{m.text}</div>

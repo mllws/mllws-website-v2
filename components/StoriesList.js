@@ -9,9 +9,9 @@ export default function StoriesList({ stories, filters, featured }) {
   const [filter, setFilter] = useState("all");
   const filtered = useMemo(
     () =>
-      (filter === "all"
-        ? stories.filter((s) => !s.featured)
-        : stories.filter((s) => s.category === filter && !s.featured)),
+    (filter === "all"
+      ? stories.filter((s) => !s.featured)
+      : stories.filter((s) => s.category === filter && !s.featured)),
     [filter, stories]
   );
 
@@ -53,7 +53,7 @@ export default function StoriesList({ stories, filters, featured }) {
               </h2>
               <p className="mb-5 text-[15px] leading-relaxed text-[#4a4438]">{featured.excerpt}</p>
               <Link href={`/stories/${featured.slug}`} className="text-sm font-bold no-underline">
-                Read the story →
+                Read the Story →
               </Link>
             </div>
           </div>

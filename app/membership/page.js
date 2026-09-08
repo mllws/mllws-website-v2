@@ -118,7 +118,7 @@ export default function MembershipPage() {
           </div>
           <div className="relative min-h-[280px]">
             <Image
-              src={`${IMG}/Content/Pictures/mllws2.jpg`}
+              src={`${IMG}/banners/mllws2.jpg`}
               alt="Community celebration at an MLLWS festival"
               fill
               className="object-cover"

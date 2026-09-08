@@ -51,7 +51,7 @@ export default function ContactPage() {
       <PageBanner title="Contact us" crumb="Contact" eyebrow="Reach Us" />
 
       <section className="mx-auto max-w-3xl px-6 py-14 sm:px-12">
-        <h2 className="font-display text-2xl font-extrabold text-foreground">Contact information</h2>
+        <h2 className="font-display text-2xl font-extrabold text-foreground">Contact Information</h2>
         <p className="mt-3 max-w-2xl text-lg text-muted">
           Reach out about membership, volunteering, partnerships, or International Mother Language
           Day.

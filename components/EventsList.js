@@ -8,11 +8,21 @@ import LanguageHover from "@/components/LanguageHover";
 
 export default function EventsList({ events, filters, featured }) {
   const [filter, setFilter] = useState("all");
+  const cityEventLinkVisible = featured?.cityHref && (!featured.date || (() => {
+    const eventDate = new Date(featured.date);
+    const today = new Date();
+
+    if (Number.isNaN(eventDate.getTime())) return true;
+
+    eventDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    return eventDate >= today;
+  })());
   const filtered = useMemo(
     () =>
-      (filter === "all"
-        ? events.filter((e) => !e.featured)
-        : events.filter((e) => e.category === filter && !e.featured)),
+    (filter === "all"
+      ? events.filter((e) => !e.featured)
+      : events.filter((e) => e.category === filter && !e.featured)),
     [filter, events]
   );
 
@@ -54,14 +64,14 @@ export default function EventsList({ events, filters, featured }) {
                 {featured.location && <span>{featured.location}</span>}
               </div>
               <div className="flex flex-wrap gap-3">
-                {featured.cityHref && (
+                {cityEventLinkVisible && (
                   <LanguageHover
                     href={featured.cityHref}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-block rounded-full bg-accent px-6 py-3.5 text-sm font-bold text-white no-underline transition hover:scale-105 hover:text-white"
                   >
-                    City of Surrey event
+                    City of Surrey Event
                   </LanguageHover>
                 )}
                 {featured.facebookHref && (
@@ -71,7 +81,7 @@ export default function EventsList({ events, filters, featured }) {
                     rel="noreferrer"
                     className="inline-block rounded-full border border-foreground/15 px-6 py-3.5 text-sm font-bold text-foreground no-underline transition hover:border-accent hover:text-accent"
                   >
-                    Facebook event
+                    Facebook Event
                   </LanguageHover>
                 )}
               </div>
@@ -81,7 +91,7 @@ export default function EventsList({ events, filters, featured }) {
       )}
 
       <section className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
-        <h2 className="font-display mb-7 text-[26px] font-extrabold">More from our calendar</h2>
+        <h2 className="font-display mb-7 text-[26px] font-extrabold">More from our Calendar</h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((ev) => (
             <Link

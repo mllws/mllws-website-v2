@@ -143,7 +143,7 @@ export default async function Home() {
 
       <section aria-labelledby="voices-heading" className="mx-auto max-w-[1200px] px-6 py-16 sm:px-12 sm:py-22">
         <h2 id="voices-heading" className="font-display mb-9 text-[32px] font-extrabold">
-          Voices from our Community
+          Voices from our Communities
         </h2>
         <div className="grid gap-6 md:grid-cols-3">
           {communityQuotes.map((q) => (

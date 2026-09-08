@@ -66,6 +66,7 @@ export default function MembershipPage() {
               </ul>
               <InvolvedCta
                 kind="member"
+                href="/membership/apply"
                 className={`block rounded-full py-3 text-center text-sm font-bold no-underline transition hover:scale-[1.03] ${tier.featured
                   ? "bg-white text-brand hover:text-brand"
                   : "bg-foreground text-white hover:text-white"
@@ -109,7 +110,7 @@ export default function MembershipPage() {
               kind="donate"
               className="inline-block rounded-full bg-foreground px-7 py-3.5 font-bold text-white no-underline transition hover:scale-105 hover:text-white"
             >
-              Donate now
+              Donate Now
             </InvolvedCta>
           </div>
           <div className="relative min-h-[280px]">

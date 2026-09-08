@@ -49,6 +49,13 @@ const initialForm = {
     mediaOther: "",
 };
 
+function formatPhoneNumber(value) {
+    const digits = value.replace(/\D/g, "").slice(0, 10);
+    if (digits.length <= 3) return digits;
+    if (digits.length <= 6) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+    return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+}
+
 function FieldHint({ children }) {
     return (
         <span className="group relative ml-1 inline-flex align-middle">
@@ -82,7 +89,8 @@ export default function MembershipForm() {
 
     function updateField(event) {
         const { name, value } = event.target;
-        setForm((current) => ({ ...current, [name]: value }));
+        const nextValue = name === "phone" ? formatPhoneNumber(value) : value;
+        setForm((current) => ({ ...current, [name]: nextValue }));
         setErrors((current) => ({ ...current, [name]: "" }));
         setSubmitted(false);
     }
@@ -151,7 +159,12 @@ export default function MembershipForm() {
 
         if (Object.keys(nextErrors).length === 0) {
             setSubmitted(true);
+            return;
         }
+
+        const firstErrorField = document.querySelector(`[name="${Object.keys(nextErrors)[0]}"]`);
+        firstErrorField?.scrollIntoView({ behavior: "smooth", block: "center" });
+        firstErrorField?.focus({ preventScroll: true });
     }
 
     const fieldClass = (name) =>
@@ -205,7 +218,7 @@ export default function MembershipForm() {
                         <label className="text-sm font-semibold">
                             Phone Number <span className="text-accent">*</span>
                             <FieldHint>We may use your phone number to contact you about your membership application or MLLWS activities.</FieldHint>
-                            <input type="tel" name="phone" value={form.phone} onChange={updateField} className={fieldClass("phone")} autoComplete="tel" placeholder="604-555-0123" aria-invalid={Boolean(errors.phone)} aria-describedby="phone-error" />
+                            <input type="tel" name="phone" value={form.phone} onChange={updateField} className={fieldClass("phone")} autoComplete="tel" placeholder="604-555-0123" maxLength={12} inputMode="numeric" aria-invalid={Boolean(errors.phone)} aria-describedby="phone-error" />
                             <FieldMessage id="phone-error" message={errors.phone} />
                         </label>
                         <label className="text-sm font-semibold">

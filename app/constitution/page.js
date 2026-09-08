@@ -11,7 +11,7 @@ export default function ConstitutionPage() {
     <div>
       <PageBanner title="Constitution and By-Laws" crumb="Constitution & By-Laws" eyebrow="Governance" />
 
-      <section className="mx-auto max-w-3xl px-6 py-14 sm:px-12">
+      <section className="mx-auto max-w-6xl px-6 py-14 sm:px-12">
         <div className="rounded-[22px] border border-border-muted bg-white p-6 sm:p-8">
           <p className="text-sm font-semibold uppercase tracking-widest text-accent">
             Mother Language Lovers of the World Society

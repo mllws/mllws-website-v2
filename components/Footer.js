@@ -2,8 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { sponsors, contactInfo, siteLogo, secondaryNav } from "@/lib/data";
 
-const PRIMARY_SOCIAL = ["Facebook", "X", "Instagram"];
-
 function SocialIcon({ label }) {
   const common = {
     width: 18,
@@ -36,12 +34,26 @@ function SocialIcon({ label }) {
       </svg>
     );
   }
+  if (label === "LinkedIn") {
+    return (
+      <svg {...common}>
+        <path d="M5.2 8.2H2V21h3.2V8.2zM3.6 3A1.9 1.9 0 1 0 3.6 6.8 1.9 1.9 0 0 0 3.6 3zM8.8 8.2H12v1.75h.05c.45-.85 1.55-2.15 3.95-2.15 4.22 0 5 2.78 5 6.4V21h-3.2v-6.05c0-1.44-.03-3.3-2.02-3.3-2.02 0-2.33 1.58-2.33 3.2V21H8.8V8.2z" />
+      </svg>
+    );
+  }
+  if (label === "YouTube") {
+    return (
+      <svg {...common}>
+        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.55 3.6 12 3.6 12 3.6s-7.55 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.85.5 9.4.5 9.4.5s7.55 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
+      </svg>
+    );
+  }
   return null;
 }
 
 export default function Footer() {
   const year = new Date().getFullYear();
-  const socialLinks = contactInfo.social.filter((s) => PRIMARY_SOCIAL.includes(s.label));
+  const socialLinks = contactInfo.social;
 
   return (
     <footer className="relative overflow-hidden bg-background px-6 pb-8 pt-14 text-foreground sm:px-12">
@@ -60,7 +72,7 @@ export default function Footer() {
 
       <div className="relative mx-auto mb-10 max-w-[1200px] text-center">
         <p className="font-display mb-7 text-xl font-extrabold text-foreground">
-          Our Language is our Identity
+          OUR LANGUAGE IS OUR IDENTITY
         </p>
         <ul className="flex flex-wrap items-center justify-center gap-7 opacity-85">
           {sponsors.map((s) => (
@@ -155,12 +167,12 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/membership#donate" className="inline-block text-muted no-underline transition hover:translate-x-1 hover:text-green-dark">
+              <Link href="/donate" className="inline-block text-muted no-underline transition hover:translate-x-1 hover:text-green-dark">
                 Donate
               </Link>
             </li>
             <li>
-              <Link href="/membership#volunteer" className="inline-block text-muted no-underline transition hover:translate-x-1 hover:text-green-dark">
+              <Link href="/membership" className="inline-block text-muted no-underline transition hover:translate-x-1 hover:text-green-dark">
                 Volunteer
               </Link>
             </li>

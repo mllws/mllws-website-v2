@@ -1,5 +1,5 @@
 import PageBanner from "@/components/PageBanner";
-import { recommendationLetters, gviewUrl } from "@/lib/data";
+import { recommendationLetters } from "@/lib/data";
 
 export const metadata = {
   title: "Recomendation",
@@ -31,7 +31,7 @@ export default function RecommendationPage() {
                 rel="noreferrer"
                 className="shrink-0 rounded-md border border-brand px-3 py-1.5 text-sm font-medium text-brand transition hover:bg-brand hover:text-white"
               >
-                Open PDF in new tab
+                Open PDF in New Tab
               </a>
             </div>
             {/* Embedded viewer is a visual convenience; the link above is
@@ -39,7 +39,7 @@ export default function RecommendationPage() {
                 the same document. */}
             <iframe
               title={letter.title}
-              src={gviewUrl(letter.pdf)}
+              src={letter.pdf}
               className="h-[500px] w-full"
             />
           </article>

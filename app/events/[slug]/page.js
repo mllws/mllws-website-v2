@@ -40,12 +40,12 @@ export default async function EventDetailPage({ params }) {
   if (!event) notFound();
   const gallery = (await getAllGalleries()).find((entry) => entry.event === event.slug);
 
-  const eventDate = new Date(event.date);
-  const today = new Date();
-  eventDate.setHours(0, 0, 0, 0);
-  today.setHours(0, 0, 0, 0);
+  const parsedEventDate = new Date(event.date);
+  const currentDate = new Date();
+  parsedEventDate.setHours(0, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0);
   const showCityEventLink =
-    event.cityHref && (Number.isNaN(eventDate.getTime()) || eventDate >= today);
+    event.cityHref && (Number.isNaN(parsedEventDate.getTime()) || parsedEventDate >= currentDate);
 
   return (
     <article className="mx-auto max-w-[800px] px-6 pt-16 pb-16 sm:px-12 sm:pt-20 sm:pb-22">

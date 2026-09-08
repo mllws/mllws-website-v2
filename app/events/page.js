@@ -45,7 +45,7 @@ export default async function EventsPage() {
             href="/contact"
             className="rounded-full bg-white px-7 py-3.5 font-bold text-brand no-underline transition hover:scale-105 hover:text-brand"
           >
-            Get in touch
+            Get in Touch
           </LanguageHover>
         </div>
       </section>

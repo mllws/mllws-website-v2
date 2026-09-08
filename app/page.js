@@ -165,7 +165,7 @@ export default async function Home() {
         <section aria-labelledby="stories-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
           <div className="mb-9 flex items-baseline justify-between gap-4">
             <h2 id="stories-heading" className="font-display text-[32px] font-extrabold">
-              Stories from our Community
+              Stories from our Communities
             </h2>
             <Link href="/stories" className="font-bold text-brand no-underline hover:text-accent">
               All Stories →

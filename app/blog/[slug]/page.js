@@ -41,7 +41,7 @@ export default async function BlogPostPage({ params }) {
     <article className="mx-auto max-w-[800px] px-6 pt-16 pb-16 sm:px-12 sm:pt-20 sm:pb-22">
       <p className="mb-6 text-sm">
         <Link href="/blog" className="font-bold no-underline">
-          ← All posts
+          ← All Posts
         </Link>
       </p>
       <header className="mb-10">

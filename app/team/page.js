@@ -23,8 +23,8 @@ export default function TeamPage() {
           Board of Directors
         </h2>
         <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
-          {directors.map((d) => (
-            <PersonCard key={d.name} {...d} />
+          {directors.map((person, index) => (
+            <PersonCard key={`${person.name}-${person.title}-${index}`} {...person} />
           ))}
         </div>
       </section>
@@ -55,7 +55,7 @@ export default function TeamPage() {
             <PersonCard key={d.name} {...d} />
           ))}
         </div>
-      </section>      
+      </section>
     </div>
   );
 }

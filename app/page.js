@@ -16,7 +16,7 @@ import { getFeaturedEvent } from "@/lib/events";
 import { getHomepageGalleryImages, getLatestGallery } from "@/lib/galleries";
 import { getAllStories, getFeaturedStory } from "@/lib/stories";
 
-export const dynamic = "force-static";
+export const revalidate = 3600;
 
 function ProgramIcon({ color }) {
   return (
@@ -35,17 +35,17 @@ export default async function Home() {
   const mdxEvent = await getFeaturedEvent();
   const upcomingEvent = mdxEvent
     ? {
-        badge: mdxEvent.tag || "Event",
-        title: mdxEvent.title,
-        description: mdxEvent.description || "",
-        date: mdxEvent.dateLocation || mdxEvent.date,
-        location: mdxEvent.location || "",
-        image: mdxEvent.coverImage || "",
-        imageAlt: mdxEvent.imageAlt || mdxEvent.title,
-        ctaHref: `/events/${mdxEvent.slug}`,
-        ctaLabel: "Event details",
-        mapHref: mdxEvent.mapHref,
-      }
+      badge: mdxEvent.tag || "Event",
+      title: mdxEvent.title,
+      description: mdxEvent.description || "",
+      date: mdxEvent.dateLocation || mdxEvent.date,
+      location: mdxEvent.location || "",
+      image: mdxEvent.coverImage || "",
+      imageAlt: mdxEvent.imageAlt || mdxEvent.title,
+      ctaHref: `/events/${mdxEvent.slug}`,
+      ctaLabel: "Event Details",
+      mapHref: mdxEvent.mapHref,
+    }
     : fallbackUpcomingEvent;
   const latestGallery = await getLatestGallery();
   const galleryImages = (await getHomepageGalleryImages()) || fallbackGalleryImages;
@@ -54,6 +54,11 @@ export default async function Home() {
   const moreStories = featuredStory
     ? (await getAllStories()).filter((story) => story.slug !== featuredStory.slug).slice(0, 2)
     : [];
+  const today = new Date();
+  const eventDate = new Date(mdxEvent?.date || "2026-08-09");
+  const eventArchiveDate = new Date("2026-12-31T23:59:59");
+  const showFeaturedEvent = today <= eventArchiveDate;
+  const eventHeading = today > eventDate ? "Recent" : "Upcoming";
 
   return (
     <div>
@@ -66,50 +71,52 @@ export default async function Home() {
         </div>
       </section>
 
-      <section aria-labelledby="upcoming-heading" className="mx-auto max-w-[1200px] px-6 py-16 sm:px-12 sm:py-22">
-        <div className="mb-9 flex items-baseline justify-between gap-4">
-          <h2 id="upcoming-heading" className="font-display text-[32px] font-extrabold">
-            Up Next
-          </h2>
-          <Link href="/events" className="font-bold text-brand no-underline hover:text-accent">
-            All Events →
-          </Link>
-        </div>
-        <div className="grid items-stretch overflow-hidden rounded-[28px] border border-border-muted bg-white md:grid-cols-2">
-          <div className="relative min-h-[280px] md:min-h-[340px] bg-surface-muted">
-            {upcomingEvent.image ? (
-              <Image
-                src={upcomingEvent.image}
-                alt={upcomingEvent.imageAlt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            ) : null}
+      {showFeaturedEvent && (
+        <section aria-labelledby="upcoming-heading" className="mx-auto max-w-[1200px] px-6 py-16 sm:px-12 sm:py-22">
+          <div className="mb-9 flex items-baseline justify-between gap-4">
+            <h2 id="upcoming-heading" className="font-display text-[32px] font-extrabold">
+              {eventHeading} <strong>Event</strong>
+            </h2>
+            <Link href="/events" className="font-bold text-brand no-underline hover:text-accent">
+              All Events →
+            </Link>
           </div>
-          <div className="p-8 sm:p-12">
-            <span className="mb-[18px] inline-block rounded-full bg-[#EAF3EC] px-3.5 py-1.5 text-[13px] font-bold text-green-dark">
-              {upcomingEvent.badge}
-            </span>
-            <h3 className="font-display mb-3.5 text-[28px] font-extrabold">{upcomingEvent.title}</h3>
-            <p className="mb-[22px] leading-relaxed text-[#4a4438]">{upcomingEvent.description}</p>
-            <div className="mb-7 flex flex-col gap-2.5 text-[15px] font-semibold text-foreground">
-              <span>{upcomingEvent.date}</span>
-              <span>
-                <a href={upcomingEvent.mapHref} target="_blank" rel="noreferrer" className="text-foreground no-underline hover:text-accent">
-                  {upcomingEvent.location}
-                </a>
-              </span>
+          <div className="grid items-stretch overflow-hidden rounded-[28px] border border-border-muted bg-white md:grid-cols-2">
+            <div className="relative min-h-[280px] md:min-h-[340px] bg-surface-muted">
+              {upcomingEvent.image ? (
+                <Image
+                  src={upcomingEvent.image}
+                  alt={upcomingEvent.imageAlt}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : null}
             </div>
-            <LanguageHover
-              href={upcomingEvent.ctaHref}
-              className="inline-block rounded-full bg-accent px-[26px] py-3.5 font-bold text-white no-underline transition hover:scale-105 hover:text-white"
-            >
-              {upcomingEvent.ctaLabel}
-            </LanguageHover>
+            <div className="p-8 sm:p-12">
+              <span className="mb-[18px] inline-block rounded-full bg-[#EAF3EC] px-3.5 py-1.5 text-[13px] font-bold text-green-dark">
+                {upcomingEvent.badge}
+              </span>
+              <h3 className="font-display mb-3.5 text-[28px] font-extrabold">{upcomingEvent.title}</h3>
+              <p className="mb-[22px] leading-relaxed text-[#4a4438]">{upcomingEvent.description}</p>
+              <div className="mb-7 flex flex-col gap-2.5 text-[15px] font-semibold text-foreground">
+                <span>{upcomingEvent.date}</span>
+                <span>
+                  <a href={upcomingEvent.mapHref} target="_blank" rel="noreferrer" className="text-foreground no-underline hover:text-accent">
+                    {upcomingEvent.location}
+                  </a>
+                </span>
+              </div>
+              <LanguageHover
+                href={upcomingEvent.ctaHref}
+                className="inline-block rounded-full bg-accent px-[26px] py-3.5 font-bold text-white no-underline transition hover:scale-105 hover:text-white"
+              >
+                {upcomingEvent.ctaLabel}
+              </LanguageHover>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section aria-labelledby="programs-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
         <h2 id="programs-heading" className="font-display mb-2 text-[32px] font-extrabold">
@@ -246,9 +253,8 @@ export default async function Home() {
             <Link
               key={img.src + img.alt}
               href={galleryHref}
-              className={`relative overflow-hidden rounded-[18px] ${
-                img.span ? "col-span-2 row-span-2" : ""
-              }`}
+              className={`relative overflow-hidden rounded-[18px] ${img.span ? "col-span-2 row-span-2" : ""
+                }`}
             >
               <Image
                 src={img.src}

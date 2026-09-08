@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import CmsHtml from "@/components/CmsHtml";
 import { getAllEvents, getEventBySlug } from "@/lib/events";
 
-export const dynamic = "force-static";
+export const revalidate = 3600;
 
 function formatEventDate(iso) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -37,6 +37,13 @@ export default async function EventDetailPage({ params }) {
   const { slug } = await params;
   const event = await getEventBySlug(slug);
   if (!event) notFound();
+
+  const eventDate = new Date(event.date);
+  const today = new Date();
+  eventDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+  const showCityEventLink =
+    event.cityHref && (Number.isNaN(eventDate.getTime()) || eventDate >= today);
 
   return (
     <article className="mx-auto max-w-[800px] px-6 pt-16 pb-16 sm:px-12 sm:pt-20 sm:pb-22">
@@ -79,7 +86,7 @@ export default async function EventDetailPage({ params }) {
         )}
 
         <div className="mt-6 flex flex-wrap gap-3">
-          {event.cityHref && (
+          {showCityEventLink && (
             <a
               href={event.cityHref}
               target="_blank"
@@ -96,7 +103,7 @@ export default async function EventDetailPage({ params }) {
               rel="noreferrer"
               className="inline-block rounded-full border border-foreground/15 px-6 py-3 text-sm font-bold text-foreground no-underline transition hover:border-accent hover:text-accent"
             >
-              Facebook event
+              Facebook Event
             </a>
           )}
           {event.mapHref && (
@@ -106,7 +113,7 @@ export default async function EventDetailPage({ params }) {
               rel="noreferrer"
               className="inline-block rounded-full border border-foreground/15 px-6 py-3 text-sm font-bold text-foreground no-underline transition hover:border-accent hover:text-accent"
             >
-              View on map
+              View on Map
             </a>
           )}
         </div>

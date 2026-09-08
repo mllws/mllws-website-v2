@@ -21,6 +21,8 @@ import {
 } from "@/flags";
 import { getInvolvedUrls } from "@/lib/get-involved-href";
 import { organizationSchema } from "@/lib/data";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -156,6 +158,8 @@ export default async function RootLayout({ children }) {
           </main>
           <Footer />
         </FeatureFlagsProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -1,11 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import CmsHtml from "@/components/CmsHtml";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 
-function includeDrafts() {
-  return process.env.NODE_ENV !== "production";
-}
+export const dynamic = "force-static";
 
 function formatPostDate(iso) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -16,15 +14,15 @@ function formatPostDate(iso) {
   }).format(new Date(`${iso}T00:00:00Z`));
 }
 
-export function generateStaticParams() {
-  return getAllPosts({ includeDrafts: includeDrafts() }).map((post) => ({
+export async function generateStaticParams() {
+  return (await getAllPosts()).map((post) => ({
     slug: post.slug,
   }));
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug, { includeDrafts: includeDrafts() });
+  const post = await getPostBySlug(slug);
   if (!post) {
     return { title: "Post not found" };
   }
@@ -36,7 +34,7 @@ export async function generateMetadata({ params }) {
 
 export default async function BlogPostPage({ params }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug, { includeDrafts: includeDrafts() });
+  const post = await getPostBySlug(slug);
   if (!post) notFound();
 
   return (
@@ -47,11 +45,6 @@ export default async function BlogPostPage({ params }) {
         </Link>
       </p>
       <header className="mb-10">
-        {post.draft && (
-          <span className="mb-4 inline-block rounded-full bg-[#F7E4D3] px-3 py-1 text-xs font-bold text-accent-dark">
-            Draft
-          </span>
-        )}
         <h1 className="font-display mb-4 text-[36px] font-extrabold tracking-tight sm:text-[42px]">
           {post.title}
         </h1>
@@ -73,9 +66,7 @@ export default async function BlogPostPage({ params }) {
           </ul>
         )}
       </header>
-      <div className="prose-content">
-        <MDXRemote source={post.content} />
-      </div>
+      <CmsHtml html={post.content} />
     </article>
   );
 }

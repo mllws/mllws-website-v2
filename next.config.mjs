@@ -1,11 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["next-mdx-remote"],
   images: {
     remotePatterns: [
       {
         protocol: "https",
         hostname: "www.motherlanguagelovers.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
       },
       {
         protocol: "https",

@@ -60,7 +60,7 @@ export default function Footer() {
 
       <div className="relative mx-auto mb-10 max-w-[1200px] text-center">
         <p className="font-display mb-7 text-xl font-extrabold text-foreground">
-          Our language is our identity
+          Our Language is our Identity
         </p>
         <ul className="flex flex-wrap items-center justify-center gap-7 opacity-85">
           {sponsors.map((s) => (
@@ -133,7 +133,7 @@ export default function Footer() {
             </li>
             <li>
               <Link href="/about" className="inline-block text-muted no-underline transition hover:translate-x-1 hover:text-accent-dark">
-                Our Story
+                About Us
               </Link>
             </li>
             {secondaryNav.map((link) => (
@@ -160,7 +160,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="inline-block text-muted no-underline transition hover:translate-x-1 hover:text-green-dark">
+              <Link href="/membership#volunteer" className="inline-block text-muted no-underline transition hover:translate-x-1 hover:text-green-dark">
                 Volunteer
               </Link>
             </li>

@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
 
-function includeDrafts() {
-  return process.env.NODE_ENV !== "production";
-}
+export const dynamic = "force-static";
 
 function formatPostDate(iso) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -14,8 +12,8 @@ function formatPostDate(iso) {
   }).format(new Date(`${iso}T00:00:00Z`));
 }
 
-export default function BlogPage() {
-  const posts = getAllPosts({ includeDrafts: includeDrafts() });
+export default async function BlogPage() {
+  const posts = await getAllPosts();
 
   return (
     <div>
@@ -42,11 +40,6 @@ export default function BlogPage() {
                     <time dateTime={post.date}>{formatPostDate(post.date)}</time>
                     <span aria-hidden="true">·</span>
                     <span>{post.author}</span>
-                    {post.draft && (
-                      <span className="rounded-full bg-[#F7E4D3] px-2.5 py-0.5 text-xs font-bold text-accent-dark">
-                        Draft
-                      </span>
-                    )}
                   </div>
                   <h2 className="font-display mb-2 text-[22px] font-extrabold">
                     <Link href={`/blog/${post.slug}`} className="text-foreground no-underline hover:text-accent">
@@ -67,7 +60,7 @@ export default function BlogPage() {
                     </ul>
                   )}
                   <Link href={`/blog/${post.slug}`} className="text-sm font-bold no-underline">
-                    Read post →
+                    Read Post →
                   </Link>
                 </article>
               </li>

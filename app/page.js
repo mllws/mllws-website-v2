@@ -3,6 +3,7 @@ import Link from "next/link";
 import HeroCarousel from "@/components/HeroCarousel";
 import LanguageListen from "@/components/LanguageListen";
 import LanguageHover from "@/components/LanguageHover";
+import InvolvedCta from "@/components/InvolvedCta";
 import NewsletterForm from "@/components/NewsletterForm";
 import {
   greetingRibbon,
@@ -14,6 +15,8 @@ import {
 import { getFeaturedEvent } from "@/lib/events";
 import { getHomepageGalleryImages, getLatestGallery } from "@/lib/galleries";
 import { getAllStories, getFeaturedStory } from "@/lib/stories";
+
+export const dynamic = "force-static";
 
 function ProgramIcon({ color }) {
   return (
@@ -28,8 +31,8 @@ function ProgramIcon({ color }) {
   );
 }
 
-export default function Home() {
-  const mdxEvent = getFeaturedEvent();
+export default async function Home() {
+  const mdxEvent = await getFeaturedEvent();
   const upcomingEvent = mdxEvent
     ? {
         badge: mdxEvent.tag || "Event",
@@ -44,12 +47,12 @@ export default function Home() {
         mapHref: mdxEvent.mapHref,
       }
     : fallbackUpcomingEvent;
-  const latestGallery = getLatestGallery();
-  const galleryImages = getHomepageGalleryImages() || fallbackGalleryImages;
+  const latestGallery = await getLatestGallery();
+  const galleryImages = (await getHomepageGalleryImages()) || fallbackGalleryImages;
   const galleryHref = latestGallery ? `/gallery/${latestGallery.slug}` : "/gallery";
-  const featuredStory = getFeaturedStory();
+  const featuredStory = await getFeaturedStory();
   const moreStories = featuredStory
-    ? getAllStories().filter((story) => story.slug !== featuredStory.slug).slice(0, 2)
+    ? (await getAllStories()).filter((story) => story.slug !== featuredStory.slug).slice(0, 2)
     : [];
 
   return (
@@ -66,10 +69,10 @@ export default function Home() {
       <section aria-labelledby="upcoming-heading" className="mx-auto max-w-[1200px] px-6 py-16 sm:px-12 sm:py-22">
         <div className="mb-9 flex items-baseline justify-between gap-4">
           <h2 id="upcoming-heading" className="font-display text-[32px] font-extrabold">
-            Up next
+            Up Next
           </h2>
           <Link href="/events" className="font-bold text-brand no-underline hover:text-accent">
-            All events →
+            All Events →
           </Link>
         </div>
         <div className="grid items-stretch overflow-hidden rounded-[28px] border border-border-muted bg-white md:grid-cols-2">
@@ -110,7 +113,7 @@ export default function Home() {
 
       <section aria-labelledby="programs-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
         <h2 id="programs-heading" className="font-display mb-2 text-[32px] font-extrabold">
-          What we run, year-round
+          What we run, year round
         </h2>
         <p className="mb-9 text-[17px] text-muted">Not just one day in February — community, all year.</p>
         <div className="grid gap-6 md:grid-cols-3">
@@ -133,7 +136,7 @@ export default function Home() {
 
       <section aria-labelledby="voices-heading" className="mx-auto max-w-[1200px] px-6 py-16 sm:px-12 sm:py-22">
         <h2 id="voices-heading" className="font-display mb-9 text-[32px] font-extrabold">
-          Voices from our community
+          Voices from our Community
         </h2>
         <div className="grid gap-6 md:grid-cols-3">
           {communityQuotes.map((q) => (
@@ -155,10 +158,10 @@ export default function Home() {
         <section aria-labelledby="stories-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
           <div className="mb-9 flex items-baseline justify-between gap-4">
             <h2 id="stories-heading" className="font-display text-[32px] font-extrabold">
-              Stories from our community
+              Stories from our Community
             </h2>
             <Link href="/stories" className="font-bold text-brand no-underline hover:text-accent">
-              All stories →
+              All Stories →
             </Link>
           </div>
           <div className="grid items-stretch overflow-hidden rounded-[28px] border border-border-muted bg-white md:grid-cols-2">
@@ -190,7 +193,7 @@ export default function Home() {
               </h3>
               <p className="mb-5 text-[15px] leading-relaxed text-[#4a4438]">{featuredStory.excerpt}</p>
               <Link href={`/stories/${featuredStory.slug}`} className="text-sm font-bold no-underline">
-                Read the story →
+                Read the Story →
               </Link>
             </div>
           </div>
@@ -232,10 +235,10 @@ export default function Home() {
       <section aria-labelledby="gallery-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
         <div className="mb-9 flex items-baseline justify-between gap-4">
           <h2 id="gallery-heading" className="font-display text-[32px] font-extrabold">
-            Moments from our events
+            Moments from our Events
           </h2>
           <Link href={galleryHref} className="font-bold text-brand no-underline hover:text-accent">
-            All photos →
+            All Photos →
           </Link>
         </div>
         <div className="grid auto-rows-[160px] grid-cols-2 gap-4 md:grid-cols-4">
@@ -262,47 +265,47 @@ export default function Home() {
       <section aria-labelledby="involved-heading" className="relative overflow-hidden bg-brand px-6 py-16 sm:px-12 sm:py-22">
         <div className="relative mx-auto max-w-[1200px]">
           <h2 id="involved-heading" className="font-display mb-2 text-[32px] font-extrabold text-white">
-            Get involved
+            Get Involved
           </h2>
           <p className="mb-9 text-[17px] text-[#D6E6F2]">
             However you show up, you help keep languages alive.
           </p>
           <div className="grid gap-6 md:grid-cols-3">
             <div className="rounded-3xl bg-white/10 p-9 text-white transition hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(0,0,0,0.25)]">
-              <h3 className="font-display mb-3 text-[21px] font-bold">Become a member</h3>
+              <h3 className="font-display mb-3 text-[21px] font-bold">Become a Member</h3>
               <p className="mb-[26px] text-[15px] leading-relaxed text-[#D6E6F2]">
                 Get event updates, our newsletter, and a voice in what we do next.
               </p>
-              <LanguageHover
-                href="/membership"
+              <InvolvedCta
+                kind="member"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-brand no-underline hover:text-brand"
               >
-                Join today
-              </LanguageHover>
+                Join Today
+              </InvolvedCta>
             </div>
             <div className="rounded-3xl bg-accent p-9 text-white transition hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(179,69,47,0.35)]">
               <h3 className="font-display mb-3 text-[21px] font-bold">Donate</h3>
               <p className="mb-[26px] text-[15px] leading-relaxed text-[#F0CFC2]">
                 Every dollar funds venue costs, artist fees and free tickets for newcomer families.
               </p>
-              <LanguageHover
-                href="/membership#donate"
+              <InvolvedCta
+                kind="donate"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-accent no-underline hover:text-accent"
               >
-                Give today
-              </LanguageHover>
+                Give Today
+              </InvolvedCta>
             </div>
             <div className="rounded-3xl bg-green p-9 text-white transition hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(46,139,103,0.35)]">
               <h3 className="font-display mb-3 text-[21px] font-bold">Volunteer</h3>
               <p className="mb-[26px] text-[15px] leading-relaxed text-[#CBE9D9]">
                 Help run booths, translate, or support youth and community programs in your language.
               </p>
-              <LanguageHover
-                href="/contact"
+              <InvolvedCta
+                kind="volunteer"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-green no-underline hover:text-green"
               >
-                Sign up
-              </LanguageHover>
+                Sign Up
+              </InvolvedCta>
             </div>
           </div>
 
@@ -311,7 +314,7 @@ export default function Home() {
               <h3 className="font-display mb-2 text-2xl font-extrabold text-white">
                 Never miss a celebration
               </h3>
-              <p className="text-[15px] text-[#D6E6F2]">Monthly event updates, straight to your inbox.</p>
+              <p className="text-[15px] text-[#D6E6F2]">Event updates, straight to your inbox.</p>
             </div>
             <NewsletterForm />
           </div>

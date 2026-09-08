@@ -108,7 +108,7 @@ export default function EventsList({ events, filters, featured }) {
                   <h3 className="font-display my-2 text-[17px] font-bold text-foreground">{ev.title}</h3>
                   <p className="mb-3 text-sm text-muted">{ev.dateLocation || ev.date}</p>
                   <span className="text-[13px] font-bold text-foreground">
-                    Learn more →
+                    Learn More →
                   </span>
                 </div>
               </article>

@@ -20,7 +20,7 @@ export default async function GalleryPage() {
     <div>
       <section className="mx-auto max-w-[900px] px-6 pt-16 pb-10 text-center sm:px-12 sm:pt-18">
         <h1 className="font-display mb-4 text-[40px] font-extrabold tracking-tight sm:text-[46px]">
-          Photo gallery
+          Photo Gallery
         </h1>
         <p className="text-lg text-muted">
           Moments from Mother Language Festivals, IMLD observances, and community gatherings.

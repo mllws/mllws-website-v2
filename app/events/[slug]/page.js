@@ -3,8 +3,9 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import CmsHtml from "@/components/CmsHtml";
 import { getAllEvents, getEventBySlug } from "@/lib/events";
+import { getAllGalleries } from "@/lib/galleries";
 
-export const dynamic = "force-static";
+export const revalidate = 3600;
 
 function formatEventDate(iso) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -37,12 +38,20 @@ export default async function EventDetailPage({ params }) {
   const { slug } = await params;
   const event = await getEventBySlug(slug);
   if (!event) notFound();
+  const gallery = (await getAllGalleries()).find((entry) => entry.event === event.slug);
+
+  const parsedEventDate = new Date(event.date);
+  const currentDate = new Date();
+  parsedEventDate.setHours(0, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0);
+  const showCityEventLink =
+    event.cityHref && (Number.isNaN(parsedEventDate.getTime()) || parsedEventDate >= currentDate);
 
   return (
     <article className="mx-auto max-w-[800px] px-6 pt-16 pb-16 sm:px-12 sm:pt-20 sm:pb-22">
       <p className="mb-6 text-sm">
         <Link href="/events" className="font-bold no-underline">
-          ← All events
+          ← All Events
         </Link>
       </p>
 
@@ -79,14 +88,14 @@ export default async function EventDetailPage({ params }) {
         )}
 
         <div className="mt-6 flex flex-wrap gap-3">
-          {event.cityHref && (
+          {showCityEventLink && (
             <a
               href={event.cityHref}
               target="_blank"
               rel="noreferrer"
               className="inline-block rounded-full bg-accent px-6 py-3 text-sm font-bold text-white no-underline transition hover:scale-105"
             >
-              City event page
+              City Event Page
             </a>
           )}
           {event.facebookHref && (
@@ -96,7 +105,7 @@ export default async function EventDetailPage({ params }) {
               rel="noreferrer"
               className="inline-block rounded-full border border-foreground/15 px-6 py-3 text-sm font-bold text-foreground no-underline transition hover:border-accent hover:text-accent"
             >
-              Facebook event
+              Facebook Event
             </a>
           )}
           {event.mapHref && (
@@ -106,8 +115,16 @@ export default async function EventDetailPage({ params }) {
               rel="noreferrer"
               className="inline-block rounded-full border border-foreground/15 px-6 py-3 text-sm font-bold text-foreground no-underline transition hover:border-accent hover:text-accent"
             >
-              View on map
+              View on Map
             </a>
+          )}
+          {gallery && (
+            <Link
+              href={`/gallery/${gallery.slug}`}
+              className="inline-block rounded-full border border-foreground/15 px-6 py-3 text-sm font-bold text-foreground no-underline transition hover:border-accent hover:text-accent"
+            >
+              View Gallery
+            </Link>
           )}
         </div>
 

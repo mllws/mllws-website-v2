@@ -20,6 +20,9 @@ import {
   hearItInYourLanguageFlag,
 } from "@/flags";
 import { getInvolvedUrls } from "@/lib/get-involved-href";
+import { organizationSchema } from "@/lib/data";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -77,12 +80,34 @@ const fontVariables = [
 ].join(" ");
 
 export const metadata = {
+  metadataBase: new URL(organizationSchema.url),
+  icons: {
+    icon: "/Logo-Without-MLLWS-Solid-Center.png",
+    apple: "/Logo-Without-MLLWS-Solid-Center.png",
+  },
   title: {
     default: "Mother Language Lovers of the World Society (MLLWS)",
     template: "%s | MLLWS",
   },
   description:
     "Mother Language Lovers of the World Society is a non-profit organization which bring together various linguistic and cultural origins to celebrate their heritage and enrich multiculturalism and intercultural harmony. We also promote the International Mother Language Day (Feb 21) to build national as well as community-level capacity for inclusive education and multilingualism as envisioned by the UNESCO.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: organizationSchema.url,
+    siteName: organizationSchema.name,
+    title: "Mother Language Lovers of the World Society (MLLWS)",
+    description: organizationSchema.description,
+    images: [{ url: organizationSchema.logo, alt: `${organizationSchema.name} logo` }],
+  },
+  twitter: {
+    card: "summary",
+    title: "Mother Language Lovers of the World Society (MLLWS)",
+    description: organizationSchema.description,
+    images: [organizationSchema.logo],
+  },
 };
 
 export default async function RootLayout({ children }) {
@@ -108,6 +133,12 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en" className={`h-full antialiased ${fontVariables}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      </head>
       <body
         className="flex min-h-full flex-col font-sans"
         data-language-hover={languageHover ? "on" : "off"}
@@ -131,6 +162,8 @@ export default async function RootLayout({ children }) {
           </main>
           <Footer />
         </FeatureFlagsProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

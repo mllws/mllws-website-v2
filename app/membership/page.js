@@ -1,6 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
-import LanguageHover from "@/components/LanguageHover";
+import InvolvedCta, { MembershipSoonNote } from "@/components/InvolvedCta";
 import { membershipTiers } from "@/lib/data";
 
 export const metadata = {
@@ -65,22 +64,20 @@ export default function MembershipPage() {
                   </li>
                 ))}
               </ul>
-              <LanguageHover
-                href="/contact"
-                className={`block rounded-full py-3 text-center text-sm font-bold no-underline transition hover:scale-[1.03] ${tier.featured
+              <InvolvedCta
+                kind="member"
+                className={`block rounded-full py-3 text-center text-sm font-bold no-underline transition hover:scale-[1.03] ${
+                  tier.featured
                     ? "bg-white text-brand hover:text-brand"
                     : "bg-foreground text-white hover:text-white"
                   }`}
               >
                 {tier.cta}
-              </LanguageHover>
+              </InvolvedCta>
             </div>
           ))}
         </div>
-        <p className="mt-6 text-center text-sm text-muted">
-          Membership payments will connect to Zeffy soon. For now, reach us via{" "}
-          <Link href="/contact">Contact</Link>.
-        </p>
+        <MembershipSoonNote />
       </section>
 
       <section id="donate" aria-labelledby="donate-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
@@ -109,12 +106,12 @@ export default function MembershipPage() {
                 </span>
               ))}
             </div>
-            <LanguageHover
-              href="/contact"
+            <InvolvedCta
+              kind="donate"
               className="inline-block rounded-full bg-foreground px-7 py-3.5 font-bold text-white no-underline transition hover:scale-105 hover:text-white"
             >
               Donate now
-            </LanguageHover>
+            </InvolvedCta>
           </div>
           <div className="relative min-h-[280px]">
             <Image
@@ -128,7 +125,11 @@ export default function MembershipPage() {
         </div>
       </section>
 
-      <section aria-labelledby="volunteer-heading" className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22">
+      <section
+        id="volunteer"
+        aria-labelledby="volunteer-heading"
+        className="mx-auto max-w-[1200px] px-6 pb-16 sm:px-12 sm:pb-22"
+      >
         <div className="flex flex-wrap items-center justify-between gap-8 rounded-[28px] bg-green p-8 sm:p-13">
           <div className="max-w-[520px]">
             <h2 id="volunteer-heading" className="font-display mb-3 text-[26px] font-extrabold text-white">
@@ -139,12 +140,12 @@ export default function MembershipPage() {
               needed — just enthusiasm for your community.
             </p>
           </div>
-          <LanguageHover
-            href="/contact"
+          <InvolvedCta
+            kind="volunteer"
             className="shrink-0 rounded-full bg-white px-7 py-3.5 font-bold text-green no-underline transition hover:scale-105 hover:text-green"
           >
             Sign up to volunteer
-          </LanguageHover>
+          </InvolvedCta>
         </div>
       </section>
     </div>

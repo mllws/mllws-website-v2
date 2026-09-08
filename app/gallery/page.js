@@ -2,9 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getAllGalleries } from "@/lib/galleries";
 
-function includeDrafts() {
-  return process.env.NODE_ENV !== "production";
-}
+export const dynamic = "force-static";
 
 function formatGalleryDate(iso) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -15,8 +13,8 @@ function formatGalleryDate(iso) {
   }).format(new Date(`${iso}T00:00:00Z`));
 }
 
-export default function GalleryPage() {
-  const galleries = getAllGalleries({ includeDrafts: includeDrafts() });
+export default async function GalleryPage() {
+  const galleries = await getAllGalleries();
 
   return (
     <div>

@@ -1,5 +1,5 @@
 ---
-description: Content architecture — site data, MDX blog fetching, private content repo
+description: Content architecture — site data, Sanity GROQ
 globs: lib/**/*.js,content/**/*,scripts/**/*.js
 ---
 
@@ -7,17 +7,15 @@ globs: lib/**/*.js,content/**/*,scripts/**/*.js
   content (nav, sponsors, directors, chapters, advisors, contact info,
   recommendation letters). Add new structured content there rather than
   hardcoding it in page files — see `nextjs-app-router.mdc`.
-- `content/blog/` is populated at build/dev time by
-  `scripts/fetch-blog-content.js`, which pulls MDX posts from the **private**
-  `mllws/mllws-blog` repo using the `BLOG_CONTENT_TOKEN` env var. It is
-  gitignored — never commit files into `content/blog/`, and never remove it
-  from `.gitignore`. Draft posts must never end up in this (public) repo's
-  git history.
-- Blog post access goes through `lib/posts.js` (`getAllPosts`,
-  `getPostBySlug`, `getAllTags` — see `docs/specs/mdx-blog-fetching.md` for
-  the full spec). Pages should import from there, not read `content/blog/`
-  directly.
-- Anything touching `content/blog/` or the fetch step must fail safe: a
-  missing `BLOG_CONTENT_TOKEN`, an empty directory, or one malformed post
-  must never crash `npm run dev` or `npm run build` — log and continue
-  rather than throw.
+- Posts, events, stories, and galleries are edited in Sanity Studio
+  (`mllws-sanity`). This site reads **published** documents via GROQ in
+  `lib/cms.js` (`force-static` + `revalidateTag`). Never query drafts on
+  the public site. Never query Neon.
+- Access goes through `lib/posts.js`, `lib/events.js`, `lib/stories.js`,
+  and `lib/galleries.js`. Pages should import from there, not create a
+  Sanity client.
+- If `NEXT_PUBLIC_SANITY_PROJECT_ID` is unset or a query fails, return
+  empty lists — never crash `npm run dev` or `npm run build`.
+- Drafts stay in Sanity. Do not commit unpublished content into this
+  public repo. Leftover `/content/cms/` and `/content/blog/` stay
+  gitignored.

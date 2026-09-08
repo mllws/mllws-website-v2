@@ -58,7 +58,11 @@ export default function Header() {
             className="h-9 w-9"
             priority
           />
-          <span className="font-display text-[15px] font-extrabold leading-tight tracking-tight sm:text-base">
+          <span
+            className={`font-display text-[15px] font-extrabold leading-tight tracking-tight sm:text-base ${
+              scrolled ? "hidden" : "hidden lg:block"
+            }`}
+          >
             Mother Language Lovers
             <br />
             <span className="text-xs font-semibold text-muted">of the World Society</span>

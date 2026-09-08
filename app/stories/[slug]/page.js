@@ -1,12 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import CmsHtml from "@/components/CmsHtml";
 import { getAllStories, getStoryBySlug } from "@/lib/stories";
 
-function includeDrafts() {
-  return process.env.NODE_ENV !== "production";
-}
+export const dynamic = "force-static";
 
 function formatStoryDate(iso) {
   return new Intl.DateTimeFormat("en-CA", {
@@ -17,15 +15,15 @@ function formatStoryDate(iso) {
   }).format(new Date(`${iso}T00:00:00Z`));
 }
 
-export function generateStaticParams() {
-  return getAllStories({ includeDrafts: includeDrafts() }).map((story) => ({
+export async function generateStaticParams() {
+  return (await getAllStories()).map((story) => ({
     slug: story.slug,
   }));
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const story = getStoryBySlug(slug, { includeDrafts: includeDrafts() });
+  const story = await getStoryBySlug(slug);
   if (!story) {
     return { title: "Story not found" };
   }
@@ -37,7 +35,7 @@ export async function generateMetadata({ params }) {
 
 export default async function StoryDetailPage({ params }) {
   const { slug } = await params;
-  const story = getStoryBySlug(slug, { includeDrafts: includeDrafts() });
+  const story = await getStoryBySlug(slug);
   if (!story) notFound();
 
   return (
@@ -62,11 +60,6 @@ export default async function StoryDetailPage({ params }) {
       )}
 
       <header className="mb-10">
-        {story.draft && (
-          <span className="mb-4 inline-block rounded-full bg-[#F7E4D3] px-3 py-1 text-xs font-bold text-accent-dark">
-            Draft
-          </span>
-        )}
         <span
           className="mb-4 inline-block rounded-full px-3.5 py-1.5 text-[13px] font-bold"
           style={{ color: story.tagColor, backgroundColor: `${story.tagColor}15` }}
@@ -95,11 +88,7 @@ export default async function StoryDetailPage({ params }) {
         )}
       </header>
 
-      {story.content.trim() && (
-        <div className="prose-content">
-          <MDXRemote source={story.content} />
-        </div>
-      )}
+      <CmsHtml html={story.content} />
     </article>
   );
 }

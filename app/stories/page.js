@@ -1,14 +1,12 @@
 import StoriesList from "@/components/StoriesList";
 import { getAllStories, getFeaturedStory, getStoryFilters } from "@/lib/stories";
 
-function includeDrafts() {
-  return process.env.NODE_ENV !== "production";
-}
+export const dynamic = "force-static";
 
-export default function StoriesPage() {
-  const stories = getAllStories({ includeDrafts: includeDrafts() });
-  const featured = getFeaturedStory({ includeDrafts: includeDrafts() });
-  const filters = getStoryFilters({ includeDrafts: includeDrafts() });
+export default async function StoriesPage() {
+  const stories = await getAllStories();
+  const featured = await getFeaturedStory();
+  const filters = await getStoryFilters();
 
   return (
     <div>

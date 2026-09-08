@@ -3,6 +3,7 @@ import Link from "next/link";
 import HeroCarousel from "@/components/HeroCarousel";
 import LanguageListen from "@/components/LanguageListen";
 import LanguageHover from "@/components/LanguageHover";
+import InvolvedCta from "@/components/InvolvedCta";
 import NewsletterForm from "@/components/NewsletterForm";
 import {
   greetingRibbon,
@@ -14,6 +15,8 @@ import {
 import { getFeaturedEvent } from "@/lib/events";
 import { getHomepageGalleryImages, getLatestGallery } from "@/lib/galleries";
 import { getAllStories, getFeaturedStory } from "@/lib/stories";
+
+export const dynamic = "force-static";
 
 function ProgramIcon({ color }) {
   return (
@@ -28,8 +31,8 @@ function ProgramIcon({ color }) {
   );
 }
 
-export default function Home() {
-  const mdxEvent = getFeaturedEvent();
+export default async function Home() {
+  const mdxEvent = await getFeaturedEvent();
   const upcomingEvent = mdxEvent
     ? {
         badge: mdxEvent.tag || "Event",
@@ -44,12 +47,12 @@ export default function Home() {
         mapHref: mdxEvent.mapHref,
       }
     : fallbackUpcomingEvent;
-  const latestGallery = getLatestGallery();
-  const galleryImages = getHomepageGalleryImages() || fallbackGalleryImages;
+  const latestGallery = await getLatestGallery();
+  const galleryImages = (await getHomepageGalleryImages()) || fallbackGalleryImages;
   const galleryHref = latestGallery ? `/gallery/${latestGallery.slug}` : "/gallery";
-  const featuredStory = getFeaturedStory();
+  const featuredStory = await getFeaturedStory();
   const moreStories = featuredStory
-    ? getAllStories().filter((story) => story.slug !== featuredStory.slug).slice(0, 2)
+    ? (await getAllStories()).filter((story) => story.slug !== featuredStory.slug).slice(0, 2)
     : [];
 
   return (
@@ -273,36 +276,36 @@ export default function Home() {
               <p className="mb-[26px] text-[15px] leading-relaxed text-[#D6E6F2]">
                 Get event updates, our newsletter, and a voice in what we do next.
               </p>
-              <LanguageHover
-                href="/membership"
+              <InvolvedCta
+                kind="member"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-brand no-underline hover:text-brand"
               >
                 Join Today
-              </LanguageHover>
+              </InvolvedCta>
             </div>
             <div className="rounded-3xl bg-accent p-9 text-white transition hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(179,69,47,0.35)]">
               <h3 className="font-display mb-3 text-[21px] font-bold">Donate</h3>
               <p className="mb-[26px] text-[15px] leading-relaxed text-[#F0CFC2]">
                 Every dollar funds venue costs, artist fees and free tickets for newcomer families.
               </p>
-              <LanguageHover
-                href="/membership#donate"
+              <InvolvedCta
+                kind="donate"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-accent no-underline hover:text-accent"
               >
                 Give Today
-              </LanguageHover>
+              </InvolvedCta>
             </div>
             <div className="rounded-3xl bg-green p-9 text-white transition hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(46,139,103,0.35)]">
               <h3 className="font-display mb-3 text-[21px] font-bold">Volunteer</h3>
               <p className="mb-[26px] text-[15px] leading-relaxed text-[#CBE9D9]">
                 Help run booths, translate, or support youth and community programs in your language.
               </p>
-              <LanguageHover
-                href="/contact"
+              <InvolvedCta
+                kind="volunteer"
                 className="inline-block rounded-full bg-white px-[22px] py-3 text-sm font-bold text-green no-underline hover:text-green"
               >
                 Sign Up
-              </LanguageHover>
+              </InvolvedCta>
             </div>
           </div>
 

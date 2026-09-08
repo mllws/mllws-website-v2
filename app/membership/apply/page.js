@@ -1,5 +1,5 @@
 import Link from "next/link";
-import MembershipForm from "@/components/MembershipForm";
+import ZeffyMembershipEmbed from "@/components/ZeffyMembershipEmbed";
 
 export const metadata = {
     title: "Membership Application",
@@ -18,11 +18,13 @@ export default function MembershipApplicationPage() {
                     Membership Application
                 </h1>
                 <p className="mt-4 text-lg text-muted">
-                    Choose your membership tier and tell us a little about yourself.
+                    Complete your membership application and payment securely through Zeffy.
                 </p>
             </section>
 
-            <MembershipForm />
+            <section className="mx-auto max-w-[900px] px-6 pb-16 sm:px-12 sm:pb-22">
+                <ZeffyMembershipEmbed />
+            </section>
         </div>
     );
 }

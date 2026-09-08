@@ -42,7 +42,7 @@ export default async function GalleryDetailPage({ params }) {
     <article className="mx-auto max-w-[1100px] px-6 pt-16 pb-16 sm:px-12 sm:pt-20 sm:pb-22">
       <p className="mb-6 text-sm">
         <Link href="/gallery" className="font-bold no-underline">
-          ← All albums
+          ← All Albums
         </Link>
       </p>
 
@@ -62,7 +62,7 @@ export default async function GalleryDetailPage({ params }) {
         {gallery.event && (
           <p className="mt-3 text-sm">
             <Link href={`/events/${gallery.event}`} className="font-bold no-underline">
-              Related event →
+              Related Event →
             </Link>
           </p>
         )}

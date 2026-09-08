@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import CmsHtml from "@/components/CmsHtml";
 import { getAllEvents, getEventBySlug } from "@/lib/events";
+import { getAllGalleries } from "@/lib/galleries";
 
 export const revalidate = 3600;
 
@@ -37,6 +38,14 @@ export default async function EventDetailPage({ params }) {
   const { slug } = await params;
   const event = await getEventBySlug(slug);
   if (!event) notFound();
+  const gallery = (await getAllGalleries()).find((entry) => entry.event === event.slug);
+
+  const eventDate = new Date(event.date);
+  const today = new Date();
+  eventDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+  const showCityEventLink =
+    event.cityHref && (Number.isNaN(eventDate.getTime()) || eventDate >= today);
 
   const eventDate = new Date(event.date);
   const today = new Date();
@@ -49,7 +58,7 @@ export default async function EventDetailPage({ params }) {
     <article className="mx-auto max-w-[800px] px-6 pt-16 pb-16 sm:px-12 sm:pt-20 sm:pb-22">
       <p className="mb-6 text-sm">
         <Link href="/events" className="font-bold no-underline">
-          ← All events
+          ← All Events
         </Link>
       </p>
 
@@ -93,7 +102,7 @@ export default async function EventDetailPage({ params }) {
               rel="noreferrer"
               className="inline-block rounded-full bg-accent px-6 py-3 text-sm font-bold text-white no-underline transition hover:scale-105"
             >
-              City event page
+              City Event Page
             </a>
           )}
           {event.facebookHref && (
@@ -115,6 +124,14 @@ export default async function EventDetailPage({ params }) {
             >
               View on Map
             </a>
+          )}
+          {gallery && (
+            <Link
+              href={`/gallery/${gallery.slug}`}
+              className="inline-block rounded-full border border-foreground/15 px-6 py-3 text-sm font-bold text-foreground no-underline transition hover:border-accent hover:text-accent"
+            >
+              View Gallery
+            </Link>
           )}
         </div>
 
